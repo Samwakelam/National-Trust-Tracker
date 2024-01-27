@@ -1,1 +1,2 @@
-export * from "./src";
+//@ts-ignore
+export * from './src';

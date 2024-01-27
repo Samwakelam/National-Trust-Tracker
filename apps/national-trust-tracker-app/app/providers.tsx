@@ -1,18 +1,21 @@
 'use client';
 
-import { ChakraProvider } from '@chakra-ui/react';
-import { defaultTheme, useDefaultTheme } from '@sam/library';
+import { ReactNode } from 'react';
 
-import { Navbar } from '../components/Navbar/Navbar.styles';
-import { extendTheme } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { useDefaultTheme } from '@sam/library';
+
+import { Navbar } from '../library/components/Navbar/Navbar.styles';
+import { Spinner } from '../library/components/Spinner/Spinner.styles';
 
 const theme = useDefaultTheme({
     components: {
         Navbar,
+        Spinner,
     },
 });
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
     return (
         <ChakraProvider
             theme={theme}

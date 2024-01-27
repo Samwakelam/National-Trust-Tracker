@@ -1,4 +1,5 @@
 export * from './Accordion';
+export * from './Alert';
 export * from './Bar';
 export * from './Button';
 export * from './ButtonPreset';
@@ -17,7 +18,7 @@ export * from './InputAndSelectBar';
 export * from './InputGroup';
 export * from './Label';
 export * from './Lorem';
-export * from './Map';
+// export * from './Map';
 export * from './Menu';
 export * from './Modal';
 export * from './ModalConfirm';

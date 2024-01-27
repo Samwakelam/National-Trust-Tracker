@@ -7,7 +7,6 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { To, useNavigate } from 'react-router-dom';
 
 import {
     Button,
@@ -22,18 +21,16 @@ import * as Chakra from '@chakra-ui/react';
 
 // Note: code has a ternary that appears to call the same function with the same prop. This is a Typescript work around as navigate() has the option of two function types which do not overlap. We have to tell typescript if it is using (delta: number): void or (to: To, options?: NavigateOptions): void.
 
-export interface ControlsBannerProps extends FrameProps {
-    slug?: To | number;
+export interface FrameControlsBannerProps extends FrameProps {
+    navigationCTA?: ButtonProps;
 }
 
 export const FrameControlsBanner = ({
-    slug,
+    navigationCTA,
     children,
     id,
     ...props
-}: ControlsBannerProps) => {
-    const navigate = useNavigate();
-
+}: FrameControlsBannerProps) => {
     const contentContainer = useRef<HTMLDivElement>(null);
     const childrenContainer = useRef<HTMLDivElement>(null);
     const childrenWidthRef = useRef<number>(0);
@@ -75,18 +72,14 @@ export const FrameControlsBanner = ({
         >
             <Chakra.HStack
                 alignItems='center'
-                justifyContent={slug ? 'space-between' : 'flex-end'}
+                justifyContent={navigationCTA ? 'space-between' : 'flex-end'}
                 w='100%'
                 ref={contentContainer}
             >
-                {slug && (
+                {navigationCTA && (
                     <Button
                         icon={{ icon: 'arrow-l', ariaLabel: 'back button' }}
-                        onClick={() =>
-                            typeof slug === 'number'
-                                ? navigate(slug)
-                                : navigate(slug)
-                        }
+                        {...navigationCTA}
                     />
                 )}
 

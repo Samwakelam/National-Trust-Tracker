@@ -2,7 +2,7 @@ export const blackText = `gray.700`;
 export const whiteText = `white.300`;
 
 export const darkBackground = 'gray.700';
-export const lightBackground = 'gray.200';
+export const lightBackground = 'white.500';
 
 export const colorScheme: string[] = [
     'black',

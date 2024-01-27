@@ -113,10 +113,10 @@ const InputGroupFixture = ({
                         ? {
                               children: (
                                   <Button
-                                      size='sm'
-                                      right='-5px'
+                                      size='xs'
+                                      left='5px'
                                   >
-                                      Element
+                                      'Element'
                                   </Button>
                               ),
                           }
@@ -125,10 +125,10 @@ const InputGroupFixture = ({
                         ? {
                               children: (
                                   <Button
-                                      size='sm'
+                                      size='xs'
                                       right='5px'
                                   >
-                                      Element
+                                      'Element'
                                   </Button>
                               ),
                           }

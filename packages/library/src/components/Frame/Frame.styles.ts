@@ -1,40 +1,70 @@
 import { mediaQueries } from '../../theme/devices.config';
 
 import * as Chakra from '@chakra-ui/react';
+import { FrameProps } from './Frame.component';
+import { blackText, whiteText } from '../../utils';
 
 const { definePartsStyle, defineMultiStyleConfig } =
-    Chakra.createMultiStyleConfigHelpers(['container', 'content']);
+    Chakra.createMultiStyleConfigHelpers(['container', 'content', 'overlay']);
 
 // heading height is 3rem (48px) Padding top is this plus frame padding-top
 
 export const frame = definePartsStyle(
-    ({ theme, colorScheme, isWideWidth, ...props }) => {
+    ({ theme, colorScheme, isWideWidth, showOverlay, ...props }) => {
         const { space } = theme;
+
+        const blackList = ['black'];
+        const whiteList = ['white'];
 
         return {
             container: {
                 backgroundColor: `${colorScheme}.300`,
                 width: '100%',
+                position: 'relative',
 
                 _dark: {
                     backgroundColor: `${colorScheme}.600`,
                 },
             },
+            overlay: {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundImage: `linear-gradient(${resolveDirection(showOverlay)}, blackAlpha.100 20%, blackAlpha.800 100%)`,
+            },
             content: {
-                display: 'flex',
-                flexDirection: 'column',
-                width: '100%',
-                gap: space[24],
-                alignItems: 'center',
+                'position': 'relative',
+                'display': 'flex',
+                'flexDirection': 'column',
+                'width': '100%',
+                'gap': space[24],
+                'alignItems': 'center',
+                'zIndex': 2,
 
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                'backgroundSize': 'cover',
+                'backgroundPosition': 'center',
                 // overflow: 'hidden',
 
-                maxWidth: isWideWidth ? '80rem' : '70rem',
-                maxW: isWideWidth ? '80rem' : '70rem',
-                marginLeft: 'auto',
-                marginRight: 'auto',
+                'maxWidth': isWideWidth ? '80rem' : '70rem',
+                'maxW': isWideWidth ? '80rem' : '70rem',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+
+                '& p, h1, h2, h3, h4, h5, h6, a, li, b': blackList.includes(
+                    colorScheme
+                ) && {
+                    color: whiteText,
+                },
+
+                '_dark': {
+                    '& p, h1, h2, h3, h4, h5, h6, a, li,': whiteList.includes(
+                        colorScheme
+                    ) && {
+                        color: blackText,
+                    },
+                },
             },
         };
     }
@@ -195,7 +225,7 @@ export const Frame = defineMultiStyleConfig({
     sizes: { sm, banner, md, lg },
     defaultProps: {
         colorScheme: 'transparent',
-        size: 'sm',
+        size: 'lg',
     },
 });
 
@@ -216,3 +246,18 @@ export const Frame = defineMultiStyleConfig({
 //         width: 100%;
 //     }
 // }
+
+const resolveDirection = (showOverlay: FrameProps['showOverlay']) => {
+    switch (showOverlay) {
+        case 'from-bottom':
+            return '180deg';
+        case 'from-left':
+            return '-90deg';
+        case 'from-right':
+            return '90deg';
+        case 'from-top':
+            return '0deg';
+        default:
+            return '180deg';
+    }
+};

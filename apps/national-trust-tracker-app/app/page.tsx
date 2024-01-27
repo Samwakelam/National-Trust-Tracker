@@ -1,13 +1,10 @@
-'use client';
+import { Metadata } from 'next';
+import { Spinner } from '../library/components';
 
-import Image from 'next/image';
+export const metadata: Metadata = {
+    title: 'National Trust Tracker',
+};
 
-import { Button, ContainerScrollBox, ContainerPage } from '@sam/library';
-
-export default function Page(): JSX.Element {
-    return (
-        <ContainerPage>
-            <ContainerScrollBox>hello</ContainerScrollBox>{' '}
-        </ContainerPage>
-    );
+export default async function Page(): Promise<JSX.Element> {
+    return true ? <>Page</> : <Spinner isPageSpinner />;
 }

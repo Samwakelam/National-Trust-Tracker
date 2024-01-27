@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PositionType } from 'src/types';
+import { PositionType } from '../../types';
 
 import { IconProps, Icon } from '..';
 

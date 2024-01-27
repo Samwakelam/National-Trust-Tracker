@@ -13,6 +13,7 @@ import {
     filesOutlineMap,
     layersSolidMap,
     locationOutlineMap,
+    nationalTrustMap,
     shapesSolidMap,
     shieldsMap,
     symbolsSolidMap,
@@ -30,6 +31,7 @@ const libraryType = [
     'files',
     'layers',
     'location',
+    'national-trust',
     'shapes',
     'shields',
     'symbols',
@@ -71,6 +73,9 @@ export const IconFixture = () => {
             }
             case 'location': {
                 return Object.keys(locationOutlineMap);
+            }
+            case 'national-trust': {
+                return Object.keys(nationalTrustMap);
             }
             case 'shapes': {
                 return Object.keys(shapesSolidMap);

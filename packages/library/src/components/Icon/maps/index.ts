@@ -5,6 +5,7 @@ export * from './circles.map';
 export * from './files.map';
 export * from './layers.map';
 export * from './location.map';
+export * from './national-trust.map';
 export * from './shapes.map';
 export * from './shields.map';
 export * from './symbols.map';

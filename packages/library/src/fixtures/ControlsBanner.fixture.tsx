@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useValue } from 'react-cosmos/fixture';
 
 // Note: Full paths must be used in all files for cosmos to work
-import { Button, ControlsBanner, FixtureBox } from '../components';
+import { Button, FrameControlsBanner, FixtureBox } from '../components';
 
 import * as Chakra from '@chakra-ui/react';
 
@@ -37,12 +37,12 @@ const ControlsBannerFixture = () => {
     return (
         <BrowserRouter>
             <FixtureBox>
-                <ControlsBanner
+                <FrameControlsBanner
                     id='test'
-                    slug={slug ? '.' : undefined}
+                    link={slug ? { href: '.', as: Chakra.Link } : undefined}
                 >
                     {buttons}
-                </ControlsBanner>
+                </FrameControlsBanner>
 
                 <Chakra.Flex
                     justifyContent='space-evenly'

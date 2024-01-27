@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Children } from 'src/types';
+import { Children } from '../../types';
 import { ButtonProps, Button } from '..';
 
 import * as Chakra from '@chakra-ui/react';

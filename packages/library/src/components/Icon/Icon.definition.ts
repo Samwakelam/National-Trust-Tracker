@@ -7,6 +7,7 @@ import {
     FilesType,
     LayersType,
     LocationType,
+    NationalTrustType,
     ShapesType,
     ShieldsType,
     SymbolsType,
@@ -25,6 +26,7 @@ export type IconType =
     | FilesType
     | LayersType
     | LocationType
+    | NationalTrustType
     | ShapesType
     | ShieldsType
     | SymbolsType

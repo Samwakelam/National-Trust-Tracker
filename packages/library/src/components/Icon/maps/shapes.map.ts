@@ -12,8 +12,13 @@ import {
     HiOutlineLockOpen,
 } from 'react-icons/hi';
 import { IoMdThumbsDown, IoMdThumbsUp } from 'react-icons/io';
+import { IoCarSport, IoCarSportOutline } from 'react-icons/io5';
 import { LuFactory } from 'react-icons/lu';
-import { MdDirectionsBoat, MdOutlineDirectionsBoat } from 'react-icons/md';
+import {
+    MdCardMembership,
+    MdDirectionsBoat,
+    MdOutlineDirectionsBoat,
+} from 'react-icons/md';
 import { PiToolboxBold, PiToolboxFill } from 'react-icons/pi';
 import {
     TbBulb,
@@ -27,10 +32,12 @@ export type ShapesType =
     | 'boat'
     | 'bulb-off'
     | 'bulb-on'
+    | 'car'
     | 'dashboard'
     | 'industry'
     | 'lock-closed'
     | 'lock-open'
+    | 'membership'
     | 'moon'
     | 'passport'
     | 'people'
@@ -46,10 +53,12 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'boat': MdOutlineDirectionsBoat,
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulb,
+    'car': IoCarSportOutline,
     'dashboard': AiOutlineDashboard,
     'industry': LuFactory,
     'lock-closed': HiOutlineLockClosed,
     'lock-open': HiOutlineLockOpen,
+    'membership': MdCardMembership,
     'moon': BiMoon,
     'passport': FaPassport,
     'people': BsPeople,
@@ -66,10 +75,12 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'boat': MdDirectionsBoat,
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulbFilled,
+    'car': IoCarSport,
     'dashboard': AiFillDashboard,
     'industry': FaIndustry,
     'lock-closed': HiLockClosed,
     'lock-open': HiLockOpen,
+    'membership': MdCardMembership,
     'moon': BiSolidMoon,
     'passport': FaPassport,
     'people': BsPeopleFill,

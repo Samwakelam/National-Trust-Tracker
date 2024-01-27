@@ -24,7 +24,12 @@ import {
     HiMenuAlt4,
     HiOutlineLink,
 } from 'react-icons/hi';
-import { IoSettingsOutline, IoSettingsSharp } from 'react-icons/io5';
+import {
+    IoSettingsOutline,
+    IoSettingsSharp,
+    IoStatsChart,
+    IoStatsChartOutline,
+} from 'react-icons/io5';
 import {
     RiDeleteBin2Fill,
     RiDeleteBin2Line,
@@ -73,6 +78,7 @@ export type UtilsType =
     | 'pencil'
     | 'search'
     | 'settings'
+    | 'stats'
     | 'toggle-l'
     | 'toggle-r'
     | 'update'
@@ -103,6 +109,7 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'pencil': MdOutlineEdit,
     'search': FiSearch,
     'settings': IoSettingsOutline,
+    'stats': IoStatsChartOutline,
     'toggle-l': BiToggleLeft,
     'toggle-r': BiToggleRight,
     'update': TbArrowBarToUp,
@@ -134,6 +141,7 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'pencil': MdEdit,
     'search': FiSearch,
     'settings': IoSettingsSharp,
+    'stats': IoStatsChart,
     'toggle-l': BiSolidToggleLeft,
     'toggle-r': BiSolidToggleRight,
     'update': TbArrowBarToUp,

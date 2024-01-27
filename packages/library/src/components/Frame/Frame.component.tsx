@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Children } from 'src/types';
+import { Children } from '../../types';
 
 import * as Chakra from '@chakra-ui/react';
 
@@ -11,13 +11,26 @@ export interface FrameProps extends Chakra.FlexProps, Chakra.ThemingProps {
     isCoupled?: boolean;
     isWideWidth?: boolean;
     colorScheme?: Chakra.StyleFunctionProps['colorScheme'];
+    showOverlay?: 'from-left' | 'from-right' | 'from-top' | 'from-bottom';
 }
 
 const [StylesProvider, useStyles] = Chakra.createStylesContext('Frame');
 
+const FrameOverlay = () => {
+    const styles = useStyles();
+
+    return (
+        <Chakra.Box
+            __css={{ ...styles.overlay }}
+            data-label='frame-overlay'
+        />
+    );
+};
+
 const FrameContainer = ({
     children,
     id,
+    showOverlay,
     ...props
 }: FrameProps): ReactElement<FrameProps> => {
     const styles = useStyles();
@@ -31,6 +44,7 @@ const FrameContainer = ({
             data-scrollspy
             {...props}
         >
+            {showOverlay && <FrameOverlay />}
             {children}
         </Chakra.Box>
     );
@@ -55,6 +69,7 @@ export const Frame = ({
     colorScheme,
     isCoupled,
     isWideWidth,
+    showOverlay,
     size,
     ...props
 }: FrameProps) => {
@@ -62,12 +77,16 @@ export const Frame = ({
         colorScheme,
         isCoupled,
         isWideWidth,
+        showOverlay,
         size,
     });
 
     return (
         <StylesProvider value={styles}>
-            <FrameContainer {...props}>
+            <FrameContainer
+                showOverlay={showOverlay}
+                {...props}
+            >
                 <FrameContent {...props}>{children}</FrameContent>
             </FrameContainer>
         </StylesProvider>

@@ -38,6 +38,17 @@ const FrameFixture = () => {
         defaultValue: 'sm',
     });
 
+    const [showOverlay] = useSelect('Show Overlay', {
+        options: [
+            'from-left',
+            'from-top',
+            'from-bottom',
+            'from-right',
+            'undefined',
+        ],
+        defaultValue: 'undefined',
+    });
+
     return (
         <FixtureBox>
             <Frame
@@ -46,6 +57,9 @@ const FrameFixture = () => {
                 isCoupled={isCoupled}
                 isWideWidth={isWideWidth}
                 size={size}
+                showOverlay={
+                    showOverlay === 'undefined' ? undefined : showOverlay
+                }
             >
                 <Chakra.HStack {...containerProps}>
                     <p>
