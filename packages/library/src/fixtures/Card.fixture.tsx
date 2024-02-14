@@ -3,18 +3,31 @@ import React from 'react';
 import { useSelect, useValue } from 'react-cosmos/fixture';
 
 // Note: Full paths must be used in all files for cosmos to work
-import { Card, CardProps, FixtureBox, Lorem } from '../components';
+import {
+    ButtonProps,
+    Card,
+    CardProps,
+    FixtureBox,
+    HeadingProps,
+    Lorem,
+    MenuProps,
+    Icon as IconComponent,
+} from '../components';
 import { PositionType } from '../types';
 import { colorScheme } from '../utils/colours.utils';
 
 import * as Chakra from '@chakra-ui/react';
 
-const CardFixture = ({ image }: Pick<CardProps, 'image'>) => {
-    const [confirmCTA] = useValue<boolean>('Add confirmCTA', {
+const CardFixture = () => {
+    const [confirmCTA] = useValue<boolean>('Add ConfirmCTA', {
         defaultValue: false,
     });
 
-    const [declineCTA] = useValue<boolean>('Add declineCTA', {
+    const [declineCTA] = useValue<boolean>('Add DeclineCTA', {
+        defaultValue: false,
+    });
+
+    const [footerItems] = useValue<boolean>('Add Footer Items', {
         defaultValue: false,
     });
 
@@ -23,6 +36,12 @@ const CardFixture = ({ image }: Pick<CardProps, 'image'>) => {
     });
 
     const [hasIcon] = useValue<boolean>('Add Icon', { defaultValue: false });
+
+    const [image] = useValue<boolean>('Add Image', {
+        defaultValue: false,
+    });
+
+    const [menu] = useValue<boolean>('Add Menu', { defaultValue: false });
 
     const [layout] = useSelect('Card Layout', {
         options: ['horizontal', 'vertical'],
@@ -36,6 +55,11 @@ const CardFixture = ({ image }: Pick<CardProps, 'image'>) => {
     const [scheme] = useSelect('Colour Scheme', {
         options: colorScheme,
         defaultValue: 'transparent',
+    });
+
+    const [headingPreset] = useSelect('Heading preset', {
+        options: ['sub-heading', 'frame-heading'],
+        defaultValue: 'sub-heading',
     });
 
     const [icon] = useSelect('Icon', {
@@ -58,51 +82,70 @@ const CardFixture = ({ image }: Pick<CardProps, 'image'>) => {
         defaultValue: false,
     });
 
+    const [isInset] = useValue<boolean>('Inset Image', {
+        defaultValue: false,
+    });
+
     const [longContent] = useValue<boolean>('Show Long Content', {
         defaultValue: false,
     });
 
+    const ConfirmCTA: ButtonProps = {
+        children: 'Confirm',
+        onClick: () => alert('The confirm button has been clicked'),
+    };
+    const DeclineCTA: ButtonProps = {
+        children: 'Cancel',
+        onClick: () => alert('The decline button has been clicked'),
+    };
+
+    const Heading: HeadingProps = {
+        children: 'Card Heading',
+        preset: headingPreset,
+    };
+    const Icon: CardProps['icon'] = {
+        icon: icon,
+        ariaLabel: icon,
+        position: iconPosition === 'undefined' ? undefined : iconPosition,
+        variant: iconVariant,
+    };
+    const Image = {
+        src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
+    };
+    const Menu: MenuProps = {
+        menuItems: [
+            { label: 'Item-1' },
+            { label: 'Item-2' },
+            { label: 'Item-3' },
+        ],
+    };
+    const FooterItems: CardProps['footerItems'] = [
+        { icon: 'circle-plus', ariaLabel: 'plus', type: 'Icon', id: '1' },
+        { icon: 'circle-remove', ariaLabel: 'remove', type: 'Icon', id: '2' },
+        { icon: 'circle-tick', ariaLabel: 'tick', type: 'Icon', id: '3' },
+        {
+            children: 'Tag',
+            colorScheme: 'blue',
+            variant: 'subtle',
+            type: 'Tag',
+            id: '5',
+        },
+    ];
+
     return (
         <FixtureBox hasPadding>
             <Card
-                confirmCTA={
-                    confirmCTA
-                        ? {
-                              children: 'Confirm',
-                              onClick: () =>
-                                  alert('The confirm button has been clicked'),
-                          }
-                        : undefined
-                }
-                declineCTA={
-                    declineCTA
-                        ? {
-                              children: 'Cancel',
-                              onClick: () =>
-                                  alert('The decline button has been clicked'),
-                          }
-                        : undefined
-                }
-                hasNegativeMargin={hasNegativeMargin}
-                heading={heading ? 'Card Heading' : undefined}
-                icon={
-                    hasIcon
-                        ? {
-                              icon: icon,
-                              ariaLabel: icon,
-                              position:
-                                  iconPosition === 'undefined'
-                                      ? undefined
-                                      : iconPosition,
-                              variant: iconVariant,
-                          }
-                        : undefined
-                }
-                image={image}
-                layout={layout}
-                variant={variant}
                 colorScheme={scheme}
-                // width={hasNegativeMargin ? 'calc(100% + 2rem)' : '100%'}
+                confirmCTA={confirmCTA ? ConfirmCTA : undefined}
+                declineCTA={declineCTA ? DeclineCTA : undefined}
+                hasNegativeMargin={hasNegativeMargin}
+                heading={heading ? Heading : undefined}
+                icon={hasIcon ? Icon : undefined}
+                image={image ? { ...Image, isInset } : undefined}
+                layout={layout}
+                menu={menu ? Menu : undefined}
+                variant={variant}
+                footerItems={footerItems ? FooterItems : undefined}
             >
                 {longContent ? <Lorem /> : 'I am a Basic Card'}
             </Card>
@@ -110,13 +153,4 @@ const CardFixture = ({ image }: Pick<CardProps, 'image'>) => {
     );
 };
 
-export default {
-    'Plain Card': () => <CardFixture />,
-    'Image Card': () => (
-        <CardFixture
-            image={{
-                src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
-            }}
-        />
-    ),
-};
+export default () => <CardFixture />;

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { Visit } from '../types/internal/visit.type';
+import { Visit } from '../types/internal';
 
 const { Schema } = mongoose;
 

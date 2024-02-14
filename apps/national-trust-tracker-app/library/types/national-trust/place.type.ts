@@ -5,6 +5,19 @@ type FeatureCategory = {
     features: Record<string, boolean>;
 };
 
+export const regionType = [
+    'East of England',
+    'London',
+    'Midlands',
+    'North West',
+    'Northern Ireland',
+    'South East',
+    'South West',
+    'Wales',
+    'Yorkshire and North East',
+] as const;
+export type RegionType = (typeof regionType)[number];
+
 export type Location = {
     latitudeLongitude: {
         latitude: number;

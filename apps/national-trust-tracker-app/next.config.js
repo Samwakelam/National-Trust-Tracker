@@ -2,6 +2,9 @@
 
 module.exports = {
     transpilePackages: ['@sam/library'],
+    experimental: {
+        serverActions: true,
+    },
 
     async redirects() {
         return [

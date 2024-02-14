@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { LatLng, LatLngExpression, Marker as LeafletMarker } from 'leaflet';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -28,16 +29,15 @@ import {
     PostalAddress,
     AccessTag,
 } from '../../types/national-trust';
-
+import { getAmountInPounds, resolveCurrency, resolveIcon } from '../../helpers';
 // import { MiniMap } from '../components/Map';
+
+import { DrawerLogVisit } from './partials';
+import { DisclosureType, Form, PlaceViewProps } from './Place.definition';
 
 import * as Chakra from '@chakra-ui/react';
 
 import '../../prototypes/String.extensions';
-import { getAmountInPounds, resolveCurrency, resolveIcon } from '../../helpers';
-import { useForm } from 'react-hook-form';
-import { DrawerLogVisit } from './partials';
-import { DisclosureType, Form, PlaceViewProps } from './Place.definition';
 
 export const PlaceView = ({
     place,

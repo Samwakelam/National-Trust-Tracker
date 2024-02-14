@@ -6,9 +6,7 @@ import PlacesModel from '../../../../library/models/Places.model';
 
 type ParametersProps = { params: { placeId: string } };
 
-export async function GET(request: Request, { params }: ParametersProps) {
-    const placeId = params.placeId;
-
+export const getPlaceById = async (placeId: string) => {
     try {
         await getDatabaseConnection();
         //@ts-ignore - unsure
@@ -27,18 +25,19 @@ export async function GET(request: Request, { params }: ParametersProps) {
             error,
         });
     }
+};
+
+export async function GET(request: Request, { params }: ParametersProps) {
+    const placeId = params.placeId;
+    return await getPlaceById(placeId);
 }
 
-export async function PUT(request: Request, { params }: ParametersProps) {
-    const placeId = params.placeId;
-
+export const putPlaceById = async (placeId: string, body: JSON) => {
     try {
         await getDatabaseConnection();
 
-        const req = await request.json();
-
         //@ts-ignore - unsure
-        const data = await PlacesModel.updateOne({ placeId }, req, {
+        const data = await PlacesModel.updateOne({ placeId }, body, {
             upsert: true,
         });
 
@@ -55,4 +54,11 @@ export async function PUT(request: Request, { params }: ParametersProps) {
             error,
         });
     }
+};
+
+export async function PUT(request: Request, { params }: ParametersProps) {
+    const placeId = params.placeId;
+    const body = await request.json();
+
+    return await putPlaceById(placeId, body);
 }

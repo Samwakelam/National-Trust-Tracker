@@ -4,6 +4,10 @@ export interface ReferencedFacility extends Facility {
     reference: string;
 }
 
+export interface ReferencedFacilities extends Facilities {
+    facilities: ReferencedFacility[];
+}
+
 export type Facility = {
     reference?: string;
     name: string;

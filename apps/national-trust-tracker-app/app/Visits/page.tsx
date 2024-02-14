@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 
 import { Spinner } from '../../library/components';
+import { VisitsView } from '../../library/views/Visits.view';
+import { getAllVisits } from '../api/Visits/route';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker',
@@ -9,22 +11,12 @@ export const metadata: Metadata = {
 export default async function Visits(): Promise<JSX.Element> {
     const data = await getData();
 
-    return data ? <>Visits</> : <Spinner isPageSpinner />;
+    return data ? <VisitsView visits={data.data} /> : <Spinner isPageSpinner />;
 }
 
 const getData = async () => {
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
     try {
-        const res = await fetch(
-            'https://v2-api.nationaltrust.org.uk/places',
-            options
-        );
+        const res = await getAllVisits();
 
         if (!res.ok) {
             throw new Error('Failed to fetch data');

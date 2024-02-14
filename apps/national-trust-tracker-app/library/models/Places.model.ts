@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import { CompiledPlace } from '../types/internal';
 const { Schema } = mongoose;
 
-const PlacesSchema = new Schema({
+const PlacesSchema = new Schema<CompiledPlace>({
     name: { type: String },
     placeId: { type: Number },
     location: {

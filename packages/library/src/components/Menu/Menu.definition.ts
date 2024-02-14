@@ -4,7 +4,6 @@ import * as Chakra from '@chakra-ui/react';
 
 export interface MenuItemProps
     extends Omit<Chakra.MenuItemProps, 'children' | 'icon'> {
-    config?: Chakra.MenuItemProps;
     icon?: IconProps;
     image?: Chakra.ImageProps;
     label: string;

@@ -4,6 +4,7 @@ import {
     Facilities,
     Opening,
     Place,
+    ReferencedFacilities,
 } from '../national-trust';
 
 export interface CompiledPlace
@@ -15,9 +16,10 @@ export interface CompiledPlace
         | 'name'
         | 'placeId'
         | 'websiteUrl'
+        | 'description'
     > {
     accessTags?: Access;
     directions?: Directions;
-    facilities?: Facilities;
+    facilities?: ReferencedFacilities;
     opening?: Opening;
 }

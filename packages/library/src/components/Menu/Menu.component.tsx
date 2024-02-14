@@ -57,13 +57,17 @@ const resolveMenuItem = (
         );
 
     if (isMenuItem(item)) {
-        const { label, image, icon, config, ...props } = item;
+        const { label, image, icon, ...props } = item;
         return (
             <Chakra.MenuItem
                 key={`item-${index}-${label}`}
                 icon={icon && <Icon {...icon} />}
                 padding={`${space[4]} ${space[8]}`}
-                {...config}
+                sx={{
+                    '& span.chakra-menu__icon-wrapper': {
+                        fontSize: 'inherit',
+                    },
+                }}
                 {...props}
             >
                 {item.image && (

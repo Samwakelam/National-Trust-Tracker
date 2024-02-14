@@ -73,7 +73,7 @@ const getData = async ({ placeId }: { placeId: number }) => {
 
         const place = await res.json();
 
-        const all = await Promise.all(
+        const allSettled = await Promise.allSettled(
             place.links.map(async (link: Link) => {
                 const res = await fetch(link.href, options);
                 if (!res.body) return [link.rel, {}];
@@ -82,8 +82,10 @@ const getData = async ({ placeId }: { placeId: number }) => {
         );
 
         const info: Record<string, any> = {};
-        all.forEach((item) => {
-            info[item[0]] = item[1];
+        allSettled.forEach((item) => {
+            if (item.status === 'fulfilled') {
+                info[item.value[0]] = item.value[1];
+            }
         });
 
         return { place, ...info };

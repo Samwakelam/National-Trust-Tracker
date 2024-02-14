@@ -3,9 +3,7 @@ import {
     Asset,
     DirectionType,
     ReferencedFacility,
-    PlaceSummary,
     Place,
-    Opening,
 } from '../national-trust';
 
 export interface Ticket extends Omit<AdmissionPrice, 'giftAidAmount'> {
@@ -45,12 +43,14 @@ type VisitedPlace = Pick<
     | 'websiteUrl'
 >;
 
+export type Person = { name: string };
+
 export type Visit = {
     assetsUsed: Asset[];
     date: string;
     facilitiesUsed: ReferencedFacility[];
     images?: CloudinaryImageProps[];
-    people: { name: string }[];
+    people: Person[];
     place: VisitedPlace;
     tickets: Ticket[];
     totalPrice: number;

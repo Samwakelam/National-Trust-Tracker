@@ -1,6 +1,10 @@
 import { Metadata } from 'next';
 
 import { Spinner } from '../../library/components';
+import { MembershipView } from '../../library/views/Membership.view';
+
+import { getAllVisits } from '../api/Visits/route';
+import { getMembership } from '../api/Memberships/[groupName]/route';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker',
@@ -9,28 +13,46 @@ export const metadata: Metadata = {
 export default async function Membership(): Promise<JSX.Element> {
     const data = await getData();
 
-    return data ? <>Membership</> : <Spinner isPageSpinner />;
+    if (data) {
+        const { membership, visits } = data;
+        return (
+            <>
+                <MembershipView
+                    visits={visits.data}
+                    membership={membership.data}
+                />
+            </>
+        );
+    }
+
+    return <Spinner isPageSpinner />;
 }
 
 const getData = async () => {
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
     try {
-        const res = await fetch(
-            'https://v2-api.nationaltrust.org.uk/places',
-            options
+        const allResponse = await Promise.allSettled([
+            await await getAllVisits(),
+            await getMembership('King'),
+        ]);
+
+        const allJson = await Promise.allSettled(
+            allResponse.map(async (res) => {
+                if (res.status === 'fulfilled') {
+                    return await res.value.json();
+                }
+            })
         );
 
-        if (!res.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
-        return await res.json();
+        return {
+            visits:
+                allJson[0] && allJson[0].status === 'fulfilled'
+                    ? allJson[0].value
+                    : [],
+            membership:
+                allJson[1] && allJson[1].status === 'fulfilled'
+                    ? allJson[1].value
+                    : [],
+        };
     } catch (error) {
         console.log('error: ', error);
     }

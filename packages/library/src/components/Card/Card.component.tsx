@@ -9,18 +9,37 @@ import {
     IconProps,
     Heading,
     HeadingProps,
+    MenuProps,
+    Menu,
+    TagProps,
+    Tag,
 } from '..';
 
 import * as Chakra from '@chakra-ui/react';
 
+interface FooterIconProps extends IconProps {
+    type: 'Icon';
+    id: string;
+}
+
+interface FooterTagProps extends TagProps {
+    type: 'Tag';
+    id: string;
+}
+
+export type CardFooterItemProps = FooterIconProps | FooterTagProps;
+export type CardFooterItemsProps = CardFooterItemProps[];
+
 export interface CardProps extends Chakra.CardProps {
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
+    footerItems?: CardFooterItemsProps;
     hasNegativeMargin?: boolean;
     heading?: HeadingProps;
     icon?: IconProps & { position?: PositionType };
-    image?: Chakra.ImageProps;
+    image?: Chakra.ImageProps & { isInset?: boolean };
     layout?: 'horizontal' | 'vertical';
+    menu?: MenuProps;
 }
 
 export const Card = ({
@@ -32,14 +51,20 @@ export const Card = ({
     icon,
     image,
     layout = 'vertical',
+    menu,
     size,
     variant = 'elevated',
+    footerItems,
     ...props
 }: CardProps) => {
     const cardContent = useRef<HTMLDivElement | null>(null);
     const footerContent = useRef<HTMLDivElement | null>(null);
 
-    const styles = Chakra.useMultiStyleConfig('Card', { size, variant });
+    const styles = Chakra.useMultiStyleConfig('Card', {
+        size,
+        variant,
+        layout,
+    });
 
     const [dimensions, setDimensions] = useState<{
         height: number;
@@ -48,6 +73,10 @@ export const Card = ({
         width: 100,
         height: 100,
     });
+    const [imagePadding, setImagePadding] = useState<number>(0);
+    const [imageProps, setImageProps] = useState<Chakra.ImageProps | undefined>(
+        undefined
+    );
 
     useEffect(() => {
         if (cardContent.current && !footerContent.current) {
@@ -71,70 +100,104 @@ export const Card = ({
         }
     }, [cardContent, footerContent, heading, icon]);
 
+    useEffect(() => {
+        if (image) {
+            const { isInset, ..._imageProps } = image;
+            setImageProps(_imageProps);
+        }
+        if (image && image.isInset) {
+            setImagePadding(16);
+        }
+        if (!image) {
+            setImageProps(undefined);
+        }
+    }, [image]);
+
     return (
         <Chakra.Card
-            as='section'
+            as='article'
             data-label='Card'
             variant={variant}
             mx={hasNegativeMargin ? '-1rem' : 0}
-            display='flex'
-            flexDirection='column'
+            flexDirection={layout === 'vertical' ? 'column' : 'row'}
             {...props}
         >
+            {imageProps && (
+                <Chakra.Image
+                    __css={styles.image}
+                    width={
+                        layout === 'vertical' ? `${dimensions.width}px` : 'auto'
+                    }
+                    height={
+                        layout === 'vertical'
+                            ? 'auto'
+                            : `${dimensions.height}px`
+                    }
+                    padding={imagePadding}
+                    {...imageProps}
+                />
+            )}
+
             <Chakra.Flex
-                direction={layout === 'vertical' ? 'column' : 'row'}
-                height='100%'
+                direction='column'
+                ref={cardContent}
+                flex='1'
             >
-                {image && (
-                    <Chakra.Image
-                        __css={styles.image}
-                        fit='cover'
-                        width={
-                            layout === 'vertical'
-                                ? `${dimensions.width}px`
-                                : 'auto'
-                        }
-                        height={
-                            layout === 'vertical'
-                                ? 'auto'
-                                : `${dimensions.height}px`
-                        }
-                        borderRadius={
-                            layout === 'vertical'
-                                ? '0.375rem 0.375rem 0 0'
-                                : declineCTA || confirmCTA
-                                ? '0.375rem 0 0 0'
-                                : '0.375rem 0 0 0.375rem'
-                        }
-                        {...image}
-                    />
-                )}
-                <Chakra.Flex
-                    direction='column'
-                    height='100%'
-                    ref={cardContent}
-                >
-                    {(heading || icon) && (
-                        <Chakra.CardHeader>
+                {(heading || icon) && (
+                    <Chakra.CardHeader>
+                        <Chakra.Flex>
                             {(icon?.position === 'left' ||
                                 (icon && !icon.position)) && <Icon {...icon} />}
-                            {heading && <Heading {...heading} />}
+                            {heading && (
+                                <Heading
+                                    mb={0}
+                                    {...heading}
+                                />
+                            )}
                             {icon?.position === 'right' && <Icon {...icon} />}
-                        </Chakra.CardHeader>
-                    )}
-                    <Chakra.CardBody
-                        display='flex'
-                        flexDirection='column'
-                        gap={16}
-                    >
-                        {children}
-                    </Chakra.CardBody>
-                </Chakra.Flex>
-            </Chakra.Flex>
-            {(declineCTA || confirmCTA) && (
-                <Chakra.Box ref={footerContent}>
-                    <Chakra.Divider />
-                    <Chakra.CardFooter>
+                        </Chakra.Flex>
+                        {menu && (
+                            <Menu
+                                buttonConfig={{
+                                    icon: {
+                                        icon: 'menu-dots-v',
+                                        ariaLabel: 'menu',
+                                    },
+                                    variant: 'ghost',
+                                }}
+                                {...menu}
+                            />
+                        )}
+                    </Chakra.CardHeader>
+                )}
+                <Chakra.CardBody>{children}</Chakra.CardBody>
+
+                {(declineCTA || confirmCTA || footerItems) && (
+                    <Chakra.CardFooter ref={footerContent}>
+                        {footerItems && (
+                            <Chakra.Flex
+                                id='footer-icons'
+                                alignItems='center'
+                            >
+                                {footerItems.map((item) => {
+                                    if (item.type === 'Icon') {
+                                        return (
+                                            <Icon
+                                                key={item.id}
+                                                {...item}
+                                            />
+                                        );
+                                    }
+
+                                    return (
+                                        <Tag
+                                            key={item.id}
+                                            {...item}
+                                        />
+                                    );
+                                })}
+                            </Chakra.Flex>
+                        )}
                         {declineCTA && (
                             <Button
                                 variant='outline'
@@ -150,8 +213,8 @@ export const Card = ({
                             />
                         )}
                     </Chakra.CardFooter>
-                </Chakra.Box>
-            )}
+                )}
+            </Chakra.Flex>
         </Chakra.Card>
     );
 };

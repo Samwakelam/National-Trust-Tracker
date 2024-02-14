@@ -45,7 +45,7 @@ export default {
         />
     ),
     'Items with Divider': () => (
-        <MenuFixture menuItems={[items[0], items[1], 'divider', items[2]]} />
+        <MenuFixture menuItems={[items[0]!, items[1]!, 'divider', items[2]!]} />
     ),
     'Groups with Divider': () => (
         <MenuFixture

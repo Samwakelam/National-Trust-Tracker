@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Form, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { revalidatePath } from 'next/cache';
 
 import {
     Button,
@@ -23,6 +24,7 @@ import {
     ReferencedFacility,
     Link,
     NameType,
+    ReferencedFacilities,
 } from '../../../types/national-trust';
 import { resolveIcon } from '../../../helpers';
 import { isAsset, isReferencedFacility } from '../../../guards';
@@ -194,6 +196,8 @@ export const DrawerLogVisit = ({
             )) as ResponseAndMessage;
 
             if (post.message === 'Success') {
+                revalidatePath('/', 'layout');
+
                 handleToast({
                     title: 'Visit Logged',
                     description: 'Your Visit has been saved successfully',
@@ -210,17 +214,27 @@ export const DrawerLogVisit = ({
             }
         }
 
+        let facilities: ReferencedFacilities | undefined = place.facilities
+            ? {
+                  ...place.facilities,
+                  facilities: place.facilities?.facilities.filter(
+                      (facility) => !!facility.reference
+                  ) as ReferencedFacility[],
+              }
+            : undefined;
+
         const compiledPlace: CompiledPlace = {
+            accessTags: place.accessTags,
+            description: place.place.description,
+            directions: place.directions,
+            facilities: facilities,
             featureCategories: place.place.featureCategories,
             images: place.place.images,
             location: place.place.location,
             name: place.place.name,
+            opening: place.opening,
             placeId: place.place.placeId,
             websiteUrl: place.place.websiteUrl,
-            accessTags: place.accessTags,
-            facilities: place.facilities,
-            directions: place.directions,
-            opening: place.opening,
         };
 
         const putPlaceOptions = {
@@ -326,14 +340,17 @@ export const DrawerLogVisit = ({
                         options: {
                             required: true,
                             validate: {
-                                isOpen: (v) =>
-                                    place.opening?.days[
-                                        v as string
-                                    ]?.assets.some(
-                                        (asset: Asset) =>
-                                            asset.description !== 'Closed'
-                                    ) ||
-                                    'The Property was fully closed on this Date',
+                                isOpen: (v) => {
+                                    return (
+                                        place.opening?.days[
+                                            v as string
+                                        ]?.assets.some(
+                                            (asset: Asset) =>
+                                                asset.description !== 'Closed'
+                                        ) ||
+                                        'The Property was fully closed on this Date'
+                                    );
+                                },
                             },
                         },
                     }}

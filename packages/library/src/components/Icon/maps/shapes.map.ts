@@ -12,18 +12,38 @@ import {
     HiOutlineLockOpen,
 } from 'react-icons/hi';
 import { IoMdThumbsDown, IoMdThumbsUp } from 'react-icons/io';
-import { IoCarSport, IoCarSportOutline } from 'react-icons/io5';
+import {
+    IoCarSport,
+    IoCarSportOutline,
+    IoTicket,
+    IoTicketOutline,
+} from 'react-icons/io5';
 import { LuFactory } from 'react-icons/lu';
 import {
     MdCardMembership,
     MdDirectionsBoat,
     MdOutlineDirectionsBoat,
 } from 'react-icons/md';
-import { PiToolboxBold, PiToolboxFill } from 'react-icons/pi';
+import {
+    PiHouse,
+    PiHouseBold,
+    PiHouseFill,
+    PiHouseLine,
+    PiHouseLineBold,
+    PiHouseLineFill,
+    PiHouseSimple,
+    PiHouseSimpleBold,
+    PiHouseSimpleFill,
+    PiToolboxBold,
+    PiToolboxFill,
+} from 'react-icons/pi';
 import {
     TbBulb,
     TbBulbFilled,
     TbBulbOff,
+    TbMoneybag,
+    TbPigMoney,
+    TbReportMoney,
     TbShip,
     TbShipOff,
 } from 'react-icons/tb';
@@ -34,17 +54,24 @@ export type ShapesType =
     | 'bulb-on'
     | 'car'
     | 'dashboard'
+    | 'house'
+    | 'house-ground'
+    | 'house-simple'
     | 'industry'
     | 'lock-closed'
     | 'lock-open'
     | 'membership'
+    | 'money-report'
     | 'moon'
     | 'passport'
     | 'people'
+    | 'piggy-bank'
     | 'pirate'
+    | 'sack'
     | 'ship-off'
     | 'ship-on'
     | 'sun'
+    | 'ticket'
     | 'thumbs-d'
     | 'thumbs-u'
     | 'toolbox';
@@ -55,17 +82,24 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'bulb-on': TbBulb,
     'car': IoCarSportOutline,
     'dashboard': AiOutlineDashboard,
+    'house': PiHouseBold,
+    'house-ground': PiHouseLineBold,
+    'house-simple': PiHouseSimpleBold,
     'industry': LuFactory,
     'lock-closed': HiOutlineLockClosed,
     'lock-open': HiOutlineLockOpen,
     'membership': MdCardMembership,
+    'money-report': TbReportMoney,
     'moon': BiMoon,
     'passport': FaPassport,
     'people': BsPeople,
+    'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
+    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'sun': BiSun,
+    'ticket': IoTicketOutline,
     'thumbs-d': FiThumbsDown,
     'thumbs-u': FiThumbsUp,
     'toolbox': PiToolboxBold,
@@ -77,17 +111,24 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'bulb-on': TbBulbFilled,
     'car': IoCarSport,
     'dashboard': AiFillDashboard,
+    'house': PiHouseFill,
+    'house-ground': PiHouseLineFill,
+    'house-simple': PiHouseSimpleFill,
     'industry': FaIndustry,
     'lock-closed': HiLockClosed,
     'lock-open': HiLockOpen,
     'membership': MdCardMembership,
+    'money-report': TbReportMoney,
     'moon': BiSolidMoon,
     'passport': FaPassport,
     'people': BsPeopleFill,
+    'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
+    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'sun': BiSolidSun,
+    'ticket': IoTicket,
     'thumbs-d': IoMdThumbsDown,
     'thumbs-u': IoMdThumbsUp,
     'toolbox': PiToolboxFill,

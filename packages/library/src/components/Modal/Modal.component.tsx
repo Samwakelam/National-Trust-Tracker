@@ -58,7 +58,7 @@ export const Modal = ({
                 data-label='modal-content'
             >
                 <Chakra.ModalHeader data-label='header'>
-                    <Chakra.Heading as='h5'>{title && title}</Chakra.Heading>
+                    <Chakra.Heading as='h4'>{title && title}</Chakra.Heading>
                     <Chakra.ModalCloseButton />
                 </Chakra.ModalHeader>
                 <Chakra.ModalBody data-label='body'>
@@ -71,6 +71,7 @@ export const Modal = ({
                                 <Button
                                     variant='outline'
                                     children='Cancel'
+                                    onClick={() => onClose()}
                                     {...declineCTA}
                                 />
                             )}

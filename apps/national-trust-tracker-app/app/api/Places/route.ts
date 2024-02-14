@@ -4,7 +4,7 @@ import { getDatabaseConnection } from '../../../library/helpers';
 
 import PlacesModel from '../../../library/models/Places.model';
 
-export async function GET(request: Request) {
+export const getAllPlaces = async () => {
     await getDatabaseConnection();
 
     try {
@@ -24,16 +24,18 @@ export async function GET(request: Request) {
             error,
         });
     }
+};
+
+export async function GET(request: Request) {
+    return await getAllPlaces();
 }
 
-export async function POST(request: Request) {
+export const postAllPlaces = async (body: JSON) => {
     try {
         await getDatabaseConnection();
 
-        const req = await request.json();
-
         //@ts-ignore - unsure
-        const data = await PlacesModel.create(req);
+        const data = await PlacesModel.create(body);
 
         return NextResponse.json({
             status: 200,
@@ -48,6 +50,12 @@ export async function POST(request: Request) {
             error,
         });
     }
+};
+
+export async function POST(request: Request) {
+    const body = await request.json();
+
+    return await postAllPlaces(body);
 }
 
 // export async function DELETE(request: Request) {}

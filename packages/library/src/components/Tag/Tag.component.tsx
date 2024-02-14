@@ -12,9 +12,10 @@ interface TagIconProps extends IconProps {
 
 export interface TagProps extends Chakra.TagProps {
     icon?: TagIconProps;
+    tooltip?: Omit<Chakra.TooltipProps, 'children'>;
 }
 
-export const Tag = ({ icon, children, ...props }: TagProps) => {
+export const TagComponent = ({ icon, children, ...props }: TagProps) => {
     return (
         <Chakra.Tag
             data-label='tag'
@@ -30,4 +31,18 @@ export const Tag = ({ icon, children, ...props }: TagProps) => {
             {icon && icon.position === 'right' && <Icon {...icon} />}
         </Chakra.Tag>
     );
+};
+
+export const Tag = ({ tooltip, ...props }: TagProps) => {
+    if (tooltip) {
+        return (
+            <Chakra.Tooltip {...tooltip}>
+                <span>
+                    <TagComponent {...props} />
+                </span>
+            </Chakra.Tooltip>
+        );
+    }
+
+    return <TagComponent {...props} />;
 };

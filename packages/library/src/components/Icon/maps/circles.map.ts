@@ -19,6 +19,7 @@ import {
     IoRemoveCircle,
 } from 'react-icons/io5';
 import { MdOutlineUnpublished, MdUnpublished } from 'react-icons/md';
+import { RiMoneyPoundCircleFill, RiMoneyPoundCircleLine } from 'react-icons/ri';
 
 export type CirclesType =
     | 'circle-chevron-d'
@@ -28,6 +29,7 @@ export type CirclesType =
     | 'circle-cross'
     | 'circle-info'
     | 'circle-plus'
+    | 'circle-pound'
     | 'circle-remove'
     | 'circle-tick'
     | 'circle-untick';
@@ -40,6 +42,7 @@ export const circlesOutlineMap: { [key in CirclesType]: IconType } = {
     'circle-cross': IoCloseCircleOutline,
     'circle-info': BiInfoCircle,
     'circle-plus': IoAddCircleOutline,
+    'circle-pound': RiMoneyPoundCircleLine,
     'circle-remove': IoRemoveCircleOutline,
     'circle-tick': IoCheckmarkCircleOutline,
     'circle-untick': MdOutlineUnpublished,
@@ -53,6 +56,7 @@ export const circlesSolidMap: { [key in CirclesType]: IconType } = {
     'circle-cross': IoCloseCircle,
     'circle-info': BiSolidInfoCircle,
     'circle-plus': IoAddCircle,
+    'circle-pound': RiMoneyPoundCircleFill,
     'circle-remove': IoRemoveCircle,
     'circle-tick': IoCheckmarkCircle,
     'circle-untick': MdUnpublished,
