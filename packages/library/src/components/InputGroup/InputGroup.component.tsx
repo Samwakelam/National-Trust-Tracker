@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react';
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -18,7 +18,6 @@ import { Label, LabelProps } from '../Label';
 
 import * as Chakra from '@chakra-ui/react';
 
-
 export type InputGroupProps<T extends FieldValues> = {
     addOn?: {
         left?: Chakra.InputAddonProps;
@@ -29,7 +28,7 @@ export type InputGroupProps<T extends FieldValues> = {
         left?: Chakra.InputElementProps;
         right?: Chakra.InputElementProps;
     };
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formRegister: {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;
@@ -130,6 +129,10 @@ export const InputGroup = <T extends FieldValues>({
                             {...element.right}
                             ref={rightElementRef}
                         />
+                    )}
+
+                    {addOn?.right && (
+                        <Chakra.InputRightAddon {...addOn.right} />
                     )}
                 </Chakra.InputGroup>
                 <Chakra.FormErrorMessage>

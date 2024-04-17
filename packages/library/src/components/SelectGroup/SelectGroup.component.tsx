@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode, useState } from 'react';
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -14,7 +14,7 @@ import * as Chakra from '@chakra-ui/react';
 export type SelectGroupProps<T extends FieldValues, K extends string> = {
     canFilter?: boolean;
     defaultValue?: K;
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formRegister: {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;

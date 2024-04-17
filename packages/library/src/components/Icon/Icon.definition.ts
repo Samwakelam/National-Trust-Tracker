@@ -5,6 +5,7 @@ import {
     ChevronsType,
     CirclesType,
     FilesType,
+    HeartsType,
     LayersType,
     LocationType,
     NationalTrustType,
@@ -24,6 +25,7 @@ export type IconType =
     | ChevronsType
     | CirclesType
     | FilesType
+    | HeartsType
     | LayersType
     | LocationType
     | NationalTrustType

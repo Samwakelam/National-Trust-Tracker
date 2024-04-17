@@ -8,11 +8,13 @@ import {
     Tooltip,
     Legend,
     Chart as ChartJS,
+    registerables,
 } from 'chart.js';
 import { Chart as ReactChart } from 'react-chartjs-2';
-import { ChartProps } from 'react-chartjs-2/dist/types';
+import { ChartProps as ReactChartProps } from 'react-chartjs-2/dist/types';
 
 ChartJS.register(
+    ...registerables,
     CategoryScale,
     LinearScale,
     PointElement,
@@ -23,6 +25,8 @@ ChartJS.register(
 );
 
 import * as Chakra from '@chakra-ui/react';
+
+export type ChartProps = ReactChartProps;
 
 export const Chart = ({
     type,

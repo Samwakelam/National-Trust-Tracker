@@ -3,6 +3,7 @@ export * from './calendars.map';
 export * from './chevrons.map';
 export * from './circles.map';
 export * from './files.map';
+export * from './hearts.map';
 export * from './layers.map';
 export * from './location.map';
 export * from './national-trust.map';

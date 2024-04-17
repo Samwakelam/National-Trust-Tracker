@@ -1,6 +1,6 @@
 import { RadioGroupProps, RadioProps, ThemingProps } from '@chakra-ui/react';
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -9,7 +9,7 @@ import {
 import { IconProps } from '../Icon';
 
 export interface MultiSwitchProps<T extends FieldValues> extends ThemingProps {
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formRegister: {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;

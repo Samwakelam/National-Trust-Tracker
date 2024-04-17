@@ -11,6 +11,7 @@ import {
     chevronsMap,
     circlesOutlineMap,
     filesOutlineMap,
+    heartsOutlineMap,
     layersSolidMap,
     locationOutlineMap,
     nationalTrustMap,
@@ -29,6 +30,7 @@ const libraryType = [
     'chevrons',
     'circles',
     'files',
+    'hearts',
     'layers',
     'location',
     'national-trust',
@@ -67,6 +69,9 @@ export const IconFixture = () => {
             }
             case 'files': {
                 return Object.keys(filesOutlineMap);
+            }
+            case 'hearts': {
+                return Object.keys(heartsOutlineMap);
             }
             case 'layers': {
                 return Object.keys(layersSolidMap);

@@ -4,6 +4,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
+    Button,
     ContainerPage,
     ContainerScrollBox,
     Frame,
@@ -14,7 +15,7 @@ import {
 
 import { RegionType, regionType } from '../types/national-trust';
 import { Visit } from '../types/internal';
-import { VisitCard } from '../components/VisitCard';
+import { VisitCard } from '../components';
 
 import * as Chakra from '@chakra-ui/react';
 
@@ -22,6 +23,7 @@ import '../prototypes/String.extensions';
 
 export type VisitsViewProps = {
     visits: Visit[];
+    handleDelete: (visitId: string) => void;
 };
 
 type Form = {
@@ -33,6 +35,7 @@ type Form = {
 
 export const VisitsView = ({
     visits,
+    handleDelete,
 }: VisitsViewProps): ReactElement<VisitsViewProps> => {
     const [filters, setFilters] = useState<Form>({
         name: '',
@@ -116,11 +119,12 @@ export const VisitsView = ({
 
                                     return 0;
                                 })
-                                .map((visit) => {
+                                .map((visit, index) => {
                                     return (
                                         <VisitCard
+                                            key={`visits-${visit.date}-${visit.place.placeId}-${index}`}
                                             visit={visit}
-                                            key={`visits-${visit.date}-${visit.place.placeId}`}
+                                            handleDelete={handleDelete}
                                         />
                                     );
                                 })}

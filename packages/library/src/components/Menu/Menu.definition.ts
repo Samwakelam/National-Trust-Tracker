@@ -6,6 +6,8 @@ export interface MenuItemProps
     extends Omit<Chakra.MenuItemProps, 'children' | 'icon'> {
     icon?: IconProps;
     image?: Chakra.ImageProps;
+    slug?: string;
+    target?: string;
     label: string;
 }
 

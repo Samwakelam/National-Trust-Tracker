@@ -119,6 +119,7 @@ export const Card = ({
             data-label='Card'
             variant={variant}
             mx={hasNegativeMargin ? '-1rem' : 0}
+            display='flex'
             flexDirection={layout === 'vertical' ? 'column' : 'row'}
             {...props}
         >

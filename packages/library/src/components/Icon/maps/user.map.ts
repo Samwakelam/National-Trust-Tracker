@@ -31,6 +31,7 @@ import {
     TbEyeQuestion,
     TbEyeX,
     TbEyePlus,
+    TbUserHeart,
 } from 'react-icons/tb';
 
 export type UserType =
@@ -53,6 +54,7 @@ export type UserType =
     | 'user-broadcast'
     | 'user-cross'
     | 'user-detail'
+    | 'user-heart'
     | 'user-plus'
     | 'user-remove'
     | 'user-tick';
@@ -77,6 +79,7 @@ export const userOutlineMap: { [key in UserType]: IconType } = {
     'user-broadcast': BiUserVoice,
     'user-cross': BiUserX,
     'user-detail': BiSolidUserDetail,
+    'user-heart': TbUserHeart,
     'user-plus': BiUserPlus,
     'user-remove': BiUserMinus,
     'user-tick': BiUserCheck,
@@ -102,6 +105,7 @@ export const userSolidMap: { [key in UserType]: IconType } = {
     'user-broadcast': BiSolidUserVoice,
     'user-cross': BiSolidUserX,
     'user-detail': BiSolidUserDetail,
+    'user-heart': TbUserHeart,
     'user-plus': BiSolidUserPlus,
     'user-remove': BiSolidUserMinus,
     'user-tick': BiSolidUserCheck,

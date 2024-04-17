@@ -1,29 +1,37 @@
-import { Metadata } from 'next';
+'use client';
 
-import { Spinner } from '../../library/components';
-import { VisitsView } from '../../library/views/Visits.view';
-import { getAllVisits } from '../api/Visits/route';
+import { useVisits } from '../../library/context/Visits.context';
 
-export const metadata: Metadata = {
-    title: 'National Trust Tracker',
-};
+// export const metadata: Metadata = {
+//     title: 'National Trust Tracker',
+// };
 
-export default async function Visits(): Promise<JSX.Element> {
-    const data = await getData();
+// export const generateMetadata = async () => {
+//     return {
+//         title: 'Visits',
+//     };
+// };
 
-    return data ? <VisitsView visits={data.data} /> : <Spinner isPageSpinner />;
+export const revalidate = 0;
+
+export default function Visits(): JSX.Element {
+    const { visits, isLoading, onDeleteVisit } = useVisits();
+    console.log('visits: ', visits);
+
+    return (
+        <div style={{ height: '100%', overflowY: 'scroll' }}>
+            {/* <pre>{JSON.stringify(visits, null, 2)}</pre> */}
+
+            {visits.map((visit) => {
+                return (
+                    <div key={visit._id}>
+                        <h2>{visit.place.name}</h2>
+                        <button onClick={() => onDeleteVisit(visit._id)}>
+                            {isLoading ? 'Deleting' : 'Delete'}
+                        </button>
+                    </div>
+                );
+            })}
+        </div>
+    );
 }
-
-const getData = async () => {
-    try {
-        const res = await getAllVisits();
-
-        if (!res.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
-        return await res.json();
-    } catch (error) {
-        console.log('error: ', error);
-    }
-};

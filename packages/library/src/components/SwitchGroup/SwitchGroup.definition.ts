@@ -1,5 +1,5 @@
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -19,7 +19,7 @@ export type SwitchConfigProps = Chakra.SwitchProps;
 
 export interface SwitchGroupProps<T extends FieldValues>
     extends Omit<LabelProps, 'isRequired' | 'htmlFor' | 'hideBadge'> {
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formControlConfig?: Chakra.FormControlProps;
     formRegister: {
         register: UseFormRegister<T>;

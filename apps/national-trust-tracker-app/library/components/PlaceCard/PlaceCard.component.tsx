@@ -108,7 +108,6 @@ export const PlaceCard = ({
                 footerItems={footerItems}
                 heading={{ children: name, preset: 'sub-heading' }}
                 onClick={(e) => {
-                    e.stopPropagation();
                     if (link.href) {
                         router.push(link.href);
                     }
@@ -130,6 +129,8 @@ export const PlaceCard = ({
                                 ariaLabel: 'external',
                                 variant: 'outline',
                             },
+                            slug: place.websiteUrl,
+                            target: '_blank',
                         },
                     ],
                 }}

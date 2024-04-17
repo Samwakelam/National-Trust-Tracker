@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Icon } from '..';
+import { Icon } from '../..';
 
 import * as Chakra from '@chakra-ui/react';
 
@@ -12,6 +12,7 @@ export interface LabelProps extends Chakra.FormLabelProps {
     isRequired: boolean;
     label?: string;
     tooltip?: Omit<Chakra.TooltipProps, 'children'>;
+    warning?: Omit<Chakra.TooltipProps, 'children'>;
 }
 
 const [StylesProvider, useStyles] = Chakra.createStylesContext('Label');
@@ -24,6 +25,7 @@ const LabelComponent = ({
     isRequired,
     label,
     tooltip,
+    warning,
     ...props
 }: LabelProps): ReactElement<LabelProps> => {
     const styles = useStyles();
@@ -37,10 +39,10 @@ const LabelComponent = ({
         >
             <Chakra.GridItem
                 rowStart={1}
-                colSpan={display === 'linear' ? 1 : 20}
+                colSpan={display === 'linear' ? 1 : hideBadge ? 1 : 20}
             >
                 <Chakra.FormLabel
-                    __css={styles.label}
+                    sx={styles.label}
                     htmlFor={htmlFor}
                     {...props}
                     data-label='Label'
@@ -49,7 +51,12 @@ const LabelComponent = ({
                 </Chakra.FormLabel>
             </Chakra.GridItem>
             {!hideBadge && (
-                <Chakra.GridItem rowStart={display === 'linear' ? 1 : 2}>
+                <Chakra.GridItem
+                    rowStart={display === 'linear' ? 1 : 2}
+                    display='flex'
+                    alignContent='center'
+                    flexWrap='wrap'
+                >
                     <Chakra.Badge
                         __css={styles.badge}
                         fontSize='x-small'
@@ -61,7 +68,12 @@ const LabelComponent = ({
                 </Chakra.GridItem>
             )}
             {addBadge && (
-                <Chakra.GridItem rowStart={display === 'linear' ? 1 : 2}>
+                <Chakra.GridItem
+                    rowStart={display === 'linear' ? 1 : 2}
+                    display='flex'
+                    alignContent='center'
+                    flexWrap='wrap'
+                >
                     {addBadge.map((badge) => {
                         return (
                             <Chakra.Badge
@@ -78,17 +90,39 @@ const LabelComponent = ({
                 <Chakra.GridItem
                     display='flex'
                     rowStart={display === 'linear' || hideBadge ? 1 : 2}
+                    alignContent='center'
+                    flexWrap='wrap'
                 >
                     <Chakra.Tooltip
+                        hasArrow={true}
                         __css={styles.tooltip}
                         {...tooltip}
                     >
-                        <Chakra.chakra.span transform='translateY(2px)'>
+                        <Chakra.chakra.span display='flex'>
                             <Icon
                                 __css={styles.icon}
                                 icon='circle-info'
-                                color='#365070'
                                 ariaLabel='extra information'
+                            />
+                        </Chakra.chakra.span>
+                    </Chakra.Tooltip>
+                </Chakra.GridItem>
+            )}
+            {warning && (
+                <Chakra.GridItem
+                    display='flex'
+                    rowStart={display === 'linear' || hideBadge ? 1 : 2}
+                >
+                    <Chakra.Tooltip
+                        hasArrow={true}
+                        __css={styles.tooltip}
+                        {...warning}
+                    >
+                        <Chakra.chakra.span transform='translateY(2px)'>
+                            <Icon
+                                __css={styles.warning}
+                                icon='warning'
+                                ariaLabel='warning information'
                             />
                         </Chakra.chakra.span>
                     </Chakra.Tooltip>

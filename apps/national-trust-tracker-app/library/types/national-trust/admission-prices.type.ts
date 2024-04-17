@@ -3,12 +3,12 @@ import { Link } from './link.type';
 export type NameType = 'Adult' | 'Child' | 'Family' | '1 adult, 3 children';
 
 export type AdmissionPrice = {
-    name: NameType;
+    name: NameType | string;
     standardAmount: {
         currency: 'GBP';
         amount: number;
     };
-    giftAidAmount: {
+    giftAidAmount?: {
         currency: 'GBP';
         amount: number;
     };
@@ -23,7 +23,7 @@ export type GroupAdmissionPrice = {
 export type AdmissionCategory = {
     name: string;
     admissionPrices: AdmissionPrice[];
-    groupAdmissionPrices: GroupAdmissionPrice[];
+    groupAdmissionPrices?: GroupAdmissionPrice[];
 };
 
 export type AdmissionPrices = {

@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 
-import { Button } from '..';
+import { Button, ButtonProps } from '..';
 
 import * as Chakra from '@chakra-ui/react';
 
 export type ModalProps = {
     children: ReactElement | ReactElement[];
-    confirmCTA?: Chakra.ButtonProps;
-    declineCTA?: Chakra.ButtonProps;
+    confirmCTA?: ButtonProps;
+    declineCTA?: ButtonProps;
     isOpen: boolean;
     onClose: () => void;
     title?: string;

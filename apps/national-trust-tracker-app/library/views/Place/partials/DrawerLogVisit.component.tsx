@@ -32,6 +32,7 @@ import { isAsset, isReferencedFacility } from '../../../guards';
 import { PlaceViewProps } from '../Place.definition';
 
 import * as Chakra from '@chakra-ui/react';
+import { postVisit } from '../../../../actions/Visits.actions';
 
 interface DrawerLogVisitProps extends Pick<DrawerProps, 'onClose' | 'isOpen'> {
     place: Pick<
@@ -51,8 +52,11 @@ type Form = {
     date: string;
     facilitiesUsed: string[];
     people: { name: string }[];
-    tickets: { name: NameType; qty: number }[];
+    tickets: Ticket[];
     travel: DirectionType[];
+    historical: boolean;
+    manualEntry: boolean;
+    manualAmount: number;
 };
 
 type ResponseAndMessage = Response & { message: 'Success' | 'Error' };
@@ -62,6 +66,7 @@ export const DrawerLogVisit = ({
     onClose,
     place,
 }: DrawerLogVisitProps): ReactElement<DrawerLogVisitProps> => {
+    // console.log('place: ', place);
     const toast = Chakra.useToast();
 
     const [admissionCategory, setAdmissionCategory] = useState<string>('');
@@ -69,6 +74,7 @@ export const DrawerLogVisit = ({
         ReferencedFacility[]
     >([]);
     const [assets, setAssets] = useState<Asset[]>([]);
+    const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
     const {
         control,
@@ -84,14 +90,21 @@ export const DrawerLogVisit = ({
         defaultValues: { people: [{ name: '' }] },
     });
 
-    const { fields, append, remove } = useFieldArray<Form>({
+    const {
+        fields: people,
+        append,
+        remove,
+    } = useFieldArray<Form>({
         control,
         name: 'people',
     });
 
+    const watchedManualEntry = watch('manualEntry');
+
     const handleClose = () => {
         reset();
         onClose();
+        setIsProcessing(false);
     };
 
     const handleToast = ({
@@ -114,8 +127,10 @@ export const DrawerLogVisit = ({
     };
 
     const onSubmit: SubmitHandler<Form> = async (data: Form) => {
+        setIsProcessing(true);
+
         const assetsUsed = data.assetsUsed
-            ? (data.assetsUsed
+            ? ([...data.assetsUsed]
                   .map((asset) =>
                       place.opening?.days[data.date]?.assets.find(
                           (a) => a.name === asset
@@ -137,22 +152,14 @@ export const DrawerLogVisit = ({
             : [];
 
         const tickets = data.tickets.flatMap((ticket) => {
+            console.log('ticket: ', ticket);
             if (ticket.name) {
-                const standardAmount = place
-                    .admissionPrices!.categories.find(
-                        (category: AdmissionCategory) => {
-                            return category.name === admissionCategory;
-                        }
-                    )!
-                    .admissionPrices.find((price: AdmissionPrice) => {
-                        return price.name === ticket.name;
-                    })!.standardAmount;
-
-                return { ...ticket, standardAmount };
+                return ticket;
             }
 
             return [];
         });
+        console.log('tickets: ', tickets);
 
         const people = data.people
             ? data.people.map((person) => ({
@@ -163,7 +170,7 @@ export const DrawerLogVisit = ({
 
         const totalPrice = calculateTotalPrice(tickets);
 
-        const visit: Visit = {
+        const visit: Omit<Visit, '_id'> = {
             assetsUsed,
             date: data.date,
             facilitiesUsed,
@@ -182,18 +189,7 @@ export const DrawerLogVisit = ({
         };
 
         if (isDirty && isValid) {
-            const postVisitOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(visit),
-            };
-
-            const post = (await fetch(
-                '/api/Visits',
-                postVisitOptions
-            )) as ResponseAndMessage;
+            const post = await (await postVisit(visit)).json();
 
             if (post.message === 'Success') {
                 revalidatePath('/', 'layout');
@@ -266,6 +262,7 @@ export const DrawerLogVisit = ({
             });
         }
 
+        setIsProcessing(false);
         handleClose();
     };
 
@@ -318,7 +315,8 @@ export const DrawerLogVisit = ({
                 type: 'submit',
                 form: 'log-a-visit-form',
                 colorScheme: 'green',
-                isDisabled: !isDirty && !isValid,
+                isDisabled: !isDirty || !isValid,
+                isLoading: isProcessing,
             }}
             declineCTA={{
                 onClick: () => handleClose(),
@@ -341,6 +339,21 @@ export const DrawerLogVisit = ({
                             required: true,
                             validate: {
                                 isOpen: (v) => {
+                                    const isHistorical =
+                                        getValues('historical');
+
+                                    if (
+                                        !place.opening?.days[v as string] &&
+                                        !isHistorical
+                                    )
+                                        return 'No Opening Data Available';
+
+                                    if (
+                                        !place.opening?.days[v as string] &&
+                                        isHistorical
+                                    )
+                                        return true;
+
                                     return (
                                         place.opening?.days[
                                             v as string
@@ -360,6 +373,37 @@ export const DrawerLogVisit = ({
                     }}
                     labelConfig={{}}
                     label='Date of Visit'
+                />
+
+                <CheckboxGroup<Form>
+                    name='historical'
+                    label='Historical Visit'
+                    errors={errors}
+                    formRegister={{
+                        register,
+                    }}
+                    labelConfig={{
+                        warning: {
+                            label: 'Only tick this box if you are logging a trip that has no opening data available',
+                        },
+                    }}
+                />
+
+                <CheckboxGroup<Form>
+                    name='manualEntry'
+                    label='Enter Tickets Manually'
+                    errors={errors}
+                    formRegister={{
+                        register,
+                    }}
+                    labelConfig={{
+                        tooltip: {
+                            label: 'Do you wish to enter a ticket price manually?',
+                        },
+                        warning: {
+                            label: 'You still need to select a category to get the ticket types',
+                        },
+                    }}
                 />
 
                 {place.admissionPrices && (
@@ -407,107 +451,141 @@ export const DrawerLogVisit = ({
                                     )
                                     .map((price, index) => {
                                         return (
-                                            <InputGroup<Form>
+                                            <Chakra.Flex
+                                                direction='column'
                                                 key={price.name}
-                                                name={`tickets.${index}.qty`}
-                                                formRegister={{
-                                                    register,
-                                                    options: {
-                                                        value: 0,
-                                                    },
-                                                }}
-                                                errors={errors}
-                                                inputConfig={{
-                                                    defaultValue: 0,
-                                                    type: 'number',
-                                                }}
-                                                element={{
-                                                    left: {
-                                                        children: (
-                                                            <Button
-                                                                size='xs'
-                                                                left='5px'
-                                                                icon={{
-                                                                    icon: 'remove',
-                                                                    ariaLabel:
-                                                                        'minus',
-                                                                }}
-                                                                isDisabled={
-                                                                    getValues(
-                                                                        `tickets.${index}.qty`
-                                                                    ) <= 0
-                                                                }
-                                                                onClick={(
-                                                                    e
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    const value =
+                                            >
+                                                <InputGroup<Form>
+                                                    name={`tickets.${index}.qty`}
+                                                    formRegister={{
+                                                        register,
+                                                        options: {
+                                                            value: 0,
+                                                        },
+                                                    }}
+                                                    errors={errors}
+                                                    inputConfig={{
+                                                        defaultValue: 0,
+                                                        type: 'number',
+                                                    }}
+                                                    element={{
+                                                        left: {
+                                                            children: (
+                                                                <Button
+                                                                    size='xs'
+                                                                    left='5px'
+                                                                    icon={{
+                                                                        icon: 'remove',
+                                                                        ariaLabel:
+                                                                            'minus',
+                                                                    }}
+                                                                    isDisabled={
                                                                         getValues(
                                                                             `tickets.${index}.qty`
+                                                                        ) <= 0
+                                                                    }
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        const value =
+                                                                            getValues(
+                                                                                `tickets.${index}.qty`
+                                                                            );
+
+                                                                        setValue(
+                                                                            `tickets.${index}.qty`,
+
+                                                                            value -
+                                                                                1,
+                                                                            {
+                                                                                shouldValidate:
+                                                                                    true,
+                                                                            }
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            ),
+                                                        },
+                                                        right: {
+                                                            children: (
+                                                                <Button
+                                                                    size='xs'
+                                                                    right='5px'
+                                                                    icon={{
+                                                                        icon: 'plus',
+                                                                        ariaLabel:
+                                                                            'plus',
+                                                                    }}
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        const value =
+                                                                            getValues(
+                                                                                `tickets.${index}.qty`
+                                                                            );
+
+                                                                        setValue(
+                                                                            `tickets.${index}.name`,
+                                                                            price.name,
+                                                                            {
+                                                                                shouldValidate:
+                                                                                    true,
+                                                                            }
                                                                         );
 
-                                                                    setValue(
-                                                                        `tickets.${index}.qty`,
+                                                                        setValue(
+                                                                            `tickets.${index}.qty`,
 
-                                                                        value -
-                                                                            1,
-                                                                        {
-                                                                            shouldValidate:
-                                                                                true,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        ),
-                                                    },
-                                                    right: {
-                                                        children: (
-                                                            <Button
-                                                                size='xs'
-                                                                right='5px'
-                                                                icon={{
-                                                                    icon: 'plus',
-                                                                    ariaLabel:
-                                                                        'plus',
-                                                                }}
-                                                                onClick={(
-                                                                    e
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    const value =
-                                                                        getValues(
-                                                                            `tickets.${index}.qty`
+                                                                            value +
+                                                                                1,
+                                                                            {
+                                                                                shouldValidate:
+                                                                                    true,
+                                                                            }
                                                                         );
-
-                                                                    setValue(
-                                                                        `tickets.${index}.name`,
-                                                                        price.name,
-                                                                        {
-                                                                            shouldValidate:
-                                                                                true,
-                                                                        }
-                                                                    );
-
-                                                                    setValue(
-                                                                        `tickets.${index}.qty`,
-
-                                                                        value +
-                                                                            1,
-                                                                        {
-                                                                            shouldValidate:
-                                                                                true,
-                                                                        }
-                                                                    );
-                                                                }}
-                                                            />
-                                                        ),
-                                                    },
-                                                }}
-                                                label={price.name}
-                                                labelConfig={{
-                                                    hideBadge: true,
-                                                }}
-                                            />
+                                                                    }}
+                                                                />
+                                                            ),
+                                                        },
+                                                    }}
+                                                    label={price.name}
+                                                    labelConfig={{
+                                                        hideBadge: true,
+                                                    }}
+                                                />
+                                                <InputGroup<Form>
+                                                    name={`tickets.${index}.standardAmount.amount`}
+                                                    formRegister={{
+                                                        register,
+                                                        options: {
+                                                            value: price
+                                                                .standardAmount
+                                                                .amount,
+                                                            valueAsNumber: true,
+                                                        },
+                                                    }}
+                                                    inputConfig={{
+                                                        isDisabled:
+                                                            !watchedManualEntry,
+                                                        type: 'number',
+                                                        defaultValue:
+                                                            price.standardAmount
+                                                                .amount,
+                                                    }}
+                                                    addOn={{
+                                                        right: {
+                                                            children: 'pence',
+                                                        },
+                                                    }}
+                                                    errors={errors}
+                                                    label='Amount'
+                                                    labelConfig={{
+                                                        hideBadge: true,
+                                                    }}
+                                                />
+                                            </Chakra.Flex>
                                         );
                                     })}
                             </Chakra.Flex>
@@ -523,10 +601,10 @@ export const DrawerLogVisit = ({
                     <Chakra.Text fontSize={14}>
                         Who visited with you?
                     </Chakra.Text>
-                    {fields.map((field, index) => {
+                    {people.map((person, index) => {
                         return (
                             <InputGroup<Form>
-                                key={field.id}
+                                key={person.id}
                                 name={`people.${index}.name`}
                                 formRegister={{
                                     register,
@@ -537,7 +615,7 @@ export const DrawerLogVisit = ({
                                             <Button
                                                 size='xs'
                                                 right='5px'
-                                                isDisabled={fields.length <= 1}
+                                                isDisabled={people.length <= 1}
                                                 icon={{
                                                     icon: 'remove',
                                                     ariaLabel: 'remove',

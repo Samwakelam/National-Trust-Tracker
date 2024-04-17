@@ -1,31 +1,38 @@
 'use client';
 
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 import {
     Card,
     CardFooterItemProps,
     CardFooterItemsProps,
-    Heading,
-    Icon,
-    Modal,
     Tag,
+    getCase,
 } from '@sam/library';
 
 import { Visit } from '../../types/internal';
+
 import { getAmountInPounds, resolveCurrency, resolveIcon } from '../../helpers';
-import { Asset } from '../../types/national-trust';
+import { resolvePersonMap } from '../../helpers/resolvePersonMap.helper';
+
+import { VisitCardModal } from './VisitCardModal.component';
+import { resolveAssetMap } from './VisitCard.helpers';
 
 import * as Chakra from '@chakra-ui/react';
 
 import '../../prototypes/String.extensions';
-import { resolvePersonMap } from '../../helpers/resolvePersonMap.helper';
+import { revalidatePath } from 'next/cache';
+import { deleteVisitById } from '../../../app/api/Visits/[visitId]/route';
 
-export type VisitCardProps = { visit: Visit };
+export type VisitCardProps = {
+    visit: Visit;
+    handleDelete: (visitId: string) => void;
+};
 
 export const VisitCard = ({
     visit,
+    handleDelete,
 }: VisitCardProps): ReactElement<VisitCardProps> => {
     const router = useRouter();
 
@@ -122,11 +129,27 @@ export const VisitCard = ({
                             },
                             onClick: () => {
                                 router.push(
-                                    `/Places/${visit.place.name}/${visit.place.placeId}`
+                                    `/Places/${getCase(visit.place.name, 'pascal')}/${visit.place.placeId}`
                                 );
                             },
                         },
+                        {
+                            label: `Delete Visit`,
+                            icon: {
+                                icon: 'bin',
+                                ariaLabel: 'delete',
+                                variant: 'outline',
+                            },
+                            onClick: () => handleDelete(visit._id),
+                        },
                     ],
+                }}
+                layout='horizontal'
+                image={{
+                    src: visit.place.images.PRIMARY.url,
+                    alt: visit.place.images.PRIMARY.description,
+                    isInset: true,
+                    width: '30%',
                 }}
                 cursor='pointer'
                 onClick={(e) => {
@@ -155,163 +178,11 @@ export const VisitCard = ({
                     </Chakra.chakra.span>
                 </Chakra.Text>
             </Card>
-            <Modal
+            <VisitCardModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                title={new Date(visit.date).toDateString()}
-            >
-                <Heading preset='modal-heading'>{visit.place.name}</Heading>
-
-                <Card
-                    heading={{ preset: 'sub-heading', children: 'Tickets' }}
-                    colorScheme='gray'
-                    variant='outline'
-                    hasNegativeMargin
-                >
-                    <Chakra.Flex>
-                        <Chakra.Text>
-                            {visit.people.map(resolvePersonMap)}
-                        </Chakra.Text>
-                    </Chakra.Flex>
-                    {visit.tickets.map((ticket) => {
-                        return (
-                            <Chakra.Flex
-                                key={`ticket-${ticket.name}`}
-                                justifyContent='space-between'
-                                gap={16}
-                            >
-                                <Chakra.Flex gap={8}>
-                                    <Chakra.Text as='b'>
-                                        {ticket.name}
-                                    </Chakra.Text>
-                                    <Chakra.Text>{ticket.qty}</Chakra.Text>
-                                </Chakra.Flex>
-                                <Chakra.Flex gap={8}>
-                                    <Chakra.Text>
-                                        {resolveCurrency(
-                                            ticket.standardAmount.currency
-                                        )}
-                                    </Chakra.Text>
-                                    <Chakra.Text>
-                                        {getAmountInPounds(
-                                            ticket.standardAmount.amount
-                                        )}
-                                    </Chakra.Text>
-                                    <Chakra.Text>each</Chakra.Text>
-                                </Chakra.Flex>
-                            </Chakra.Flex>
-                        );
-                    })}
-                </Card>
-                <Card
-                    heading={{
-                        preset: 'sub-heading',
-                        children: 'Facilities Used',
-                    }}
-                    colorScheme='gray'
-                    variant='outline'
-                    hasNegativeMargin
-                >
-                    {visit.facilitiesUsed.map((facility) => {
-                        const icon = resolveIcon(facility.reference);
-
-                        return (
-                            <Chakra.Flex
-                                key={`facility-${facility.reference}`}
-                                gap={8}
-                                alignItems='center'
-                            >
-                                {icon && <Icon {...icon} />}
-
-                                <Chakra.Text
-                                    display='flex'
-                                    flexDirection='row'
-                                    as='b'
-                                >
-                                    {facility.name}
-                                </Chakra.Text>
-                            </Chakra.Flex>
-                        );
-                    })}
-                </Card>
-                <Card
-                    heading={{
-                        preset: 'sub-heading',
-                        children: 'Assets Used',
-                    }}
-                    colorScheme='gray'
-                    variant='outline'
-                    hasNegativeMargin
-                >
-                    {visit.assetsUsed.map(resolveAssetMap)}
-                </Card>
-                <Card
-                    heading={{
-                        preset: 'sub-heading',
-                        children: 'Travelled By:',
-                    }}
-                    colorScheme='gray'
-                    variant='outline'
-                    hasNegativeMargin
-                >
-                    {visit.travel.map((vehicle) => {
-                        const icon = resolveIcon(vehicle);
-
-                        return (
-                            <Chakra.Flex
-                                key={`facility-${vehicle}`}
-                                gap={8}
-                                alignItems='center'
-                            >
-                                {icon && <Icon {...icon} />}
-
-                                <Chakra.Text
-                                    display='flex'
-                                    flexDirection='row'
-                                    as='b'
-                                >
-                                    {vehicle.toCapitalisedCase()}
-                                </Chakra.Text>
-                            </Chakra.Flex>
-                        );
-                    })}
-                </Card>
-            </Modal>
+                visit={visit}
+            />
         </>
-    );
-};
-
-const resolveAssetTagColorScheme = (asset: string) => {
-    const cafeTypes: string[] = ['tea', 'caf', 'restaurant', 'kitchen'];
-
-    if (cafeTypes.some((value) => asset.toLowerCase().includes(value)))
-        return 'purple';
-
-    switch (asset) {
-        case 'House':
-            return 'blue';
-        case 'Garden':
-            return 'green';
-        case 'Park':
-            return 'teal';
-        case 'Castle':
-            return 'yellow';
-        case 'Shop':
-            return 'pink';
-        default:
-            return undefined;
-    }
-};
-
-
-
-const resolveAssetMap = (asset: Asset) => {
-    return (
-        <Tag
-            key={`asset-tag-${asset.name}`}
-            colorScheme={resolveAssetTagColorScheme(asset.name)}
-        >
-            {asset.name}
-        </Tag>
     );
 };

@@ -23,8 +23,23 @@ import {
     MdCardMembership,
     MdDirectionsBoat,
     MdOutlineDirectionsBoat,
+    MdOutlinePark,
+    MdOutlineSoupKitchen,
+    MdPark,
+    MdSoupKitchen,
 } from 'react-icons/md';
 import {
+    PiCastleTurret,
+    PiCastleTurretBold,
+    PiCastleTurretFill,
+    PiCoffee,
+    PiCoffeeBold,
+    PiCoffeeFill,
+    PiCookingPot,
+    PiCookingPotFill,
+    PiFlower,
+    PiFlowerBold,
+    PiFlowerFill,
     PiHouse,
     PiHouseBold,
     PiHouseFill,
@@ -34,8 +49,14 @@ import {
     PiHouseSimple,
     PiHouseSimpleBold,
     PiHouseSimpleFill,
+    PiShoppingCart,
+    PiShoppingCartFill,
     PiToolboxBold,
     PiToolboxFill,
+    PiTree,
+    PiTreeEvergreen,
+    PiTreeEvergreenFill,
+    PiTreeFill,
 } from 'react-icons/pi';
 import {
     TbBulb,
@@ -53,7 +74,11 @@ export type ShapesType =
     | 'bulb-off'
     | 'bulb-on'
     | 'car'
+    | 'castle'
+    | 'coffee'
+    | 'cook-pot'
     | 'dashboard'
+    | 'flower'
     | 'house'
     | 'house-ground'
     | 'house-simple'
@@ -70,21 +95,29 @@ export type ShapesType =
     | 'sack'
     | 'ship-off'
     | 'ship-on'
+    | 'shop'
+    | 'soup'
     | 'sun'
     | 'ticket'
     | 'thumbs-d'
     | 'thumbs-u'
-    | 'toolbox';
+    | 'toolbox'
+    | 'tree'
+    | 'tree-pine';
 
 export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'boat': MdOutlineDirectionsBoat,
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulb,
     'car': IoCarSportOutline,
+    'castle': PiCastleTurret,
+    'coffee': PiCoffee,
+    'cook-pot': PiCookingPot,
     'dashboard': AiOutlineDashboard,
-    'house': PiHouseBold,
-    'house-ground': PiHouseLineBold,
-    'house-simple': PiHouseSimpleBold,
+    'flower': PiFlower,
+    'house': PiHouse,
+    'house-ground': PiHouseLine,
+    'house-simple': PiHouseSimple,
     'industry': LuFactory,
     'lock-closed': HiOutlineLockClosed,
     'lock-open': HiOutlineLockOpen,
@@ -98,11 +131,15 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
+    'shop': PiShoppingCartFill,
+    'soup': MdOutlineSoupKitchen,
     'sun': BiSun,
     'ticket': IoTicketOutline,
     'thumbs-d': FiThumbsDown,
     'thumbs-u': FiThumbsUp,
     'toolbox': PiToolboxBold,
+    'tree': PiTree,
+    'tree-pine': PiTreeEvergreen,
 };
 
 export const shapesSolidMap: { [key in ShapesType]: IconType } = {
@@ -110,7 +147,11 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulbFilled,
     'car': IoCarSport,
+    'castle': PiCastleTurretFill,
+    'coffee': PiCoffeeFill,
+    'cook-pot': PiCookingPotFill,
     'dashboard': AiFillDashboard,
+    'flower': PiFlowerFill,
     'house': PiHouseFill,
     'house-ground': PiHouseLineFill,
     'house-simple': PiHouseSimpleFill,
@@ -127,9 +168,13 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
+    'shop': PiShoppingCart,
     'sun': BiSolidSun,
+    'soup': MdSoupKitchen,
     'ticket': IoTicket,
     'thumbs-d': IoMdThumbsDown,
     'thumbs-u': IoMdThumbsUp,
     'toolbox': PiToolboxFill,
+    'tree': PiTreeFill,
+    'tree-pine': PiTreeEvergreenFill,
 };

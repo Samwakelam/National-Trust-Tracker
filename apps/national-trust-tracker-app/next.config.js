@@ -21,8 +21,12 @@ module.exports = {
             'mongodb-client-encryption': false,
             'aws4': false,
         };
+        return config;
+    },
+};
 
-        //     config.node = {
+
+//     config.node = {
         //         fs: "empty"
         //     };
         //     config.resolve.alias = {
@@ -32,7 +36,3 @@ module.exports = {
         //         "@redux": path.join(__dirname, "redux"),
         //         "@api": path.join(__dirname, "api")
         //     };
-
-        return config;
-    },
-};

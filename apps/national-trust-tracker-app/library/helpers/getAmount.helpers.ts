@@ -1,8 +1,7 @@
 export const getAmountInPence = (pounds: string): number => {
-    const split = pounds.split('.');
-    const pence = split.join('');
+    const pence = parseFloat(pounds) * 100;
 
-    return parseInt(pence);
+    return pence;
 };
 
 export const getAmountInPounds = (pence: number): string => {

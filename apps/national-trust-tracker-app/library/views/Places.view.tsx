@@ -20,8 +20,8 @@ import * as Chakra from '@chakra-ui/react';
 
 type PlacesViewProps = {
     places: Places;
-    compiledPlaces?: CompiledPlace[];
-    visits?: Visit[];
+    compiledPlaces: CompiledPlace[];
+    visits: Visit[];
 };
 
 type Form = { name: string };

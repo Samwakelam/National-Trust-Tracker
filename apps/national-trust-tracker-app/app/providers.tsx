@@ -1,27 +1,17 @@
-'use client';
-
 import { ReactNode } from 'react';
 
-import { ChakraProvider } from '@chakra-ui/react';
-import { useDefaultTheme } from '@sam/library';
+import { VisitsProvider } from '../library/context/Visits.context';
+import { PlacesProvider } from '../library/context/Places.context';
 
-import { Navbar } from '../library/components/Navbar/Navbar.styles';
-import { Spinner } from '../library/components/Spinner/Spinner.styles';
+import { getAllVisits } from '../actions/Visits.actions';
+import { getAllPlaces } from '../actions/Places.actions';
 
-const theme = useDefaultTheme({
-    components: {
-        Navbar,
-        Spinner,
-    },
-});
+export async function Providers({ children }: { children: ReactNode }) {
+    const res = await Promise.all([await getAllVisits(), await getAllPlaces()]);
 
-export function Providers({ children }: { children: ReactNode }) {
     return (
-        <ChakraProvider
-            theme={theme}
-            toastOptions={{ defaultOptions: { variant: 'left-accent' } }}
-        >
-            {children}
-        </ChakraProvider>
+        <VisitsProvider initial={res[0].data}>
+            <PlacesProvider initial={res[1].data}>{children}</PlacesProvider>
+        </VisitsProvider>
     );
 }

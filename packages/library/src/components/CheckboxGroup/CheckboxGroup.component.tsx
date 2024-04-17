@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -13,7 +13,7 @@ import * as Chakra from '@chakra-ui/react';
 
 export type CheckboxProps<T extends FieldValues> = {
     checkboxConfig?: Chakra.CheckboxProps & { form?: string };
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formRegister: {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;

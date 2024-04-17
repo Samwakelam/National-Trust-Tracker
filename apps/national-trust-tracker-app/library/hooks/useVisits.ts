@@ -26,17 +26,9 @@ export type ReduceMapProps = {
     visits: number;
 };
 
-export type GetReducedResponse =
-    | number
-    | ReduceMapProps
-    | Record<string, number>;
-
 export const useVisits = ({ visits }: { visits: Visit[] }) => {
-    const getReduced = (
-        _visits: Visit[],
-        filter?: InformationType
-    ): GetReducedResponse => {
-        const reduceMap: ReduceMapProps = {
+    const getReduced = (_visits: Visit[]): ReduceMapProps => {
+        const reduceMap = {
             assets: getReducedAssets(_visits),
             facilities: getReducedFacilities(_visits),
             people: getReducedPeople(_visits),
@@ -49,83 +41,107 @@ export const useVisits = ({ visits }: { visits: Visit[] }) => {
             visits: _visits.length,
         };
 
-        if (filter) {
-            return reduceMap[filter];
-        }
-
         return reduceMap;
     };
 
-    const getStatistics = ({
-        by,
-        filter,
-    }: {
-        by?: 'month' | 'year';
-        filter?: InformationType;
-    }) => {
-        const visitStatistics: Record<string, GetReducedResponse> = {};
-        if (by && by === 'month') {
-            const _visits = getByMonth();
-
-            Object.keys(_visits).forEach((key) => {
-                visitStatistics[key] = getReduced(
-                    _visits[key] as Visit[],
-                    filter
-                );
-            });
-            return visitStatistics;
-        }
-
-        if (by && by === 'year') {
-            const _visits = getByYear();
-
-            Object.keys(_visits).forEach((key) => {
-                visitStatistics[key] = getReduced(
-                    _visits[key] as Visit[],
-                    filter
-                );
-            });
-            return visitStatistics;
-        }
-
-        return getReduced(visits, filter);
+    const getStatistics = (_visits: any) => {
+        const visitStatistics: Record<string, ReduceMapProps> = {};
+        Object.keys(_visits).forEach((key) => {
+            visitStatistics[key] = getReduced(_visits[key] as Visit[]);
+        });
+        return visitStatistics;
     };
 
-    const getByMonth = () => {
-        return visits.reduce((prev: Record<string, Visit[]>, visit: Visit) => {
-            const key = getDateKeyFormat(visit.date);
-
-            if (Object.keys(prev).includes(key)) {
-                prev[key]!.push(visit);
-            } else {
-                prev[key] = [visit];
+    const getAll = (filterByDate?: string) => {
+        const _visits = visits.filter((visit) => {
+            if (filterByDate) {
+                return visit.date.includes(filterByDate);
             }
-
-            return prev;
-        }, {});
+            return true;
+        });
+        return {
+            visits: _visits,
+            statistics: getReduced(_visits),
+        };
     };
 
-    const getByYear = () => {
-        return visits.reduce((prev: Record<string, Visit[]>, visit: Visit) => {
-            const date = new Date(visit.date);
+    const getByMonth = (filterByDate?: string) => {
+        const _visits = visits
+            .filter((visit) => {
+                if (filterByDate) {
+                    return visit.date.includes(filterByDate);
+                }
+                return true;
+            })
+            .sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
 
-            const year = date.getFullYear();
-            const key = year.toString();
+                if (dateA === dateB) return 0;
+                if (dateA > dateB) return 1;
+                if (dateA < dateB) return -1;
+                return 0;
+            })
+            .reduce((prev: Record<string, Visit[]>, visit: Visit) => {
+                const key = getDateKeyFormat(visit.date);
 
-            if (Object.keys(prev).includes(key)) {
-                prev[key]!.push(visit);
-            } else {
-                prev[key] = [visit];
-            }
+                if (Object.keys(prev).includes(key)) {
+                    prev[key]!.push(visit);
+                } else {
+                    prev[key] = [visit];
+                }
 
-            return prev;
-        }, {});
+                return prev;
+            }, {});
+
+        return {
+            visits: _visits,
+            statistics: getStatistics(_visits),
+        };
+    };
+
+    const getByYear = (filterByDate?: string) => {
+        const _visits = visits
+            .filter((visit) => {
+                if (filterByDate) {
+                    return visit.date.includes(filterByDate);
+                }
+                return true;
+            })
+            .sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+
+                if (dateA === dateB) return 0;
+                if (dateA > dateB) return 1;
+                if (dateA < dateB) return -1;
+                return 0;
+            })
+            .reduce((prev: Record<string, Visit[]>, visit: Visit) => {
+                const date = new Date(visit.date);
+
+                const year = date.getFullYear();
+                const key = year.toString();
+
+                if (Object.keys(prev).includes(key)) {
+                    prev[key]!.push(visit);
+                } else {
+                    prev[key] = [visit];
+                }
+
+                return prev;
+            }, {});
+
+        return {
+            visits: _visits,
+            statistics: getStatistics(_visits),
+        };
     };
 
     return {
+        getAll,
         getByMonth,
         getByYear,
-        getStatistics,
     };
 };
 

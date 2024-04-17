@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { Form, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { ChartData, ChartOptions } from 'chart.js';
 
 import {
@@ -19,45 +19,33 @@ import {
     Modal,
     InputGroup,
     SelectGroup,
-    ModalConfirm,
 } from '@sam/library';
 import { Children } from '@sam/library/src/types';
 
-import {
-    Membership,
-    MembershipType,
-    Visit,
-    membershipType,
-} from '../types/internal';
-import {
-    GetReducedResponse,
-    InformationType,
-    ReduceMapProps,
-    useVisits,
-} from '../hooks/useVisits';
+import { MembershipType, membershipType } from '../../types/internal';
+import { InformationType, useVisits } from '../../hooks/useVisits';
 import {
     getAmountInPounds,
     resolveCurrency,
     resolvePersonMap,
-} from '../helpers';
+} from '../../helpers';
+import { getDateKeyFormat } from '../../helpers/getDateKeyFormat.helper';
+
+import {
+    MembershipChartType,
+    MembershipViewProps,
+    MembershipData,
+    FormMembership,
+} from './Membership.definitions';
+import { chartOptionsConfig } from './Membership.config';
 
 import * as Chakra from '@chakra-ui/react';
 
-import '../prototypes/String.extensions';
-import { getDateKeyFormat } from '../helpers/getDateKeyFormat.helper';
-
-export type MembershipViewProps = {
-    visits: Visit[];
-    membership: Membership;
-};
-
-type Form = Membership;
-type ChartType = 'ticket' | 'price';
-type Data = any;
+import '../../prototypes/String.extensions';
 
 export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
     const theme = Chakra.useTheme();
-    const { getStatistics } = useVisits({
+    const { getAll, getByMonth } = useVisits({
         visits,
     });
 
@@ -69,6 +57,8 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
         ticketAverage: number;
         totalTickets: number;
         ticketsOutstanding: number;
+        monthlyAverage: number;
+        projection: number;
     }>({
         total: 100,
         remaining: 100,
@@ -76,6 +66,8 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
         ticketAverage: 100,
         totalTickets: 0,
         ticketsOutstanding: 0,
+        monthlyAverage: 100,
+        projection: 0,
     });
 
     const {
@@ -83,30 +75,34 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
         formState: { errors, isDirty, isValid },
         register,
         reset,
-    } = useForm<Form>({
+    } = useForm<FormMembership>({
         mode: 'onChange',
         defaultValues: {
             ...membership,
             totalCost: parseFloat(getAmountInPounds(membership.totalCost)),
         },
     });
-    const { fields, append, remove } = useFieldArray<Form>({
+    const { fields, append, remove } = useFieldArray<FormMembership>({
         control,
         name: 'members',
     });
 
-    const data: Record<ChartType, ChartData<Data>> = useMemo(() => {
-        const _data = getStatistics({ by: 'month' }) as Record<
-            string,
-            GetReducedResponse
-        >;
+    const data: Record<
+        MembershipChartType,
+        ChartData<MembershipData>
+    > = useMemo(() => {
+        const _data = getByMonth().statistics;
 
         const months = Object.keys(_data);
         const getData = (key: InformationType) =>
-            months.flatMap((month) => {
+            months.flatMap((month): number | Record<string, number> | any[] => {
                 const stats = _data[month];
 
-                if (key === 'totalPrice' && stats) {
+                if (
+                    key === 'totalPrice' &&
+                    stats &&
+                    typeof stats === 'number'
+                ) {
                     return parseFloat(
                         getAmountInPounds(stats[key as keyof typeof stats])
                     );
@@ -126,9 +122,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                 const lastTotal = prev[lastMonth] as number;
 
                 const currentTotal =
-                    lastTotal -
-                    (_data[month as keyof typeof _data] as ReduceMapProps)!
-                        .totalPrice;
+                    lastTotal - _data[month as keyof typeof _data]!.totalPrice;
 
                 if (prev[month]) {
                     prev[month] = currentTotal;
@@ -190,38 +184,11 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
     }, [visits]);
 
     const chartOptions: Record<
-        ChartType,
+        MembershipChartType,
         ChartOptions<'line'>
     > = useMemo(() => {
-        return {
-            ticket: {
-                responsive: true,
-                scales: {
-                    axisOne: {
-                        display: true,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'Units',
-                        },
-                        beginAtZero: true,
-                    },
-                    axisTwo: {
-                        display: true,
-                        position: 'right',
-                        title: {
-                            display: true,
-                            text: 'Pounds',
-                        },
-                        beginAtZero: true,
-                    },
-                },
-            },
-            price: {
-                responsive: true,
-            },
-        };
-    }, [visits]);
+        return chartOptionsConfig;
+    }, []);
 
     const handleCloseModal = () => {
         reset();
@@ -229,15 +196,23 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
     };
 
     useEffect(() => {
-        const stats = getStatistics({});
+        const stats = getAll().statistics;
         if (typeof stats !== 'number') {
-            const spent = stats['totalPrice'] as number;
+            const spent = stats['totalPrice'];
 
             const remaining = membership.totalCost - spent;
-            const totalTickets = stats['totalTickets'] as number;
+            const totalTickets = stats['totalTickets'];
 
             const ticketAverage = Math.round(spent / totalTickets);
             const ticketsOutstanding = Math.ceil(remaining / ticketAverage);
+
+            const monthlyStats = getByMonth().statistics;
+            const months = Object.keys(monthlyStats);
+            const monthlyAverage =
+                months.reduce((prev, month) => {
+                    prev += monthlyStats[month]!.totalPrice;
+                    return prev;
+                }, 0) / months.length;
 
             setAmounts((prev) => ({
                 ...prev,
@@ -247,6 +222,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                 ticketAverage,
                 totalTickets,
                 ticketsOutstanding,
+                monthlyAverage,
             }));
         }
     }, [membership, visits]);
@@ -341,7 +317,6 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                                         amounts.spent
                                     )}`}
                                 />
-
                                 <InformationItem
                                     icon={{
                                         icon: 'money-report',
@@ -352,6 +327,18 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                                     }}
                                     text={` ${resolveCurrency('GBP')} ${getAmountInPounds(
                                         amounts.remaining
+                                    )}`}
+                                />
+                                <InformationItem
+                                    icon={{
+                                        icon: 'money-report',
+                                        ariaLabel: 'money report',
+                                    }}
+                                    heading={{
+                                        children: 'Monthly Average',
+                                    }}
+                                    text={` ${resolveCurrency('GBP')} ${getAmountInPounds(
+                                        amounts.monthlyAverage
                                     )}`}
                                 />
                             </Card>
@@ -423,7 +410,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                 }}
             >
                 <Chakra.chakra.form id='update-membership-form'>
-                    <InputGroup<Form>
+                    <InputGroup<FormMembership>
                         name='groupName'
                         formRegister={{ register }}
                         errors={errors}
@@ -431,7 +418,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                         labelConfig={{ hideBadge: true }}
                     />
 
-                    <InputGroup<Form>
+                    <InputGroup<FormMembership>
                         name='startDate'
                         formRegister={{ register }}
                         errors={errors}
@@ -447,7 +434,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                         colorScheme='gray'
                         hasNegativeMargin
                     >
-                        <InputGroup<Form>
+                        <InputGroup<FormMembership>
                             name='totalCost'
                             formRegister={{
                                 register,
@@ -458,7 +445,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                             inputConfig={{ type: 'number' }}
                             addOn={{ left: { children: '£' } }}
                         />
-                        <SelectGroup<Form, MembershipType>
+                        <SelectGroup<FormMembership, MembershipType>
                             name='type'
                             label='Membership Type'
                             labelConfig={{ hideBadge: true }}
@@ -473,7 +460,7 @@ export const MembershipView = ({ visits, membership }: MembershipViewProps) => {
                         />
                         {fields.map((field, index) => {
                             return (
-                                <InputGroup<Form>
+                                <InputGroup<FormMembership>
                                     key={field.id}
                                     name={`members.${index}.name`}
                                     formRegister={{

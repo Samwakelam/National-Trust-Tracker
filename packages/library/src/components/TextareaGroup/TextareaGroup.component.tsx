@@ -1,5 +1,5 @@
 import {
-    FieldErrorsImpl,
+    FieldErrors,
     FieldValues,
     Path,
     RegisterOptions,
@@ -12,7 +12,7 @@ import { Label, LabelProps } from '../Label';
 import * as Chakra from '@chakra-ui/react';
 
 export type TextareaGroupProps<T extends FieldValues> = {
-    errors: FieldErrorsImpl<T>;
+    errors: FieldErrors<T>;
     formRegister: {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;

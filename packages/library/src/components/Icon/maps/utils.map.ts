@@ -50,7 +50,14 @@ import {
     TbLassoPolygon,
 } from 'react-icons/tb';
 import { FiSearch } from 'react-icons/fi';
-import { MdEdit, MdOutlineEdit } from 'react-icons/md';
+import {
+    MdEdit,
+    MdFormatBold,
+    MdFormatItalic,
+    MdFormatUnderlined,
+    MdOutlineEdit,
+    MdStrikethroughS,
+} from 'react-icons/md';
 import { LuSettings2 } from 'react-icons/lu';
 
 export type UtilsType =
@@ -66,6 +73,10 @@ export type UtilsType =
     | 'detail'
     | 'download'
     | 'filter'
+    | 'format-bold'
+    | 'format-italics'
+    | 'format-strikethrough'
+    | 'format-underline'
     | 'lasso'
     | 'lasso-poly'
     | 'link'
@@ -97,6 +108,10 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'detail': BiDetail,
     'download': TbArrowBarToDown,
     'filter': LuSettings2,
+    'format-bold': MdFormatBold,
+    'format-italics': MdFormatItalic,
+    'format-strikethrough': MdStrikethroughS,
+    'format-underline': MdFormatUnderlined,
     'lasso': TbLasso,
     'lasso-poly': TbLassoPolygon,
     'link': HiOutlineLink,
@@ -129,6 +144,10 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'detail': BiSolidDetail,
     'download': TbArrowBarToDown,
     'filter': LuSettings2,
+    'format-bold': MdFormatBold,
+    'format-italics': MdFormatItalic,
+    'format-strikethrough': MdStrikethroughS,
+    'format-underline': MdFormatUnderlined,
     'lasso': TbLasso,
     'lasso-poly': TbLassoPolygon,
     'link': HiOutlineLink,

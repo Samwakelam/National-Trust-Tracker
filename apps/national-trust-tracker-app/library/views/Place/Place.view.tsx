@@ -19,6 +19,7 @@ import {
     getCase,
     InputGroup,
     Tag,
+    HtmlParser,
 } from '@sam/library';
 
 import {
@@ -28,8 +29,15 @@ import {
     NoteCategory,
     PostalAddress,
     AccessTag,
+    AdmissionPrice,
+    AdmissionPrices,
 } from '../../types/national-trust';
-import { getAmountInPounds, resolveCurrency, resolveIcon } from '../../helpers';
+import {
+    getAmountInPence,
+    getAmountInPounds,
+    resolveCurrency,
+    resolveIcon,
+} from '../../helpers';
 // import { MiniMap } from '../components/Map';
 
 import { DrawerLogVisit } from './partials';
@@ -38,6 +46,7 @@ import { DisclosureType, Form, PlaceViewProps } from './Place.definition';
 import * as Chakra from '@chakra-ui/react';
 
 import '../../prototypes/String.extensions';
+import { resolveCategoriesFromHTML } from './Place.helpers';
 
 export const PlaceView = ({
     place,
@@ -51,8 +60,6 @@ export const PlaceView = ({
     openingTimes,
     ...props
 }: PlaceViewProps) => {
-    console.log('props: ', props);
-
     const markerRef = useRef<LeafletMarker<any>>(null);
     const router = useRouter();
 
@@ -82,6 +89,38 @@ export const PlaceView = ({
         };
     }, []);
 
+    const _admissionPrices: AdmissionPrices | undefined = useMemo(() => {
+        const admissionCategories = admissionPrices?.categories;
+
+        if (admissionCategories?.length === 0) {
+            const categories = admissionPrices?.htmlNote
+                ? resolveCategoriesFromHTML(admissionPrices?.htmlNote)
+                : [];
+
+            const noFee: AdmissionCategory = {
+                name: 'No Fee',
+                admissionPrices: [
+                    {
+                        name: 'Adult',
+                        standardAmount: {
+                            currency: 'GBP',
+                            amount: 0,
+                        },
+                    },
+                ],
+            };
+
+            return {
+                htmlNote: '',
+                links: [],
+                ...admissionPrices,
+                categories: categories.length > 0 ? categories : [noFee],
+            };
+        }
+
+        return admissionPrices;
+    }, [admissionPrices]);
+
     const handleDisclosure = (
         disclosure: DisclosureType,
         action: 'open' | 'close'
@@ -91,19 +130,6 @@ export const PlaceView = ({
             [disclosure]: action === 'open' ? true : false,
         }));
     };
-
-    // const parseHtmlString = (string: string): string[] => {
-    //     return string
-    //         .split(/<p>(.*?)p>/g)
-    //         .filter((item) => item.includes('/'))
-    //         .map((item) =>
-    //             item
-    //                 .replaceAll('</', '')
-    //                 .replaceAll('&#39;', '"')
-    //                 .replaceAll('&rsquo;', "'")
-    //                 .replaceAll('&nbsp;', ' ')
-    //         );
-    // };
 
     useEffect(() => {
         if (place) {
@@ -217,9 +243,9 @@ export const PlaceView = ({
                             flexDirection='column'
                             gap={16}
                         >
-                            <Chakra.Text>
-                                {place.description.htmlDescription}
-                            </Chakra.Text>
+                            <HtmlParser
+                                htmlString={place.description.htmlDescription}
+                            />
                         </Chakra.GridItem>
                     </Chakra.Grid>
                 </Frame>
@@ -292,23 +318,19 @@ export const PlaceView = ({
                     </Chakra.Flex>
                 </Frame>
 
-                {admissionPrices && (
+                {_admissionPrices && (
                     <Frame
                         id='admission-prices-frame'
                         colorScheme='black'
                     >
                         <Heading preset='frame-heading'>Admission</Heading>
-                        <Chakra.Flex
-                            direction='column'
+
+                        <HtmlParser
+                            htmlString={_admissionPrices.htmlNote}
                             maxW='800px'
                             alignItems='center'
                             textAlign='center'
-                            gap={8}
-                        >
-                            <Chakra.Text>
-                                {admissionPrices.htmlNote}
-                            </Chakra.Text>
-                        </Chakra.Flex>
+                        />
 
                         <Chakra.Grid
                             gridTemplateColumns={[
@@ -318,7 +340,7 @@ export const PlaceView = ({
                             columnGap={32}
                             rowGap={20}
                         >
-                            {admissionPrices.categories.map(
+                            {_admissionPrices.categories.map(
                                 (
                                     category: AdmissionCategory,
                                     index: number
@@ -663,7 +685,7 @@ export const PlaceView = ({
                 onClose={() => handleDisclosure('log', 'close')}
                 place={{
                     place,
-                    admissionPrices,
+                    admissionPrices: _admissionPrices,
                     facilities,
                     opening,
                     directions,

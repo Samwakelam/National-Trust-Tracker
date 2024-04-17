@@ -18,18 +18,24 @@ export const Menu = ({
 
     return (
         <Chakra.Menu {...menuConfig}>
-            <Chakra.MenuButton as={Chakra.Box}>
-                <Button
-                    icon={{ icon: 'menu-three', ariaLabel: 'menu' }}
-                    variant='outline'
-                    {...buttonConfig}
-                />
-            </Chakra.MenuButton>
-            <Chakra.MenuList {...menuListConfig}>
-                {menuItems.map((item, index) =>
-                    resolveMenuItem(item, index, theme)
-                )}
-            </Chakra.MenuList>
+            <div
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+            >
+                <Chakra.MenuButton as={Chakra.Box}>
+                    <Button
+                        icon={{ icon: 'menu-three', ariaLabel: 'menu' }}
+                        variant='outline'
+                        {...buttonConfig}
+                    />
+                </Chakra.MenuButton>
+                <Chakra.MenuList {...menuListConfig}>
+                    {menuItems.map((item, index) =>
+                        resolveMenuItem(item, index, theme)
+                    )}
+                </Chakra.MenuList>
+            </div>
         </Chakra.Menu>
     );
 };
@@ -57,9 +63,12 @@ const resolveMenuItem = (
         );
 
     if (isMenuItem(item)) {
-        const { label, image, icon, ...props } = item;
+        const { label, image, icon, slug, target, ...props } = item;
         return (
             <Chakra.MenuItem
+                as={slug ? 'a' : undefined}
+                target={target && slug ? target : undefined}
+                href={slug ? slug : undefined}
                 key={`item-${index}-${label}`}
                 icon={icon && <Icon {...icon} />}
                 padding={`${space[4]} ${space[8]}`}

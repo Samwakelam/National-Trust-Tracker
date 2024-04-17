@@ -43,9 +43,11 @@ export const space = {
     56: '3.5rem',
     60: '3.75rem',
     64: '4rem',
+    72: '4.5rem',
     80: '5rem',
     88: '5.5rem',
     96: '6rem',
+    104: '6.5rem',
     112: '7rem',
     120: '7.5rem',
     128: '8rem',
@@ -54,6 +56,9 @@ export const space = {
     208: '13rem',
     304: '19rem',
     544: '34rem',
+    800: '50rem',
+    896: '56rem',
+    960: '60rem',
 };
 
 export const extensions = (_extensions: any) => ({

@@ -56,3 +56,7 @@ export type Visit = {
     totalPrice: number;
     travel: DirectionType[];
 };
+
+export interface VisitDB extends Visit {
+    _id: string;
+}
