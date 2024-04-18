@@ -1,0 +1,22 @@
+{
+    "$schema": "./node_modules/react-cosmos/config.schema.json",
+    "port": 5001,
+    "staticPath": "public",
+    "globalImports": ["./library/global.css"],
+    "ui": {
+        "responsivePreview": {
+            "devices": [
+                { "label": "mobile", "width": 320, "height": 667 },
+                { "label": "sm", "width": 640, "height": 667 },
+                { "label": "md", "width": 768, "height": 1024 },
+                { "label": "lg", "width": 1024, "height": 768 },
+                { "label": "xl", "width": 1280, "height": 929 },
+                { "label": "2xl", "width": 1536, "height": 929 }
+            ]
+        }
+    },
+    "rendererUrl": {
+        "dev": "http://localhost:4001/cosmos/<fixture>",
+        "export": "/cosmos/<fixture>.html"
+    }
+}

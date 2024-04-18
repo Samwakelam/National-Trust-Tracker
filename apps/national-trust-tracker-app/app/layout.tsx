@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 import { Providers } from './providers';
-import { Navbar } from '../library/components';
 
 import '../library/prototypes/String.extensions';
+import '../library/global.css';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker App',
@@ -31,9 +31,24 @@ export default function RootLayout({
                 }}
             >
                 <Providers>
-                    {/* <Navbar /> */}
-
-                    {children}
+                    <div
+                        data-label='header'
+                        className='flex flex-row bg-blue-100 border-2 border-solid border-blue-200  w-full'
+                    >
+                        <div
+                            data-label='menu-button'
+                            className='w-32 h-full bg-blue-200 border-blue-200 border-solid hover:bg-blue-100'
+                        ></div>
+                        <div
+                            data-label='content'
+                            className='flex flex-row gap-8 p-16'
+                        >
+                            I am a basic bar
+                        </div>
+                    </div>
+                    <main className='h-screen w-screen overflow-y-auto'>
+                        {children}
+                    </main>
                 </Providers>
             </body>
         </html>

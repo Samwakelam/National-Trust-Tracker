@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-    transpilePackages: ['@sam/library'],
-    experimental: {
-        serverActions: true,
-    },
+    transpilePackages: [],
 
     async redirects() {
         return [
@@ -25,14 +22,13 @@ module.exports = {
     },
 };
 
-
 //     config.node = {
-        //         fs: "empty"
-        //     };
-        //     config.resolve.alias = {
-        //         ...config.resolve.alias,
-        //         "@components": path.join(__dirname, "components"),
-        //         "@pages": path.join(__dirname, "pages"),
-        //         "@redux": path.join(__dirname, "redux"),
-        //         "@api": path.join(__dirname, "api")
-        //     };
+//         fs: "empty"
+//     };
+//     config.resolve.alias = {
+//         ...config.resolve.alias,
+//         "@components": path.join(__dirname, "components"),
+//         "@pages": path.join(__dirname, "pages"),
+//         "@redux": path.join(__dirname, "redux"),
+//         "@api": path.join(__dirname, "api")
+//     };

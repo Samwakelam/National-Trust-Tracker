@@ -1,1 +1,0 @@
-export * from './DrawerLogVisit.component';

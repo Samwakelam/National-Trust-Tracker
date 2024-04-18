@@ -209,7 +209,7 @@ export const Card = ({
                         {confirmCTA && (
                             <Button
                                 variant='solid'
-                                colorScheme='facebook'
+                                colorScheme='blue'
                                 {...confirmCTA}
                             />
                         )}
