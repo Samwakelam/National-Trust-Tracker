@@ -85,7 +85,7 @@ export const Icon = ({
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
             className={clsx(
-                '[&>svg]:w-full [&>svg]:h-full',
+                'inline-block [&>svg]:w-full [&>svg]:h-full w-20 h-20',
                 className,
                 isCustomIcon && '[&>svg]:fill-current',
                 !isCustomIcon && '[&>svg]:stroke-current'

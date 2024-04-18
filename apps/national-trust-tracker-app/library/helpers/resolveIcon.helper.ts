@@ -1,4 +1,4 @@
-import { IconProps } from '@sam/library';
+import { IconProps } from '../components';
 
 export const resolveIcon = (reference: string): IconProps | null => {
     switch (reference) {

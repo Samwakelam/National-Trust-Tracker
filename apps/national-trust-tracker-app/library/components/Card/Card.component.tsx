@@ -2,6 +2,9 @@ import React, { ReactElement, useRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 
 import { Button, ButtonProps } from '../Button';
+import { Menu, MenuProps } from '../Menu';
+import { Icon, IconProps } from '../Icon';
+import { Tag, TagProps } from '../Tag';
 
 type CardVariant =
     | 'horizontal'
@@ -10,16 +13,29 @@ type CardVariant =
     | 'filled'
     | 'elevated';
 
+interface IndicatorIconProps extends IconProps {
+    type: 'icon';
+    id: string;
+}
+
+interface IndicatorTagProps extends TagProps {
+    type: 'tag';
+    id: string;
+}
+
+export type IndicatorProps = IndicatorIconProps | IndicatorTagProps;
+
 export type CardProps = {
     children?: ReactElement | ReactElement[] | null;
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
-    footer?: string;
     heading?: string;
     image?: {
         src: string;
         alt: string;
     };
+    indicators?: IndicatorProps[];
+    menu?: MenuProps;
     variant?: CardVariant[];
 };
 
@@ -27,9 +43,10 @@ export const Card = ({
     children,
     confirmCTA,
     declineCTA,
-    footer,
     heading,
     image,
+    indicators,
+    menu,
     variant = ['vertical'],
 }: CardProps): ReactElement<CardProps> => {
     return (
@@ -59,9 +76,15 @@ export const Card = ({
             >
                 <header
                     data-label='card-header'
-                    className='bg-pink-300 w-full flex justify-between px-16 pt-16 pb-0 g-24'
+                    className='bg-pink-300 w-full flex justify-between items-center px-16 pt-16 pb-0 g-24'
                 >
                     {heading}
+                    {menu && (
+                        <Menu
+                            align='right'
+                            {...menu}
+                        />
+                    )}
                 </header>
                 <div
                     data-label='card-body'
@@ -73,6 +96,11 @@ export const Card = ({
                     data-label='card-footer'
                     className='flex gap-16 pt-0 px-16 pb-16 justify-end items-center '
                 >
+                    {indicators && (
+                        <div className='flex flex-row items-center gap-8'>
+                            {indicators.map(indicatorMap)}
+                        </div>
+                    )}
                     {declineCTA && <Button {...declineCTA} />}
                     {confirmCTA && <Button {...confirmCTA} />}
                 </footer>
@@ -107,4 +135,22 @@ const resolveImageClasses = (variant: CardVariant[]) => {
         }
         return prev;
     }, '');
+};
+
+const indicatorMap = (indicator: IndicatorProps) => {
+    if (indicator.type === 'icon') {
+        return (
+            <Icon
+                key={indicator.id}
+                {...indicator}
+            />
+        );
+    }
+
+    return (
+        <Tag
+            key={indicator.id}
+            {...indicator}
+        />
+    );
 };

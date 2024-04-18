@@ -1,14 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
-import { Button, Card } from '../../library/components';
 import { useVisits } from '../../library/context/Visits.context';
-import {
-    getAmountInPounds,
-    getCase,
-    resolveCurrency,
-} from '../../library/helpers';
+import { VisitCard } from './partials';
 
 // export const metadata: Metadata = {
 //     title: 'National Trust Tracker',
@@ -23,8 +16,7 @@ import {
 export const revalidate = 0;
 
 export default function Visits(): JSX.Element {
-    const router = useRouter();
-    const { visits, isLoading, onDeleteVisit } = useVisits();
+    const { visits, isLoading } = useVisits();
     console.log('visits: ', visits);
 
     return (
@@ -40,42 +32,10 @@ export default function Visits(): JSX.Element {
             <div className=' bg-blue-100 p-8 flex flex-col gap-4 w-full'>
                 {visits.map((visit) => {
                     return (
-                        <Card
+                        <VisitCard
+                            visit={visit}
                             key={visit._id}
-                            heading={new Date(visit.date).toDateString()}
-                        >
-                            <div className='flex flex-row gap-8'>
-                                <p>{visit.place.location.region}</p>
-                            </div>
-                            <div className='flex flex-row gap-8'>
-                                <p>{visit.place.name}</p>
-                                <p>assets</p>
-                            </div>
-
-                            <p>
-                                <span>Total: </span>
-                                <span>
-                                    {resolveCurrency('GBP')}
-                                    {getAmountInPounds(visit.totalPrice)}
-                                </span>
-                            </p>
-
-                            <div className='flex flex-col'>
-                                <p>{visit.people.length} visitors</p>
-                            </div>
-                            <Button onClick={() => onDeleteVisit(visit._id)}>
-                                Delete Visit
-                            </Button>
-                            <Button
-                                onClick={() =>
-                                    router.push(
-                                        `/Places/${getCase(visit.place.name, 'pascal')}/${visit.place.placeId}`
-                                    )
-                                }
-                            >
-                                Visit Property Page
-                            </Button>
-                        </Card>
+                        />
                     );
                 })}
             </div>

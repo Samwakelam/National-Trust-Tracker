@@ -111,7 +111,6 @@ export const IconFixture = () => {
                             icon={icon}
                             ariaLabel={icon}
                             variant={variant}
-                            className='w-20 h-20'
                         />
                         <p>{icon}</p>
                     </div>

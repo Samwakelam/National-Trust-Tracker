@@ -3,52 +3,63 @@
 import clsx from 'clsx';
 import React, { ReactElement, useState } from 'react';
 import { Button } from '../Button';
+import { Icon, IconProps } from '../Icon';
 
-type MenuProps = {
+export type MenuProps = {
     menuItems: MenuItemProps[];
+    align?: 'left' | 'right';
 };
 
-type MenuItemProps = {
+export type MenuItemProps = {
+    label: string;
+    icon?: IconProps;
     onClick?: () => void;
 };
 
-export const Menu = ({ menuItems }: MenuProps): ReactElement<MenuProps> => {
+export const Menu = ({
+    menuItems,
+    align = 'left',
+}: MenuProps): ReactElement<MenuProps> => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
         <div
             data-label='menu'
-            className='inline-block relative bg-teal-100'
+            className='inline-block relative'
         >
             <Button
                 data-label='menu-button'
                 onClick={() => setIsOpen(!isOpen)}
-            >
-                Menu
-            </Button>
-            <div
+                icon={{ icon: 'menu-dots-v', ariaLabel: 'menu' }}
+            />
+            <ul
                 data-label='menu-content'
                 className={clsx(
                     'absolute min-w-120 z-1 flex flex-col gap-2',
-                    isOpen ? 'flex' : 'hidden'
+                    isOpen ? 'flex' : 'hidden',
+                    align === 'left' ? 'left-0' : 'right-0'
                 )}
             >
-                {Array.from({ length: 3 }, (item, index) => (
-                    <MenuItem key={index} />
+                {menuItems.map((item) => (
+                    <MenuItem
+                        key={`menu-item-${item.label}`}
+                        {...item}
+                    />
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };
 
-const MenuItem = ({ onClick }: MenuItemProps) => {
+const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
     return (
-        <a
+        <li
             data-label='menu-item'
-            className='bg-teal-300 py-12 px-16  first:rounded-t-8 first:rounded-b-0 last:rounded-b-8 last:rounded-t-0 hover:bg-teal-200'
+            className='bg-teal-300 py-12 px-16  first:rounded-t-8 first:rounded-b-0 last:rounded-b-8 last:rounded-t-0 hover:bg-teal-200 flex flex-row flex-nowrap items-center gap-8'
             onClick={onClick}
         >
-            Menu Item
-        </a>
+            {icon && <Icon {...icon} />}
+            <span className='text-nowrap'>{label}</span>
+        </li>
     );
 };

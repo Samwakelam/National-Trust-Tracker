@@ -2,9 +2,17 @@
 
 import React, { ReactNode } from 'react';
 
+import { Icon, IconProps } from '../Icon';
+import clsx from 'clsx';
+
+interface ButtonIconProps extends IconProps {
+    position?: 'left' | 'right';
+}
+
 export type ButtonProps = {
     children?: ReactNode;
     form?: string;
+    icon?: ButtonIconProps;
     isDisabled?: boolean;
     name?: string;
     onClick?: () => void;
@@ -14,6 +22,7 @@ export type ButtonProps = {
 export const Button = ({
     children,
     form,
+    icon,
     isDisabled,
     name,
     onClick,
@@ -21,14 +30,19 @@ export const Button = ({
 }: ButtonProps) => {
     return (
         <button
-            className='h-40 py-0 px-24 capitalize bg-pink-200 border-0  rounded-[24px]'
+            className={clsx(
+                'h-40 py-0 px-24 capitalize bg-pink-200 border-0 rounded-[24px] flex flex-row gap-4 justify-center items-center',
+                !children && icon && 'w-40 px-0'
+            )}
             onClick={onClick}
             disabled={isDisabled}
             form={form}
             type={type}
             name={name}
         >
+            {icon && icon.position !== 'right' && <Icon {...icon} />}
             {children}
+            {icon && icon.position === 'right' && <Icon {...icon} />}
         </button>
     );
 };

@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-type TagProps = { children?: ReactNode };
+export type TagProps = { children?: ReactNode };
 
 export const Tag = ({ children }: TagProps): ReactElement<TagProps> => {
     return (
