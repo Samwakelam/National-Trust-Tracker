@@ -3,5 +3,5 @@
 import React, { ReactNode, ReactElement } from 'react';
 
 export default ({ children }: { children: ReactNode | ReactElement }) => (
-    <div className='h-screen bg-slate-100 p-16'>{children}</div>
+    <div className='h-full bg-zinc-100 p-16'>{children}</div>
 );

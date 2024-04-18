@@ -33,7 +33,7 @@ export default function RootLayout({
                 <Providers>
                     <div
                         data-label='header'
-                        className='flex flex-row bg-blue-100 border-2 border-solid border-blue-200  w-full'
+                        className='flex flex-row bg-blue-100 border-2 border-solid border-blue-200 w-full'
                     >
                         <div
                             data-label='menu-button'
@@ -46,7 +46,7 @@ export default function RootLayout({
                             I am a basic bar
                         </div>
                     </div>
-                    <main className='h-screen w-screen overflow-y-auto'>
+                    <main className='h-full w-full overflow-y-auto scrollbar scrollbar-w-12 scrollbar-thumb-teal-300 scrollbar-thumb-rounded-8 scrollbar-track-teal-200'>
                         {children}
                     </main>
                 </Providers>

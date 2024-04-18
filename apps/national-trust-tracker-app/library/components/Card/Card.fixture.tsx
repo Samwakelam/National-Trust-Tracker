@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFixtureInput } from 'react-cosmos/client';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
 import { Card, CardProps } from './Card.component';
 import { ButtonProps } from '../Button';
@@ -12,6 +12,11 @@ const CardFixture = () => {
         src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
         alt: 'placeholder',
     };
+
+    const [cardLayout] = useFixtureSelect('Card Layout', {
+        options: ['vertical', 'horizontal', 'undefined'],
+        defaultValue: 'undefined',
+    });
 
     const [hasConfirmCTA] = useFixtureInput<boolean>('Has Confirm CTA', false);
     const confirmCTA: ButtonProps = {
@@ -61,10 +66,10 @@ const CardFixture = () => {
     return (
         <Card
             heading='I am a basic Header'
-            // image={image}
+            image={image}
             confirmCTA={hasConfirmCTA ? confirmCTA : undefined}
             declineCTA={hasDeclineCTA ? declineCTA : undefined}
-            variant={['vertical']}
+            layout={cardLayout !== 'undefined' ? cardLayout : undefined}
             menu={hasMenu ? menu : undefined}
             indicators={hasIndicators ? indicators : undefined}
         >

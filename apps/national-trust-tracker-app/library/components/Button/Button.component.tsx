@@ -31,7 +31,8 @@ export const Button = ({
     return (
         <button
             className={clsx(
-                'h-40 py-0 px-24 capitalize bg-pink-200 border-0 rounded-[24px] flex flex-row gap-4 justify-center items-center',
+                'h-40 py-0  capitalize bg-pink-200 border-0 rounded-[24px] flex flex-row gap-4 justify-center items-center',
+                children && 'px-24',
                 !children && icon && 'w-40 px-0'
             )}
             onClick={onClick}

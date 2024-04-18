@@ -1,17 +1,10 @@
-import React, { ReactElement, useRef, useState, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import clsx from 'clsx';
 
 import { Button, ButtonProps } from '../Button';
 import { Menu, MenuProps } from '../Menu';
 import { Icon, IconProps } from '../Icon';
 import { Tag, TagProps } from '../Tag';
-
-type CardVariant =
-    | 'horizontal'
-    | 'vertical'
-    | 'outline'
-    | 'filled'
-    | 'elevated';
 
 interface IndicatorIconProps extends IconProps {
     type: 'icon';
@@ -35,8 +28,8 @@ export type CardProps = {
         alt: string;
     };
     indicators?: IndicatorProps[];
+    layout?: 'horizontal' | 'vertical';
     menu?: MenuProps;
-    variant?: CardVariant[];
 };
 
 export const Card = ({
@@ -46,39 +39,44 @@ export const Card = ({
     heading,
     image,
     indicators,
+    layout = 'vertical',
     menu,
-    variant = ['vertical'],
 }: CardProps): ReactElement<CardProps> => {
     return (
         <article
             data-label='card'
             className={clsx(
-                'flex  gap-16 bg-pink-100 p-16',
-                resolveContainerClasses(variant)
+                'flex p-16 bg-pink-100 rounded-12',
+                layout === 'vertical' ? 'flex-col' : 'flex-col sm:flex-row'
             )}
         >
             <div
                 data-label='card-image'
-                className={`flex w-full h-full`}
+                className='flex flex-1 w-full h-full'
             >
                 <img
                     data-label='card-image'
                     className={clsx(
-                        'object-cover bg-blue-300 h-full w-full',
-                        resolveImageClasses(variant)
+                        'object-cover  h-full w-full',
+                        layout === 'vertical'
+                            ? `rounded-t-6 rounded-b-0`
+                            : `rounded-t-6 rounded-b-0 sm:rounded-l-6 sm:rounded-r-0`
                     )}
                     {...image}
                 />
             </div>
             <div
                 data-label='card-content'
-                className='bg-blue-200 flex flex-col'
+                className={clsx(
+                    'flex flex-col flex-2',
+                    layout === 'vertical' ? 'py-16' : 'py-16 sm:py-0 sm:pl-16'
+                )}
             >
                 <header
                     data-label='card-header'
-                    className='bg-pink-300 w-full flex justify-between items-center px-16 pt-16 pb-0 g-24'
+                    className='w-full flex justify-between items-center g-24'
                 >
-                    {heading}
+                    <h3 className='font-bold capitalised'>{heading}</h3>
                     {menu && (
                         <Menu
                             align='right'
@@ -88,53 +86,27 @@ export const Card = ({
                 </header>
                 <div
                     data-label='card-body'
-                    className='bg-pink-400 w-full p-16 h-full flex flex-col gap-16'
+                    className='w-full py-16 h-full flex flex-col gap-16'
                 >
                     {children}
                 </div>
                 <footer
                     data-label='card-footer'
-                    className='flex gap-16 pt-0 px-16 pb-16 justify-end items-center '
+                    className='flex flex-col sm:flex-row gap-16 justify-end items-center'
                 >
                     {indicators && (
-                        <div className='flex flex-row items-center gap-8'>
+                        <div className='flex flex-row w-full items-center gap-8'>
                             {indicators.map(indicatorMap)}
                         </div>
                     )}
-                    {declineCTA && <Button {...declineCTA} />}
-                    {confirmCTA && <Button {...confirmCTA} />}
+                    <div className='flex flex-row gap-16 w-full justify-end'>
+                        {declineCTA && <Button {...declineCTA} />}
+                        {confirmCTA && <Button {...confirmCTA} />}
+                    </div>
                 </footer>
             </div>
         </article>
     );
-};
-
-const resolveContainerClasses = (variant: CardVariant[]) => {
-    return variant.reduce((prev: string, current: CardVariant) => {
-        switch (current) {
-            case 'horizontal':
-                prev += 'flex-row';
-                break;
-            case 'vertical':
-                prev += 'flex-col';
-                break;
-        }
-        return prev;
-    }, '');
-};
-
-const resolveImageClasses = (variant: CardVariant[]) => {
-    return variant.reduce((prev: string, current: CardVariant) => {
-        switch (current) {
-            case 'horizontal':
-                prev += `rounded-l-[6px] rounded-r-[0]`;
-                break;
-            case 'vertical':
-                prev += `rounded-t-[6px] rounded-b-[0]`;
-                break;
-        }
-        return prev;
-    }, '');
 };
 
 const indicatorMap = (indicator: IndicatorProps) => {

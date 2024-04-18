@@ -22,14 +22,9 @@ export default function Visits(): JSX.Element {
     return (
         <div
             data-label='page-container'
-            className='flex flex-rox gap-16 bg-pink-100 p-16 h-screen'
+            className='flex flex-row gap-16 bg-zinc-100 p-16 h-auto'
         >
-            {/* <pre>{JSON.stringify(visits, null, 2)}</pre> */}
-            {/* <div
-                data-label='grid'
-                className='grid grid-cols-3 gap-16 w-full'
-            > */}
-            <div className=' bg-blue-100 p-8 flex flex-col gap-4 w-full'>
+            <div className='  flex flex-col bg-blue-100 gap-8 w-full'>
                 {visits.map((visit) => {
                     return (
                         <VisitCard
@@ -39,8 +34,6 @@ export default function Visits(): JSX.Element {
                     );
                 })}
             </div>
-            {/* <div className='col-span-1 bg-blue-100 p-8 flex flex-row'></div>
-            </div> */}
         </div>
     );
 }

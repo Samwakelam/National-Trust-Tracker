@@ -27,6 +27,12 @@ module.exports = {
                 56: '3.5rem',
                 60: '3.75rem',
             },
+            flexGrow: {
+                2: '2',
+            },
+            flex: {
+                2: '2 2 0%',
+            },
         },
         spacing: {
             0: '0',
@@ -78,5 +84,10 @@ module.exports = {
             12: '0.75rem',
         },
     },
-    plugins: [],
+    plugins: [
+        require('tailwind-scrollbar')({
+            preferredStrategy: 'pseudoelements',
+            nocompatible: true,
+        }),
+    ],
 };
