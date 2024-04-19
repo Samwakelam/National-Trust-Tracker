@@ -4,6 +4,8 @@ import { Providers } from './providers';
 
 import '../library/prototypes/String.extensions';
 import '../library/global.css';
+import { scrollbar } from '../library/utilities/className.utils';
+import clsx from 'clsx';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker App',
@@ -46,7 +48,12 @@ export default function RootLayout({
                             I am a basic bar
                         </div>
                     </div>
-                    <main className='h-full w-full overflow-y-auto scrollbar scrollbar-w-12 scrollbar-thumb-teal-300 scrollbar-thumb-rounded-8 scrollbar-track-teal-200'>
+                    <main
+                        className={clsx(
+                            'h-full w-full overflow-y-auto ',
+                            scrollbar
+                        )}
+                    >
                         {children}
                     </main>
                 </Providers>
