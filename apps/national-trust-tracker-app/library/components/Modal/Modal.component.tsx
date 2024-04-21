@@ -1,12 +1,19 @@
 'use client';
 
 import React, { ReactElement } from 'react';
-
-import { Button, ButtonProps } from '../Button';
 import clsx from 'clsx';
+
 import { scrollbar } from '../../utilities/className.utils';
 
-export type ModalProps = {
+import { Button, ButtonProps } from '../Button';
+
+type ModalPreset = 'confirm';
+
+export interface ModalProps extends ModalComponentProps {
+    preset?: ModalPreset;
+}
+
+type ModalComponentProps = {
     children?: ReactElement | ReactElement[];
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
@@ -17,14 +24,41 @@ export type ModalProps = {
 
 type ModalOverlayProps = Pick<ModalProps, 'onClose' | 'isOpen'>;
 
-export const Modal = ({
+export const Modal = ({ preset, ...props }: ModalProps) => {
+    const { confirmCTA, declineCTA, children } = props;
+
+    switch (preset) {
+        case 'confirm':
+            return (
+                <ModalComponent
+                    {...props}
+                    confirmCTA={{ children: 'Confirm', ...confirmCTA }}
+                    declineCTA={{ children: 'Cancel', ...declineCTA }}
+                >
+                    <div className='flex flex-col items-center gap-16'>
+                        <h3 className='text-32 font-bold uppercase'>
+                            Are you sure?
+                        </h3>
+                        <p className='font-bold'>
+                            This action is permanent and cannot be undone
+                        </p>
+                        {children}
+                    </div>
+                </ModalComponent>
+            );
+        default:
+            return <ModalComponent {...props} />;
+    }
+};
+
+const ModalComponent = ({
     children,
     confirmCTA,
     declineCTA,
     heading,
     isOpen,
     onClose,
-}: ModalProps): ReactElement<ModalProps> => {
+}: ModalComponentProps): ReactElement<ModalProps> => {
     return (
         <>
             <article
@@ -69,11 +103,9 @@ export const Modal = ({
                         <Button
                             onClick={onClose}
                             {...declineCTA}
-                        >
-                            Cancel
-                        </Button>
+                        />
                     )}
-                    {confirmCTA && <Button {...confirmCTA}>Confirm</Button>}
+                    {confirmCTA && <Button {...confirmCTA} />}
                 </footer>
             </article>
             <ModalOverlay

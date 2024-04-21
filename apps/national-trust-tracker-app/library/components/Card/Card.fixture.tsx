@@ -12,6 +12,8 @@ const CardFixture = () => {
         src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
         alt: 'placeholder',
     };
+    const [canClick] = useFixtureInput<boolean>('Can Click Card', false);
+    const onClick = () => alert('Card Clicked');
 
     const [cardLayout] = useFixtureSelect('Card Layout', {
         options: ['vertical', 'horizontal', 'undefined'],
@@ -65,13 +67,14 @@ const CardFixture = () => {
 
     return (
         <Card
-            heading='I am a basic Header'
-            image={image}
             confirmCTA={hasConfirmCTA ? confirmCTA : undefined}
             declineCTA={hasDeclineCTA ? declineCTA : undefined}
+            heading='I am a basic Header'
+            image={image}
+            indicators={hasIndicators ? indicators : undefined}
             layout={cardLayout !== 'undefined' ? cardLayout : undefined}
             menu={hasMenu ? menu : undefined}
-            indicators={hasIndicators ? indicators : undefined}
+            onClick={canClick ? () => onClick() : undefined}
         >
             <div>Basic Card Content</div>
         </Card>

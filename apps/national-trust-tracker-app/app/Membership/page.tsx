@@ -1,56 +1,13 @@
 import { Metadata } from 'next';
-
-import { Spinner } from '../../library/components';
-import { MembershipView } from '../../library/views/Membership/Membership.view';
+import { MembershipView } from './partials/MembershipView.view';
+import { getMembership } from '../../actions/Membership.actions';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker',
 };
 
 export default async function Membership(): Promise<JSX.Element> {
-    // const data = await getData();
+    const membership = await getMembership('King');
 
-    // if (data) {
-    //     const { membership, visits } = data;
-    //     return (
-    //         <>
-    //             <MembershipView
-    //                 visits={visits.data}
-    //                 membership={membership.data}
-    //             />
-    //         </>
-    //     );
-    // }
-
-    return <Spinner isPageSpinner />;
+    return <MembershipView membership={membership.data} />;
 }
-
-// const getData = async () => {
-//     try {
-//         const allResponse = await Promise.allSettled([
-//             await getAllVisits(),
-//             await getMembership('King'),
-//         ]);
-
-//         const allJson = await Promise.allSettled(
-//             allResponse.map(async (res) => {
-//                 if (res.status === 'fulfilled') {
-//                     return await res.value.json();
-//                 }
-//             })
-//         );
-
-//         return {
-//             visits:
-//                 allJson[0] && allJson[0].status === 'fulfilled'
-//                     ? allJson[0].value
-//                     : [],
-//             membership:
-//                 allJson[1] && allJson[1].status === 'fulfilled'
-//                     ? allJson[1].value
-//                     : [],
-//         };
-//     } catch (error) {
-//         console.log('error: ', error);
-//     }
-// };

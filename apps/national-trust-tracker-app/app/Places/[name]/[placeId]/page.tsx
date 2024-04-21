@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 
-import { Spinner } from '../../../../library/components';
-import { PlaceView } from '../../../../library/views/Place/Place.view';
 import {
     PlaceSummary,
     Places,
 } from '../../../../library/types/national-trust/places.type';
 import { Link } from '../../../../library/types/national-trust/link.type';
+
+import { PlaceView } from './partials';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker',
@@ -21,7 +21,7 @@ const Place = async ({ params }: PlaceProps): Promise<JSX.Element> => {
         placeId: params.placeId,
     });
 
-    return data ? <PlaceView {...data} /> : <Spinner isPageSpinner />;
+    return data ? <PlaceView {...data} /> : <div>Loading</div>;
 };
 
 export default Place;

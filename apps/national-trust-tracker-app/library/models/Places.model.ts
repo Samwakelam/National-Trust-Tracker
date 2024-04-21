@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { CompiledPlace } from '../types/internal';
+import { SavedPlace } from '../types/internal';
 const { Schema } = mongoose;
 
-const PlacesSchema = new Schema<CompiledPlace>({
+const PlacesSchema = new Schema<SavedPlace>({
     name: { type: String },
     placeId: { type: Number },
     location: {

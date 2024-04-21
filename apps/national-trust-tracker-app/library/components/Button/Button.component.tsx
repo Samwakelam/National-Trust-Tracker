@@ -1,9 +1,11 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import clsx from 'clsx';
+
+import { ClickEvent } from '../../types';
 
 import { Icon, IconProps } from '../Icon';
-import clsx from 'clsx';
 
 interface ButtonIconProps extends IconProps {
     position?: 'left' | 'right';
@@ -16,7 +18,7 @@ export type ButtonProps = {
     icon?: ButtonIconProps;
     isDisabled?: boolean;
     name?: string;
-    onClick?: () => void;
+    onClick?: (e: ClickEvent) => void;
     type?: 'button' | 'reset' | 'submit';
 };
 
@@ -38,7 +40,10 @@ export const Button = ({
                 !children && icon && 'w-40 px-0',
                 className
             )}
-            onClick={onClick}
+            onClick={(e) => {
+                e.stopPropagation();
+                if (onClick) onClick(e);
+            }}
             disabled={isDisabled}
             form={form}
             type={type}

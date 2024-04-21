@@ -22,7 +22,7 @@ export default function Visits(): JSX.Element {
     return (
         <div
             data-label='page-container'
-            className='flex flex-row gap-16 bg-zinc-100 p-16 h-auto'
+            className='flex flex-row gap-16 bg-slate-100 p-16 h-auto'
         >
             <div className='  flex flex-col bg-blue-100 gap-8 w-full'>
                 {visits.map((visit) => {

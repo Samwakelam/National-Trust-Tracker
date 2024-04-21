@@ -1,10 +1,23 @@
 'use client';
 
 import React from 'react';
-import { Tag } from './Tag.component';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
+
+import { Tag, TagProps } from './Tag.component';
 
 const TagFixture = () => {
-    return <Tag>Tag</Tag>;
+    const [hasIcon] = useFixtureInput<boolean>('Has Icon', false);
+    const [iconVariant] = useFixtureSelect('Icon Variant', {
+        options: ['outline', 'solid', 'undefined'],
+        defaultValue: 'undefined',
+    });
+    const icon: TagProps['icon'] = {
+        icon: 'thumbs-u',
+        ariaLabel: 'great',
+        variant: iconVariant === 'undefined' ? undefined : iconVariant,
+    };
+
+    return <Tag icon={hasIcon ? icon : undefined}>Tag</Tag>;
 };
 
 export default TagFixture;

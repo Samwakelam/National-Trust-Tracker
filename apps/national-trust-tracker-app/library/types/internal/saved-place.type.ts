@@ -1,13 +1,12 @@
 import {
     Access,
     Directions,
-    Facilities,
     Opening,
     Place,
     ReferencedFacilities,
 } from '../national-trust';
 
-export interface CompiledPlace
+export interface SavedPlace
     extends Pick<
         Place,
         | 'featureCategories'

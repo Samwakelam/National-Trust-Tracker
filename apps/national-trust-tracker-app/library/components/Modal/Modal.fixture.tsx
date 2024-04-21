@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import { Modal } from './Modal.component';
-import { useFixtureInput } from 'react-cosmos/client';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 import { Button, ButtonProps } from '../Button';
 import { Lorem } from '../Lorem';
 
@@ -23,6 +23,10 @@ const ModalFixture = () => {
         children: 'Cancel',
     };
 
+    const [preset] = useFixtureSelect('Preset', {
+        options: ['undefined', 'confirm'],
+    });
+
     return (
         <>
             <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
@@ -32,9 +36,10 @@ const ModalFixture = () => {
                 heading={hasHeading ? 'Modal Header' : undefined}
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
+                preset={preset !== 'undefined' ? preset : undefined}
             >
-                {/* <p>I'm a basic modal</p> */}
-                <Lorem count={10} />
+                <p>I'm a basic modal</p>
+                {/* <Lorem count={10} /> */}
             </Modal>
         </>
     );

@@ -50,7 +50,7 @@ export default function RootLayout({
                     </div>
                     <main
                         className={clsx(
-                            'h-full w-full overflow-y-auto ',
+                            'h-full w-full overflow-y-auto bg-slate-100',
                             scrollbar
                         )}
                     >

@@ -1,70 +1,43 @@
 import { Metadata } from 'next';
+import { useCallback } from 'react';
 
-import { PlacesView } from '../../library/views/Places.view';
+import { Places as PlacesType } from '../../library/types/national-trust';
 
-import { Spinner } from '../../library/components';
+import { PlacesView } from './partials';
 
 export const metadata: Metadata = {
-    title: 'National Trust Tracker',
+    title: 'National Trust Places',
 };
 
-export default async function Places(): Promise<JSX.Element> {
-    // const data = await getData();
+export default async function Places() {
+    const getData = useCallback(async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        const res = await fetch(
+            'https://v2-api.nationaltrust.org.uk/places',
+            options
+        );
 
-    // if (data) {
-    //     const { places, compiledPlaces, visits } = data;
-    //     return (
-    //         <>
-    //             <PlacesView
-    //                 places={places}
-    //                 compiledPlaces={compiledPlaces.data}
-    //                 visits={visits.data}
-    //             />
-    //         </>
-    //     );
-    // }
+        return await res.json();
+    }, []);
 
-    return <Spinner isPageSpinner />;
+    const data: PlacesType = await getData();
+
+    const places = data.placeSummaries.sort((a, b) => {
+        if (a.name > b.name) {
+            return 1;
+        }
+
+        if (b.name > a.name) {
+            return -1;
+        }
+
+        return 0;
+    });
+
+    return <PlacesView places={places} />;
 }
-
-// const getData = async () => {
-//     const options = {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//     };
-
-//     try {
-//         const allResponse = await Promise.allSettled([
-//             await fetch('https://v2-api.nationaltrust.org.uk/places', options),
-//             await getAllPlaces(),
-//             await getAllVisits(),
-//         ]);
-
-//         const allJson = await Promise.allSettled(
-//             allResponse.map(async (res) => {
-//                 if (res.status === 'fulfilled') {
-//                     return await res.value.json();
-//                 }
-//             })
-//         );
-
-//         return {
-//             places:
-//                 allJson[0] && allJson[0].status === 'fulfilled'
-//                     ? allJson[0].value
-//                     : [],
-//             compiledPlaces:
-//                 allJson[1] && allJson[1].status === 'fulfilled'
-//                     ? allJson[1].value
-//                     : [],
-//             visits:
-//                 allJson[2] && allJson[2].status === 'fulfilled'
-//                     ? allJson[2].value
-//                     : [],
-//         };
-//     } catch (error) {
-//         console.log('Places error: ', error);
-//     }
-// };

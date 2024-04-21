@@ -5,6 +5,7 @@ import { Button, ButtonProps } from '../Button';
 import { Menu, MenuProps } from '../Menu';
 import { Icon, IconProps } from '../Icon';
 import { Tag, TagProps } from '../Tag';
+import { ClickEvent } from '../../types';
 
 interface IndicatorIconProps extends IconProps {
     type: 'icon';
@@ -18,7 +19,7 @@ interface IndicatorTagProps extends TagProps {
 
 export type IndicatorProps = IndicatorIconProps | IndicatorTagProps;
 
-export type CardProps = {
+type CardComponentProps = {
     children?: ReactElement | ReactElement[] | null;
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
@@ -30,9 +31,21 @@ export type CardProps = {
     indicators?: IndicatorProps[];
     layout?: 'horizontal' | 'vertical';
     menu?: MenuProps;
+    onClick?: (e: ClickEvent) => void;
 };
 
-export const Card = ({
+export interface CardProps extends CardComponentProps {
+    preset?: 'quartered';
+}
+
+export const Card = ({ preset, ...props }: CardProps) => {
+    switch (preset) {
+        default:
+            return <CardComponent {...props} />;
+    }
+};
+
+export const CardComponent = ({
     children,
     confirmCTA,
     declineCTA,
@@ -41,14 +54,17 @@ export const Card = ({
     indicators,
     layout = 'vertical',
     menu,
-}: CardProps): ReactElement<CardProps> => {
+    onClick,
+}: CardComponentProps): ReactElement<CardComponentProps> => {
     return (
         <article
             data-label='card'
             className={clsx(
                 'flex p-16 bg-pink-100 rounded-12',
-                layout === 'vertical' ? 'flex-col' : 'flex-col sm:flex-row'
+                layout === 'vertical' ? 'flex-col' : 'flex-col sm:flex-row',
+                onClick ? 'cursor-pointer' : 'cursor-default'
             )}
+            onClick={onClick}
         >
             <div
                 data-label='card-image'

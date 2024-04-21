@@ -7,6 +7,10 @@ module.exports = {
     ],
     theme: {
         extend: {
+            aspectRatio: {
+                '4/3': '4 / 3',
+                '3/4': '3 / 4',
+            },
             borderRadius: {
                 0: '0',
                 1: '0.0625rem',

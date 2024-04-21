@@ -7,10 +7,12 @@ import {
     useState,
     ReactNode,
 } from 'react';
+
 import { getAllPlaces } from '../../actions/Places.actions';
 import { Place } from '../types/national-trust';
 
 type PlacesContextProps = {
+    isLoading: boolean;
     places: Place[];
     getPlace: (placeId: string) => void;
     getPlaces: () => void;
@@ -25,6 +27,7 @@ type PlacesProviderProps = {
 };
 
 const initialState: PlacesContextProps = {
+    isLoading: false,
     places: [],
     getPlace: function (placeId: string): void {
         throw new Error('Function not implemented.');
@@ -46,6 +49,7 @@ const initialState: PlacesContextProps = {
 const PlacesContext = createContext<PlacesContextProps>(initialState);
 
 export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [places, setPlaces] = useState<PlacesContextProps['places']>(initial);
 
     const getPlace: PlacesContextProps['getPlace'] = async (placeId) => {};
@@ -71,6 +75,7 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
     return (
         <PlacesContext.Provider
             value={{
+                isLoading,
                 places,
                 getPlace,
                 getPlaces,
