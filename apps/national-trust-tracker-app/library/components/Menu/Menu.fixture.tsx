@@ -34,7 +34,7 @@ const MenuFixture = () => {
     ];
 
     return (
-        <div className='flex flex-row justify-between '>
+        <div className='flex flex-row justify-between p-16'>
             <Menu menuItems={menuItems} />
             <Menu
                 menuItems={menuItems}

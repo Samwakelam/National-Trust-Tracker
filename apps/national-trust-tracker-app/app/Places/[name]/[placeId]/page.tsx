@@ -21,6 +21,7 @@ const Place = async ({ params }: PlaceProps): Promise<JSX.Element> => {
         placeId: params.placeId,
     });
 
+    console.log('data: ', data);
     return data ? <PlaceView {...data} /> : <div>Loading</div>;
 };
 

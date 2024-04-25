@@ -30,6 +30,7 @@ import {
     IoStatsChart,
     IoStatsChartOutline,
 } from 'react-icons/io5';
+import { ImSpinner8 } from 'react-icons/im';
 import {
     RiDeleteBin2Fill,
     RiDeleteBin2Line,
@@ -89,6 +90,7 @@ export type UtilsType =
     | 'pencil'
     | 'search'
     | 'settings'
+    | 'spinner'
     | 'stats'
     | 'toggle-l'
     | 'toggle-r'
@@ -124,6 +126,7 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'pencil': MdOutlineEdit,
     'search': FiSearch,
     'settings': IoSettingsOutline,
+    'spinner': ImSpinner8,
     'stats': IoStatsChartOutline,
     'toggle-l': BiToggleLeft,
     'toggle-r': BiToggleRight,
@@ -160,6 +163,7 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'pencil': MdEdit,
     'search': FiSearch,
     'settings': IoSettingsSharp,
+    'spinner': ImSpinner8,
     'stats': IoStatsChart,
     'toggle-l': BiSolidToggleLeft,
     'toggle-r': BiSolidToggleRight,

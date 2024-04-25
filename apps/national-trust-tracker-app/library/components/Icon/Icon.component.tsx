@@ -1,6 +1,8 @@
 'use client';
 
 import React, { ReactElement, createElement } from 'react';
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
 import {
     arrowsMap,
@@ -30,7 +32,6 @@ import {
 } from './maps';
 
 import { IconMapProps, IconProps } from './Icon.definition';
-import clsx from 'clsx';
 
 export const outlineIconMap: IconMapProps = {
     ...arrowsMap,
@@ -84,7 +85,7 @@ export const Icon = ({
             data-label='icon'
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
-            className={clsx(
+            className={twMerge(
                 'inline-block [&>svg]:w-full [&>svg]:h-full w-20 h-20',
                 className,
                 isCustomIcon && '[&>svg]:fill-current',

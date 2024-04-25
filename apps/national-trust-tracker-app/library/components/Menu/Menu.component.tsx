@@ -2,8 +2,11 @@
 
 import clsx from 'clsx';
 import React, { ReactElement, useState } from 'react';
+
 import { Button } from '../Button';
 import { Icon, IconProps } from '../Icon';
+
+// MARK: Types
 
 export type MenuProps = {
     menuItems: MenuItemProps[];
@@ -16,11 +19,14 @@ export type MenuItemProps = {
     onClick?: () => void;
 };
 
+// MARK: Menu
 export const Menu = ({
     menuItems,
     align = 'left',
 }: MenuProps): ReactElement<MenuProps> => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // MARK: Return
 
     return (
         <div
@@ -28,6 +34,7 @@ export const Menu = ({
             className='inline-block relative'
         >
             <Button
+                divergent='ghost'
                 data-label='menu-button'
                 onClick={() => setIsOpen(!isOpen)}
                 icon={{ icon: 'menu-dots-v', ariaLabel: 'menu' }}
@@ -51,6 +58,7 @@ export const Menu = ({
     );
 };
 
+// MARK: Menu Item
 const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
     return (
         <li

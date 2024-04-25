@@ -24,12 +24,23 @@ import {
     HiMenuAlt4,
     HiOutlineLink,
 } from 'react-icons/hi';
+import { ImSpinner8 } from 'react-icons/im';
 import {
     IoSettingsOutline,
     IoSettingsSharp,
     IoStatsChart,
     IoStatsChartOutline,
 } from 'react-icons/io5';
+import {
+    LuPanelBottomClose,
+    LuPanelBottomOpen,
+    LuPanelTopClose,
+    LuPanelTopOpen,
+    LuPanelLeftClose,
+    LuPanelLeftOpen,
+    LuPanelRightClose,
+    LuPanelRightOpen,
+} from 'react-icons/lu';
 import {
     RiDeleteBin2Fill,
     RiDeleteBin2Line,
@@ -86,9 +97,18 @@ export type UtilsType =
     | 'menu-dots-v'
     | 'menu-three'
     | 'menu-two'
+    | 'panel-cb'
+    | 'panel-cl'
+    | 'panel-cr'
+    | 'panel-ct'
+    | 'panel-ob'
+    | 'panel-ol'
+    | 'panel-or'
+    | 'panel-ot'
     | 'pencil'
     | 'search'
     | 'settings'
+    | 'spinner'
     | 'stats'
     | 'toggle-l'
     | 'toggle-r'
@@ -121,9 +141,18 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'menu-dots-v': HiDotsVertical,
     'menu-three': HiMenu,
     'menu-two': HiMenuAlt4,
+    'panel-cb': LuPanelBottomClose,
+    'panel-cl': LuPanelLeftClose,
+    'panel-cr': LuPanelRightClose,
+    'panel-ct': LuPanelTopClose,
+    'panel-ob': LuPanelBottomOpen,
+    'panel-ol': LuPanelLeftOpen,
+    'panel-or': LuPanelRightOpen,
+    'panel-ot': LuPanelTopOpen,
     'pencil': MdOutlineEdit,
     'search': FiSearch,
     'settings': IoSettingsOutline,
+    'spinner': ImSpinner8,
     'stats': IoStatsChartOutline,
     'toggle-l': BiToggleLeft,
     'toggle-r': BiToggleRight,
@@ -158,8 +187,17 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'menu-three': HiMenu,
     'menu-two': HiMenuAlt4,
     'pencil': MdEdit,
+    'panel-cb': LuPanelBottomClose,
+    'panel-cl': LuPanelLeftClose,
+    'panel-cr': LuPanelRightClose,
+    'panel-ct': LuPanelTopClose,
+    'panel-ob': LuPanelBottomOpen,
+    'panel-ol': LuPanelLeftOpen,
+    'panel-or': LuPanelRightOpen,
+    'panel-ot': LuPanelTopOpen,
     'search': FiSearch,
     'settings': IoSettingsSharp,
+    'spinner': ImSpinner8,
     'stats': IoStatsChart,
     'toggle-l': BiSolidToggleLeft,
     'toggle-r': BiSolidToggleRight,

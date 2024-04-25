@@ -28,7 +28,7 @@ const ModalFixture = () => {
     });
 
     return (
-        <>
+        <div className='p-16 h-full'>
             <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
             <Modal
                 confirmCTA={hasConfirmCTA ? confirmCTA : undefined}
@@ -41,7 +41,7 @@ const ModalFixture = () => {
                 <p>I'm a basic modal</p>
                 {/* <Lorem count={10} /> */}
             </Modal>
-        </>
+        </div>
     );
 };
 

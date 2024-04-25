@@ -1,22 +1,29 @@
 import React, { ReactElement } from 'react';
-import clsx from 'clsx';
+
+import { ClickEvent } from '../../types';
 
 import { Button, ButtonProps } from '../Button';
 import { Icon, IconProps } from '../Icon';
-import { ClickEvent } from '../../types';
 
-type TileComponentProps = {
+import { TileStyles, tileStyles } from './Tile.styles';
+import { twMerge } from '../../utilities/twMerge.util';
+
+// MARK: Types
+
+interface TileComponentProps extends TileStyles {
     className?: string;
     cta?: ButtonProps;
     description?: string;
     heading?: string;
     icon: IconProps;
     onClick?: (e: ClickEvent) => void;
-};
+}
 
 export interface TileProps extends TileComponentProps {
     preset?: 'quartered';
 }
+
+// MARK: Tile
 
 export const Tile = ({ preset, ...props }: TileProps) => {
     switch (preset) {
@@ -25,22 +32,34 @@ export const Tile = ({ preset, ...props }: TileProps) => {
     }
 };
 
+// MARK: Tile Component
+
 export const TileComponent = ({
     className,
+    colorScheme,
     cta,
     description,
+    divergent,
     heading,
     icon,
     onClick,
+    size,
 }: TileComponentProps): ReactElement<TileComponentProps> => {
+    const styles = tileStyles({
+        className: twMerge(
+            onClick ? 'cursor-pointer' : 'cursor-default',
+            className
+        ),
+        colorScheme,
+        divergent,
+    });
+
+    // MARK: Return
+
     return (
         <article
             data-label='tile'
-            className={clsx(
-                'flex bg-pink-100 rounded-12 flex-col aspect-3/4 w-fit justify-center',
-                className,
-                onClick ? 'cursor-pointer' : 'cursor-default'
-            )}
+            className={twMerge(styles)}
             onClick={onClick}
         >
             <section className='flex flex-col flex-1 px-16 py-20 gap-8 items-center'>
@@ -73,8 +92,9 @@ export const TileComponent = ({
             >
                 {cta && (
                     <Button
+                        colorScheme={colorScheme}
                         {...cta}
-                        className='rounded-t-0 rounded-b-12 w-full'
+                        className='rounded-t-0 rounded-b-12 w-full text-[--color-700]'
                     />
                 )}
             </footer>

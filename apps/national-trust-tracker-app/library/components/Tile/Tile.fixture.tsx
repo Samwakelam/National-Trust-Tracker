@@ -1,14 +1,31 @@
 'use client';
 
 import React from 'react';
-import { Tile } from './Tile.component';
-import { useFixtureInput } from 'react-cosmos/client';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
+
+import { colorScheme } from '../../utilities/colorScheme.util';
+
 import { ButtonProps } from '../Button';
 import { IconProps } from '../Icon';
+
+import { Tile, TileProps } from './Tile.component';
+
+const divergents: Exclude<TileProps['divergent'], null | undefined>[] = [
+    'outline',
+    'solid',
+    'solidOutline',
+];
+
+// MARK: Tile Fixture;
 
 const TileFixture = () => {
     const [canClick] = useFixtureInput<boolean>('Can Click Tile', false);
     const onClick = () => alert('Tile Clicked');
+
+    const [colors] = useFixtureSelect('Colour Scheme', {
+        options: Object.keys(colorScheme),
+        defaultValue: 'slate',
+    });
 
     const [hasCTA] = useFixtureInput<boolean>('Has CTA', false);
     const cta: ButtonProps = {
@@ -29,14 +46,27 @@ const TileFixture = () => {
 
     const icon: IconProps = { icon: 'thumbs-u', ariaLabel: 'thumbs up' };
 
+    const props: TileProps = {
+        colorScheme: colors as TileProps['colorScheme'],
+        cta: hasCTA ? cta : undefined,
+        description: hasDescription ? description : undefined,
+        heading: hasHeading ? 'Heading' : undefined,
+        icon,
+        onClick: canClick ? () => onClick() : undefined,
+    };
+
     return (
-        <Tile
-            cta={hasCTA ? cta : undefined}
-            description={hasDescription ? description : undefined}
-            heading={hasHeading ? 'Heading' : undefined}
-            icon={icon}
-            onClick={canClick ? () => onClick() : undefined}
-        />
+        <div className='flex gap-16 p-16'>
+            {divergents.map((divergent) => {
+                return (
+                    <Tile
+                        key={divergent}
+                        divergent={divergent}
+                        {...props}
+                    />
+                );
+            })}
+        </div>
     );
 };
 

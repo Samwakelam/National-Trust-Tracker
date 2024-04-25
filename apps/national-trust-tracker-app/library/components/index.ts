@@ -8,3 +8,5 @@ export * from './Lorem';
 export * from './Menu';
 export * from './Modal';
 export * from './Tag';
+
+export * from './Form Components';

@@ -13,8 +13,9 @@ import * as fixture4 from './library/components/Icon/Icon.fixture';
 import * as fixture5 from './library/components/HTMLParser/HTMLParser.fixture';
 import * as fixture6 from './library/components/Frame/Frame.fixture';
 import * as fixture7 from './library/components/Drawer/Drawer.fixture';
-import * as fixture8 from './library/components/Card/Card.fixture';
-import * as fixture9 from './library/components/Button/Button.fixture';
+import * as fixture8 from './library/components/Colour Tools/Colours.fixture';
+import * as fixture9 from './library/components/Card/Card.fixture';
+import * as fixture10 from './library/components/Button/Button.fixture';
 
 import * as decorator0 from './library/components/cosmos.decorator';
 
@@ -32,8 +33,9 @@ const fixtures = {
   'library/components/HTMLParser/HTMLParser.fixture.tsx': { module: fixture5 },
   'library/components/Frame/Frame.fixture.tsx': { module: fixture6 },
   'library/components/Drawer/Drawer.fixture.tsx': { module: fixture7 },
-  'library/components/Card/Card.fixture.tsx': { module: fixture8 },
-  'library/components/Button/Button.fixture.tsx': { module: fixture9 }
+  'library/components/Colour Tools/Colours.fixture.tsx': { module: fixture8 },
+  'library/components/Card/Card.fixture.tsx': { module: fixture9 },
+  'library/components/Button/Button.fixture.tsx': { module: fixture10 }
 };
 
 const decorators = {

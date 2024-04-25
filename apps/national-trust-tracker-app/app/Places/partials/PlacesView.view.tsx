@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 import { PlaceSummary } from '../../../library/types/national-trust';
 import { useVisits } from '../../../library/context/Visits.context';
@@ -10,8 +10,12 @@ import { PlaceCard } from './PlaceCard.component';
 import { getCase } from '../../../library/helpers';
 import { Tile } from '../../../library/components/Tile/Tile.component';
 import { useRouter } from 'next/navigation';
+import { Button, Drawer } from '../../../library/components';
+import { twMerge } from '../../../library/utilities/twMerge.util';
 
 type PlacesViewProps = { places: PlaceSummary[] };
+
+// MARK: Places View
 
 export const PlacesView = ({
     places,
@@ -19,14 +23,27 @@ export const PlacesView = ({
     const { visits, isLoading: isLoadingVisits } = useVisits();
     const { places: savedPlaces, isLoading: isLoadingPlaces } = usePlaces();
 
+    // MARK: State
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const router = useRouter();
+
+    // MARK: Return
 
     return (
         <div
             data-label='page-container'
-            className='flex flex-col gap-16 p-16 min-h-full'
+            className='flex flex-row gap-16 p-16 h-auto bg-pink-200'
         >
-            <div className='grid grid-cols-2 sm:grid-cols-3 grid-flow-row-dense bg-blue-100 gap-8 w-full'>
+            <aside
+                data-label='drawer-container'
+                className='bg-blue-200 w-48 ml-[-16px] flex flex-col h-[70vh] sticky top-16'
+            ></aside>
+            <section
+                data-label='places-container'
+                className='grid grid-cols-2 sm:grid-cols-3 grid-flow-row-dense h-full gap-16 w-full'
+            >
                 {places.map((summary) => {
                     const { placeId } = summary;
 
@@ -47,6 +64,7 @@ export const PlacesView = ({
                                 <Tile
                                     className='w-full h-full'
                                     heading={summary.name}
+                                    colorScheme='forest'
                                     icon={
                                         summary.active
                                             ? {
@@ -88,7 +106,14 @@ export const PlacesView = ({
                         </div>
                     );
                 })}
-            </div>
+            </section>
+            <Drawer
+                divergent='tab'
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                onOpen={() => setIsOpen(true)}
+                direction='left'
+            ></Drawer>
         </div>
     );
 };

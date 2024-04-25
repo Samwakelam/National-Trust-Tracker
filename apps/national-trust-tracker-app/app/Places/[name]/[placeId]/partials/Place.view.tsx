@@ -36,6 +36,8 @@ import {
     Tag,
 } from '../../../../../library/components';
 
+// MARK: Place View
+
 export const PlaceView = ({
     place,
     accessTags,
@@ -109,6 +111,8 @@ export const PlaceView = ({
         return admissionPrices;
     }, [admissionPrices]);
 
+    // MARK: Functions
+
     const handleDisclosure = (
         disclosure: DisclosureType,
         action: 'open' | 'close'
@@ -118,6 +122,8 @@ export const PlaceView = ({
             [disclosure]: action === 'open' ? true : false,
         }));
     };
+
+    // MARK: Effects
 
     // useEffect(() => {
     //     if (place) {
@@ -141,7 +147,9 @@ export const PlaceView = ({
     //         setOpeningDate(date);
     //     }
     // }, [watch('date')]);
-    console.log('bgImage: ', place.images.PRIMARY.url);
+
+    // MARK: Return
+
     return (
         place && (
             <div
@@ -159,15 +167,15 @@ export const PlaceView = ({
                 <Frame
                     bgImage={place.images.PRIMARY.url}
                     id='frame-hero-image'
-                    showOverlay='to-right'
                 >
                     <div className='flex flex-col gap-16 w-full items-start'>
                         <h2>{place.name}</h2>
                         <Button
-                        // link={{
-                        //     href: place.websiteUrl,
-                        //     target: '_blank',
-                        // }}
+                            // link={{
+                            //     href: place.websiteUrl,
+                            //     target: '_blank',
+                            // }}
+                            colorScheme='white'
                         >
                             Website
                         </Button>
@@ -177,8 +185,9 @@ export const PlaceView = ({
                     </div>
                 </Frame>
 
-                {/* <FrameControlsBanner
+                <Frame
                     id='place-frame-controls'
+                    preset='controls'
                     navigationCTA={{ onClick: () => router.back() }}
                 >
                     <Button
@@ -186,12 +195,18 @@ export const PlaceView = ({
                             icon: 'location-edit',
                             ariaLabel: 'log location',
                         }}
+                        divergent='soft'
                         onClick={() => handleDisclosure('log', 'open')}
-                        tooltip={{ label: 'Log a visit', hasArrow: true }}
+                        // tooltip={{ label: 'Log a visit', hasArrow: true }}
                     />
-                </FrameControlsBanner> */}
+                </Frame>
 
-                <Frame id='frame-place-description'>
+                {/* MARK: Description */}
+
+                <Frame
+                    id='frame-place-description'
+                    colorScheme='slate'
+                >
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 items-center'>
                         <img
                             className='h-full object-cover'
@@ -207,7 +222,12 @@ export const PlaceView = ({
                     </div>
                 </Frame>
 
-                <Frame id='place-frame'>
+                {/* MARK: Location */}
+
+                <Frame
+                    id='place-frame'
+                    colorScheme='white'
+                >
                     <div className='flex flex-row gap-16'>
                         <div className='flex flex-row max-h-[200px]'></div>
                         <Card>
@@ -255,8 +275,13 @@ export const PlaceView = ({
                     </div>
                 </Frame>
 
+                {/* MARK: Admission Prices */}
+
                 {_admissionPrices && (
-                    <Frame id='admission-prices-frame'>
+                    <Frame
+                        id='admission-prices-frame'
+                        colorScheme='black'
+                    >
                         <h2>Admission</h2>
 
                         <HtmlParser htmlString={_admissionPrices.htmlNote} />
@@ -317,8 +342,13 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
+                {/* MARK: Opening Times */}
+
                 {opening && (
-                    <Frame id='opening-times-frame'>
+                    <Frame
+                        id='opening-times-frame'
+                        colorScheme='forest'
+                    >
                         <h2>Opening Times</h2>
 
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 w-full'>
@@ -366,6 +396,8 @@ export const PlaceView = ({
                         </div>
                     </Frame>
                 )}
+
+                {/* MARK: Diresctions*/}
 
                 {directions && (
                     <Frame id='directions-frame'>
@@ -424,8 +456,13 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
+                {/* MARK: Facilities */}
+
                 {facilities && (
-                    <Frame id='facilities-frame'>
+                    <Frame
+                        id='facilities-frame'
+                        colorScheme='slate'
+                    >
                         <h2>Facilities</h2>
 
                         <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-y-20 gap-x-32'>
@@ -455,8 +492,13 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
+                {/* MARK: Accessibility */}
+
                 {accessTags && (
-                    <Frame id='accessibility-frame'>
+                    <Frame
+                        id='accessibility-frame'
+                        colorScheme='white'
+                    >
                         <h2>Accessibility</h2>
                         <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-y-20 gap-x-32'>
                             {accessTags.tags.map((tag: AccessTag) => {
@@ -480,6 +522,8 @@ export const PlaceView = ({
                         </div>
                     </Frame>
                 )}
+
+                {/* MARK: Notes */}
 
                 {notes && (
                     <Frame id='notes-frame'>
@@ -508,19 +552,21 @@ export const PlaceView = ({
                 <DrawerAddVisit
                     isOpen={isOpen.log}
                     onClose={() => handleDisclosure('log', 'close')}
-                    // place={{
-                    //     place,
-                    //     admissionPrices: _admissionPrices,
-                    //     facilities,
-                    //     opening,
-                    //     directions,
-                    //     accessTags,
-                    // }}
+                    place={{
+                        place,
+                        admissionPrices: _admissionPrices,
+                        facilities,
+                        opening,
+                        directions,
+                        accessTags,
+                    }}
                 />
             </div>
         )
     );
 };
+
+// MARK: Resolve Functions
 
 const resolveOpenStatus = (status: Day['status'] | undefined) => {
     switch (status) {

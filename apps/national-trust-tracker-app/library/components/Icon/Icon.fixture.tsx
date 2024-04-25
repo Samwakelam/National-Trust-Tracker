@@ -100,7 +100,7 @@ export const IconFixture = () => {
     };
 
     return (
-        <div className='flex flex-row flex-wrap items-center gap-24 p-16'>
+        <div className='flex flex-row flex-wrap items-center justify-center gap-24 p-16'>
             {getIcons(library).map((icon) => {
                 return (
                     <div

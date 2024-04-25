@@ -21,6 +21,8 @@ type PlaceCardProps = {
     visited: number | undefined;
 };
 
+// MARK: Place Card
+
 export const PlaceCard = ({
     link,
     place,
@@ -40,6 +42,8 @@ export const PlaceCard = ({
             type: 'icon',
         },
     ]);
+
+    // MARK: Effects
 
     useEffect(() => {
         if (visited) {
@@ -97,8 +101,11 @@ export const PlaceCard = ({
         }
     }, [place]);
 
+    // MARK: Return
+
     return (
         <Card
+            colorScheme='white'
             indicators={indicators}
             heading={name}
             onClick={(e) => {
@@ -110,7 +117,7 @@ export const PlaceCard = ({
                 src: place.images.PRIMARY.url,
                 alt: place.images.PRIMARY.description,
             }}
-            layout='horizontal'
+            direction='horizontal'
             menu={{
                 menuItems: [
                     {

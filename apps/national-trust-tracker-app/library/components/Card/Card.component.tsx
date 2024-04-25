@@ -1,12 +1,18 @@
 import React, { ReactElement } from 'react';
 import clsx from 'clsx';
 
+import { twMerge } from '../../utilities/twMerge.util';
+import { ClickEvent } from '../../types';
+
+// MARK: Component imports
 import { Button, ButtonProps } from '../Button';
 import { Menu, MenuProps } from '../Menu';
 import { Icon, IconProps } from '../Icon';
 import { Tag, TagProps } from '../Tag';
-import { ClickEvent } from '../../types';
 
+import { CardStyles, useCardStyles } from './Card.Styles';
+
+// MARK: Types
 interface IndicatorIconProps extends IconProps {
     type: 'icon';
     id: string;
@@ -19,8 +25,9 @@ interface IndicatorTagProps extends TagProps {
 
 export type IndicatorProps = IndicatorIconProps | IndicatorTagProps;
 
-type CardComponentProps = {
+interface CardComponentProps extends CardStyles {
     children?: ReactElement | ReactElement[] | null;
+    className?: string;
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
     heading?: string;
@@ -29,14 +36,15 @@ type CardComponentProps = {
         alt: string;
     };
     indicators?: IndicatorProps[];
-    layout?: 'horizontal' | 'vertical';
     menu?: MenuProps;
     onClick?: (e: ClickEvent) => void;
-};
+}
 
 export interface CardProps extends CardComponentProps {
     preset?: 'quartered';
 }
+
+// MARK: Card
 
 export const Card = ({ preset, ...props }: CardProps) => {
     switch (preset) {
@@ -45,54 +53,70 @@ export const Card = ({ preset, ...props }: CardProps) => {
     }
 };
 
+// MARK: CardComponent
 export const CardComponent = ({
     children,
+    className,
+    colorScheme,
     confirmCTA,
     declineCTA,
+    design,
+    direction,
+    divergent,
     heading,
     image,
     indicators,
-    layout = 'vertical',
     menu,
     onClick,
+    size,
 }: CardComponentProps): ReactElement<CardComponentProps> => {
+    const { card, img } = useCardStyles({
+        design,
+        direction,
+        divergent,
+        size,
+        colorScheme,
+    });
+
+    // MARK: Return
     return (
         <article
             data-label='card'
-            className={clsx(
-                'flex p-16 bg-pink-100 rounded-12',
-                layout === 'vertical' ? 'flex-col' : 'flex-col sm:flex-row',
-                onClick ? 'cursor-pointer' : 'cursor-default'
+            className={twMerge(
+                card(
+                    twMerge(
+                        onClick ? 'cursor-pointer' : 'cursor-default',
+                        className
+                    )
+                )
             )}
             onClick={onClick}
         >
-            <div
-                data-label='card-image'
-                className='flex flex-1 w-full h-full'
-            >
-                <img
+            {/* MARK: Image */}
+            {image && (
+                <div
                     data-label='card-image'
-                    className={clsx(
-                        'object-cover  h-full w-full',
-                        layout === 'vertical'
-                            ? `rounded-t-6 rounded-b-0`
-                            : `rounded-t-6 rounded-b-0 sm:rounded-l-6 sm:rounded-r-0`
-                    )}
-                    {...image}
-                />
-            </div>
+                    className={twMerge(img())}
+                >
+                    <img
+                        data-label='card-image'
+                        className='object-cover h-full w-full'
+                        {...image}
+                    />
+                </div>
+            )}
             <div
                 data-label='card-content'
-                className={clsx(
-                    'flex flex-col flex-2',
-                    layout === 'vertical' ? 'py-16' : 'py-16 sm:py-0 sm:pl-16'
-                )}
+                className='flex flex-col flex-2'
             >
+                {/* MARK: Header */}
                 <header
                     data-label='card-header'
                     className='w-full flex justify-between items-center g-24'
                 >
-                    <h3 className='font-bold capitalised'>{heading}</h3>
+                    {heading && (
+                        <h3 className='font-bold capitalised'>{heading}</h3>
+                    )}
                     {menu && (
                         <Menu
                             align='right'
@@ -100,12 +124,14 @@ export const CardComponent = ({
                         />
                     )}
                 </header>
+                {/* MARK: Body */}
                 <div
                     data-label='card-body'
                     className='w-full py-16 h-full flex flex-col gap-16'
                 >
                     {children}
                 </div>
+                {/* MARK: Footer */}
                 <footer
                     data-label='card-footer'
                     className='flex flex-col sm:flex-row gap-16 justify-end items-center'
@@ -116,8 +142,24 @@ export const CardComponent = ({
                         </div>
                     )}
                     <div className='flex flex-row gap-16 w-full justify-end'>
-                        {declineCTA && <Button {...declineCTA} />}
-                        {confirmCTA && <Button {...confirmCTA} />}
+                        {declineCTA && (
+                            <Button
+                                divergent={resolveDeclineCTADivergent(
+                                    divergent
+                                )}
+                                colorScheme='red'
+                                {...declineCTA}
+                            />
+                        )}
+                        {confirmCTA && (
+                            <Button
+                                divergent={resolveConfirmCTADivergent(
+                                    divergent
+                                )}
+                                colorScheme={colorScheme}
+                                {...confirmCTA}
+                            />
+                        )}
                     </div>
                 </footer>
             </div>
@@ -125,6 +167,7 @@ export const CardComponent = ({
     );
 };
 
+// MARK: indicatorMap
 const indicatorMap = (indicator: IndicatorProps) => {
     if (indicator.type === 'icon') {
         return (
@@ -141,4 +184,36 @@ const indicatorMap = (indicator: IndicatorProps) => {
             {...indicator}
         />
     );
+};
+
+// MARK: Resolve Functions
+
+const resolveConfirmCTADivergent = (
+    divergent: ButtonProps['divergent']
+): ButtonProps['divergent'] => {
+    switch (divergent) {
+        case 'ghost':
+            return 'ghost';
+        case 'outline':
+            return 'outline';
+        case 'soft':
+            return 'solid';
+        case 'solid':
+            return 'solid';
+    }
+};
+
+const resolveDeclineCTADivergent = (
+    divergent: ButtonProps['divergent']
+): ButtonProps['divergent'] => {
+    switch (divergent) {
+        case 'ghost':
+            return 'ghost';
+        case 'outline':
+            return 'ghost';
+        case 'soft':
+            return 'outline';
+        case 'solid':
+            return 'outline';
+    }
 };

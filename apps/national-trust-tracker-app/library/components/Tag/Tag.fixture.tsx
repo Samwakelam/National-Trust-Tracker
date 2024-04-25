@@ -17,7 +17,11 @@ const TagFixture = () => {
         variant: iconVariant === 'undefined' ? undefined : iconVariant,
     };
 
-    return <Tag icon={hasIcon ? icon : undefined}>Tag</Tag>;
+    return (
+        <div className='h-full p-16'>
+            <Tag icon={hasIcon ? icon : undefined}>Tag</Tag>{' '}
+        </div>
+    );
 };
 
 export default TagFixture;

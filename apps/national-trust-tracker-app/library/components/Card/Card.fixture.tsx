@@ -3,21 +3,33 @@
 import React from 'react';
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
+import { colorScheme } from '../../utilities/colorScheme.util';
+
 import { Card, CardProps } from './Card.component';
 import { ButtonProps } from '../Button';
 import { MenuProps } from '../Menu';
 
+import '../../prototypes/String.extensions';
+
+const divergents: Exclude<CardProps['divergent'], null | undefined>[] = [
+    'ghost',
+    'outline',
+    'soft',
+    'solid',
+];
+
 const CardFixture = () => {
-    const image = {
-        src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
-        alt: 'placeholder',
-    };
     const [canClick] = useFixtureInput<boolean>('Can Click Card', false);
     const onClick = () => alert('Card Clicked');
 
-    const [cardLayout] = useFixtureSelect('Card Layout', {
-        options: ['vertical', 'horizontal', 'undefined'],
-        defaultValue: 'undefined',
+    const [cardDirection] = useFixtureSelect('Card Direction', {
+        options: ['vertical', 'horizontal'],
+        defaultValue: 'vertical',
+    });
+
+    const [colors] = useFixtureSelect('Colour Scheme', {
+        options: Object.keys(colorScheme),
+        defaultValue: 'slate',
     });
 
     const [hasConfirmCTA] = useFixtureInput<boolean>('Has Confirm CTA', false);
@@ -30,6 +42,12 @@ const CardFixture = () => {
     const declineCTA: ButtonProps = {
         children: 'Cancel',
         onClick: () => alert('Decline CTA Clicked'),
+    };
+
+    const [hasImage] = useFixtureInput<boolean>('Has Image', false);
+    const image = {
+        src: 'https://ambrey.com/app/uploads/2021/09/IMAGE-GRID_96Res_Medium11-2.png',
+        alt: 'placeholder',
     };
 
     const [hasIndicators] = useFixtureInput<boolean>('Has Indicators', false);
@@ -65,19 +83,36 @@ const CardFixture = () => {
         ],
     };
 
+    const props: Partial<CardProps> = {
+        confirmCTA: hasConfirmCTA ? confirmCTA : undefined,
+        declineCTA: hasDeclineCTA ? declineCTA : undefined,
+        heading: 'I am a basic Header',
+        image: hasImage ? image : undefined,
+        indicators: hasIndicators ? indicators : undefined,
+        direction: cardDirection,
+        menu: hasMenu ? menu : undefined,
+        onClick: canClick ? () => onClick() : undefined,
+        colorScheme: colors as CardProps['colorScheme'],
+    };
+
     return (
-        <Card
-            confirmCTA={hasConfirmCTA ? confirmCTA : undefined}
-            declineCTA={hasDeclineCTA ? declineCTA : undefined}
-            heading='I am a basic Header'
-            image={image}
-            indicators={hasIndicators ? indicators : undefined}
-            layout={cardLayout !== 'undefined' ? cardLayout : undefined}
-            menu={hasMenu ? menu : undefined}
-            onClick={canClick ? () => onClick() : undefined}
-        >
-            <div>Basic Card Content</div>
-        </Card>
+        <div className='grid grid-cols-2 gap-16 mb-20 p-16'>
+            {divergents.map((divergent) => {
+                return (
+                    <div className='flex flex-col gap-16'>
+                        <h2 className='font-bold'>
+                            {divergent.toCapitalisedCase()}
+                        </h2>
+                        <Card
+                            divergent={divergent}
+                            {...props}
+                        >
+                            <p>Basic Card Content</p>
+                        </Card>
+                    </div>
+                );
+            })}
+        </div>
     );
 };
 

@@ -1,46 +1,76 @@
-import clsx from 'clsx';
 import React, { ReactElement } from 'react';
+import clsx from 'clsx';
 
-type FrameProps = {
+import { twMerge } from '../../utilities/twMerge.util';
+
+import { Button, ButtonProps } from '../Button';
+
+import { useFrameStyles, FrameStyles } from './Frame.styles';
+
+// MARK: Types
+
+interface FrameComponentProps extends Omit<FrameStyles, 'hero'> {
     bgImage?: string;
     children?: ReactElement | ReactElement[];
     id: string;
-    showOverlay?: 'to-left' | 'to-right' | 'to-top' | 'to-bottom';
+    overlayDirection?: 'to-left' | 'to-right' | 'to-top' | 'to-bottom';
     isWideWidth?: boolean;
-};
+}
 
-export const Frame = ({
+interface FrameControlsProps
+    extends Omit<FrameComponentProps, 'overlayDirection'> {
+    preset: 'controls';
+    navigationCTA?: ButtonProps;
+}
+
+interface FrameDefaultProps extends FrameComponentProps {
+    preset?: never;
+}
+
+export type FrameProps = FrameControlsProps | FrameDefaultProps;
+
+// MARK: Frame Component
+
+export const FrameComponent = ({
     bgImage,
     children,
+    colorScheme,
+    divergent,
+    size,
     id,
-    showOverlay,
+    overlayDirection = 'to-right',
     isWideWidth = false,
-}: FrameProps) => {
+}: FrameComponentProps) => {
+    const { frame, content } = useFrameStyles({
+        colorScheme,
+        divergent,
+        size,
+        hero: !!bgImage,
+    });
+
+    // MARK: Return
+
     return (
         <section
             data-label='frame'
             style={{ backgroundImage: `url(${bgImage})` }}
-            className={clsx(
-                'bg-pink-100 w-full relative px-16 py-56 md:px-32 lg:px-56 lg:py-60',
-                'bg-no-repeat bg-cover'
-            )}
+            className={twMerge(frame())}
             id={`section-${id}`}
         >
-            {showOverlay && (
+            {!!bgImage && (
                 <div
                     data-label='frame-overlay'
-                    className={clsx(
+                    className={twMerge(
                         'absolute top-0 bottom-0 left-0 right-0',
-                        resolveOverlayGradient(showOverlay),
+                        resolveOverlayGradient(overlayDirection),
                         'from-slate-900/75 to-70%'
                     )}
                 />
             )}
             <div
                 data-label='frame-content'
-                className={clsx(
-                    'bg-blue-100 relative flex flex-col w-full gap-16 md:gap-32 lg:gap-56 pt-56 lg:pt-60 mt-[-56px] lg:mt-[-60px] items-center z-10 mx-auto ',
-                    isWideWidth ? 'max-w-4/5' : 'max-w-7/10'
+                className={twMerge(
+                    content(twMerge(isWideWidth ? 'max-w-1280' : 'max-w-1120'))
                 )}
                 id={id}
             >
@@ -50,12 +80,45 @@ export const Frame = ({
     );
 };
 
+// MARK: Frame
+
+export const Frame = ({ preset, children, ...props }: FrameProps) => {
+    switch (preset) {
+        case 'controls':
+            return (
+                <FrameComponent
+                    divergent='banner'
+                    {...props}
+                >
+                    <div
+                        className={twMerge(
+                            'flex flex-row items-center justify-between w-full'
+                        )}
+                    >
+                        {(props as FrameControlsProps).navigationCTA && (
+                            <Button
+                                divergent='soft'
+                                icon={{ icon: 'arrow-l', ariaLabel: 'back' }}
+                                {...(props as FrameControlsProps).navigationCTA}
+                            />
+                        )}
+                        <div className='flex flex-row flex'>{children}</div>
+                    </div>
+                </FrameComponent>
+            );
+        default:
+            return <FrameComponent {...props}>{children}</FrameComponent>;
+    }
+};
+
 // data-label='' className=''
 
+// MARK: Resolve Functions
+
 const resolveOverlayGradient = (
-    showOverlay: FrameProps['showOverlay'] = 'to-right'
+    overlayDirection: FrameComponentProps['overlayDirection'] = 'to-right'
 ): string => {
-    switch (showOverlay) {
+    switch (overlayDirection) {
         case 'to-bottom':
             return 'bg-gradient-to-b';
         case 'to-left':

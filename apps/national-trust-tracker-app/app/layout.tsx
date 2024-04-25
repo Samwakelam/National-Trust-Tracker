@@ -6,6 +6,7 @@ import '../library/prototypes/String.extensions';
 import '../library/global.css';
 import { scrollbar } from '../library/utilities/className.utils';
 import clsx from 'clsx';
+import { extendTailwindMerge } from 'tailwind-merge';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker App',
@@ -20,7 +21,7 @@ export default function RootLayout({
     return (
         <html
             lang='en'
-            style={{ margin: '0', height: '100vh', overflow: ' hidden' }}
+            style={{ margin: '0', height: '100%', overflow: ' hidden' }}
         >
             <body
                 style={{
@@ -50,7 +51,7 @@ export default function RootLayout({
                     </div>
                     <main
                         className={clsx(
-                            'h-full w-full overflow-y-auto bg-slate-100',
+                            'flex flex-col min-h-full w-full overflow-y-auto bg-slate-100',
                             scrollbar
                         )}
                     >

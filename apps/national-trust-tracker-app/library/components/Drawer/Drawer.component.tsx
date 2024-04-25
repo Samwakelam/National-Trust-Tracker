@@ -6,9 +6,15 @@ import clsx from 'clsx';
 import { scrollbar } from '../../utilities/className.utils';
 
 import { Button, ButtonProps } from '../Button';
+import { DrawerStyles, drawerStyles } from './Drawer.styles';
+import { twMerge } from '../../utilities/twMerge.util';
+import { IconProps } from '../Icon';
 
-export type DrawerProps = {
+// MARK: Types
+
+type Drawer = {
     children?: ReactElement | ReactElement[];
+    className?: string;
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
     heading?: string;
@@ -16,42 +22,61 @@ export type DrawerProps = {
     onClose: () => void;
 };
 
+interface ClosedDrawer
+    extends Omit<DrawerStyles, 'isOpen' | 'isVisible'>,
+        Drawer {
+    divergent: 'closed';
+}
+
+interface TabDrawer extends Omit<DrawerStyles, 'isOpen' | 'isVisible'>, Drawer {
+    divergent: 'tab';
+    onOpen: () => void;
+}
+
+export type DrawerProps = TabDrawer | ClosedDrawer;
+
 type DrawerOverlayProps = Pick<DrawerProps, 'onClose' | 'isOpen'>;
 
-const useDrawerVisibility = (isOpen: boolean) => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (isOpen === true) setIsVisible(true);
-        if (isOpen === false)
-            setTimeout(() => {
-                setIsVisible(false);
-            }, 600);
-    }, [isOpen]);
-
-    return isVisible;
-};
+// MARK: Drawer
 
 export const Drawer = ({
     children,
+    className,
     confirmCTA,
     declineCTA,
+    direction,
+    divergent,
     heading,
     isOpen,
     onClose,
+    size,
+    ...props
 }: DrawerProps): ReactElement<DrawerProps> => {
+    let onOpen;
+    if ('onOpen' in props && divergent === 'tab') {
+        onOpen = props.onOpen;
+    }
+
     const isVisible = useDrawerVisibility(isOpen);
+
+    const styles = drawerStyles({
+        className,
+        direction,
+        divergent,
+        isOpen,
+        isVisible,
+        size,
+    });
+
+    useEffect(() => {}, [isOpen]);
+
+    // MARK: Return
 
     return (
         <>
             <aside
                 data-label='drawer'
-                className={clsx(
-                    'h-full absolute w-3/4 bg-pink-100 top-0 flex flex-col rounded-l-24 z-40 ',
-                    isVisible ? 'visible' : 'invisible',
-                    isOpen ? 'right-0' : 'right-[-75%]',
-                    'transition-[right] delay-75 duration-500 ease-in-out '
-                )}
+                className={twMerge(styles)}
                 aria-hidden={isVisible}
             >
                 <header
@@ -66,11 +91,42 @@ export const Drawer = ({
                             {heading}
                         </h3>
                     )}
-                    <Button
-                        icon={{ icon: 'cross', ariaLabel: 'cancel' }}
-                        onClick={onClose}
-                        className='col-start-1 col-span-1 row-start-1'
-                    />
+                    {!onOpen && (
+                        <Button
+                            icon={{ icon: 'cross', ariaLabel: 'cancel' }}
+                            onClick={onClose}
+                            className={twMerge(
+                                'col-span-1 row-start-1',
+                                direction === 'left'
+                                    ? 'col-start-3'
+                                    : 'col-start-1'
+                            )}
+                        />
+                    )}
+                    {onOpen && !isOpen && (
+                        <Button
+                            icon={resolveOpenIcon(direction)}
+                            onClick={onOpen}
+                            className={twMerge(
+                                'col-span-1 row-start-1',
+                                direction === 'left' || direction === 'bottom'
+                                    ? 'col-start-3'
+                                    : 'col-start-1'
+                            )}
+                        />
+                    )}
+                    {onOpen && isOpen && (
+                        <Button
+                            icon={resolveCloseIcon(direction)}
+                            onClick={onClose}
+                            className={twMerge(
+                                'col-span-1 row-start-1',
+                                direction === 'left' || direction === 'bottom'
+                                    ? 'col-start-3'
+                                    : 'col-start-1'
+                            )}
+                        />
+                    )}
                 </header>
                 <div
                     data-label='drawer-body'
@@ -106,6 +162,8 @@ export const Drawer = ({
 
 // data-label='' className=''
 
+// MARK: Drawer Overlay
+
 const DrawerOverlay = ({ onClose, isOpen }: DrawerOverlayProps) => {
     const isVisible = useDrawerVisibility(isOpen);
 
@@ -114,7 +172,7 @@ const DrawerOverlay = ({ onClose, isOpen }: DrawerOverlayProps) => {
             data-label='drawer-overlay'
             className={clsx(
                 'flex absolute top-0 right-0 bottom-0 left-0 bg-black/50 z-30',
-                isOpen ? 'bg-black/50' : 'bg-black/0',
+                isOpen ? 'bg-black-500/50' : 'bg-black-500/0',
                 isVisible ? 'visible' : 'invisible',
                 'transition-[background-color] ease-in-out duration-500'
             )}
@@ -122,4 +180,43 @@ const DrawerOverlay = ({ onClose, isOpen }: DrawerOverlayProps) => {
             aria-hidden={isVisible}
         />
     );
+};
+
+// MARK: Use Drawer Visibility
+
+const useDrawerVisibility = (isOpen: boolean) => {
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isOpen === true) setIsVisible(true);
+        if (isOpen === false)
+            setTimeout(() => {
+                setIsVisible(false);
+            }, 600);
+    }, [isOpen]);
+
+    return isVisible;
+};
+
+// MARK: Resolve Functions
+
+const resolveCloseIcon = (direction: DrawerProps['direction']): IconProps => {
+    switch (direction) {
+        case 'bottom':
+        case 'left':
+            return { icon: 'panel-cl', ariaLabel: 'close panel' };
+
+        default:
+            return { icon: 'panel-cr', ariaLabel: 'close panel' };
+    }
+};
+
+const resolveOpenIcon = (direction: DrawerProps['direction']): IconProps => {
+    switch (direction) {
+        case 'bottom':
+        case 'left':
+            return { icon: 'panel-ol', ariaLabel: 'open panel' };
+        default:
+            return { icon: 'panel-or', ariaLabel: 'open panel' };
+    }
 };

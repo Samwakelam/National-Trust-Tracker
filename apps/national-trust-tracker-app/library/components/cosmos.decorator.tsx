@@ -3,5 +3,5 @@
 import React, { ReactNode, ReactElement } from 'react';
 
 export default ({ children }: { children: ReactNode | ReactElement }) => (
-    <div className='h-full bg-slate-100 p-16'>{children}</div>
+    <div className='min-h-full bg-slate-100'>{children}</div>
 );
