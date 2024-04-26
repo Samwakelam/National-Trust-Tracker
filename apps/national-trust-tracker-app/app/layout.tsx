@@ -51,7 +51,7 @@ export default function RootLayout({
                     </div>
                     <main
                         className={clsx(
-                            'flex flex-col min-h-full w-full overflow-y-auto bg-slate-100',
+                            'flex flex-col w-full h-full overflow-y-auto bg-slate-100',
                             scrollbar
                         )}
                     >

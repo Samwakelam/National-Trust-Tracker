@@ -1,14 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-
-import { Modal } from './Modal.component';
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
+
+import { colorScheme } from '../../utilities/colorScheme.util';
+
 import { Button, ButtonProps } from '../Button';
 import { Lorem } from '../Lorem';
 
+import { Modal, ModalProps } from './Modal.component';
+
 const ModalFixture = () => {
+    // MARK: State
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // MARK: Inputs
+    const [colors] = useFixtureSelect('Colour Scheme', {
+        options: Object.keys(colorScheme),
+        defaultValue: 'slate',
+    });
 
     const [hasHeading] = useFixtureInput<boolean>('Has Heading', false);
 
@@ -37,6 +47,7 @@ const ModalFixture = () => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 preset={preset !== 'undefined' ? preset : undefined}
+                colorScheme={colors as ModalProps['colorScheme']}
             >
                 <p>I'm a basic modal</p>
                 {/* <Lorem count={10} /> */}

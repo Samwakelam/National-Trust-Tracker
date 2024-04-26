@@ -4,8 +4,22 @@ import React from 'react';
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
 import { Badge, BadgeProps } from './Badge.component';
+import { colorScheme } from '../../utilities/colorScheme.util';
+import { getCase } from '../../helpers';
+
+const divergents: Exclude<BadgeProps['divergent'], undefined | null>[] = [
+    'outline',
+    'soft',
+    'solid',
+    'solidOutline',
+];
 
 const BadgeFixture = () => {
+    const [colors] = useFixtureSelect('Colour Scheme', {
+        options: Object.keys(colorScheme),
+        defaultValue: 'slate',
+    });
+
     const [hasIcon] = useFixtureInput<boolean>('Has Icon', false);
     const [iconVariant] = useFixtureSelect('Icon Variant', {
         options: ['outline', 'solid', 'undefined'],
@@ -18,8 +32,26 @@ const BadgeFixture = () => {
     };
 
     return (
-        <div className='h-full p-16'>
-            <Badge icon={hasIcon ? icon : undefined}>Badge</Badge>
+        <div className=' flex flex-flow flex-wrap gap-16 h-full p-16'>
+            {divergents.map((divergent) => {
+                return (
+                    <div
+                        className='flex flex-col gap-16 h-fit items-center'
+                        key={`tag-${divergent}`}
+                    >
+                        <h2 className='font-bold text-14'>
+                            {getCase(divergent, 'sentence').toCapitalisedCase()}
+                        </h2>
+                        <Badge
+                            colorScheme={colors as BadgeProps['colorScheme']}
+                            icon={hasIcon ? icon : undefined}
+                            divergent={divergent}
+                        >
+                            Badge
+                        </Badge>
+                    </div>
+                );
+            })}
         </div>
     );
 };

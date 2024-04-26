@@ -6,6 +6,10 @@ import clsx from 'clsx';
 import { scrollbar } from '../../utilities/className.utils';
 
 import { Button, ButtonProps } from '../Button';
+import { ModalStyles, modalStyles } from './Modal.styles';
+import { twMerge } from '../../utilities/twMerge.util';
+
+// MARK: Types
 
 type ModalPreset = 'confirm';
 
@@ -13,16 +17,18 @@ export interface ModalProps extends ModalComponentProps {
     preset?: ModalPreset;
 }
 
-type ModalComponentProps = {
+interface ModalComponentProps extends ModalStyles {
     children?: ReactElement | ReactElement[];
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;
     heading?: string;
     isOpen: boolean;
     onClose: () => void;
-};
+}
 
 type ModalOverlayProps = Pick<ModalProps, 'onClose' | 'isOpen'>;
+
+// MARK: Presets
 
 export const Modal = ({ preset, ...props }: ModalProps) => {
     const { confirmCTA, declineCTA, children } = props;
@@ -32,8 +38,17 @@ export const Modal = ({ preset, ...props }: ModalProps) => {
             return (
                 <ModalComponent
                     {...props}
-                    confirmCTA={{ children: 'Confirm', ...confirmCTA }}
-                    declineCTA={{ children: 'Cancel', ...declineCTA }}
+                    confirmCTA={{
+                        children: 'Confirm',
+                        colorScheme: 'green',
+                        ...confirmCTA,
+                    }}
+                    declineCTA={{
+                        children: 'Cancel',
+                        colorScheme: 'red',
+                        divergent: 'outline',
+                        ...declineCTA,
+                    }}
                 >
                     <div className='flex flex-col items-center gap-16'>
                         <h3 className='text-32 font-bold uppercase'>
@@ -51,22 +66,31 @@ export const Modal = ({ preset, ...props }: ModalProps) => {
     }
 };
 
+// MARK: Modal Component
+
 const ModalComponent = ({
     children,
+    colorScheme,
     confirmCTA,
     declineCTA,
+    divergent,
     heading,
     isOpen,
     onClose,
 }: ModalComponentProps): ReactElement<ModalProps> => {
+    const styles = modalStyles({
+        colorScheme,
+        divergent,
+        className: twMerge(isOpen ? 'absolute' : 'hidden'),
+    });
+
+    // MARK: Return
+
     return (
         <>
             <article
                 data-label='modal'
-                className={clsx(
-                    'max-h-4/5 w-3/4 bg-pink-100 right-2/25 left-2/25 top-1/10 flex flex-col rounded-24 z-40 ',
-                    isOpen ? 'absolute' : 'hidden'
-                )}
+                className={twMerge(styles)}
             >
                 <header
                     data-label='modal-header'
@@ -84,6 +108,8 @@ const ModalComponent = ({
                         icon={{ icon: 'cross', ariaLabel: 'cancel' }}
                         onClick={onClose}
                         className='col-start-3 col-span-1'
+                        divergent='ghost'
+                        colorScheme={colorScheme}
                     />
                 </header>
                 <div
@@ -101,11 +127,19 @@ const ModalComponent = ({
                 >
                     {declineCTA && (
                         <Button
+                            divergent='soft'
+                            colorScheme={colorScheme}
                             onClick={onClose}
                             {...declineCTA}
                         />
                     )}
-                    {confirmCTA && <Button {...confirmCTA} />}
+                    {confirmCTA && (
+                        <Button
+                            divergent='soft'
+                            colorScheme={colorScheme}
+                            {...confirmCTA}
+                        />
+                    )}
                 </footer>
             </article>
             <ModalOverlay
@@ -122,7 +156,7 @@ const ModalOverlay = ({ onClose, isOpen }: ModalOverlayProps) => {
     return (
         <div
             data-label='modal-overlay'
-            className={clsx(
+            className={twMerge(
                 'flex top-0 right-0 bottom-0 left-0 bg-black/50 z-30',
                 isOpen ? 'fixed' : 'hidden'
             )}

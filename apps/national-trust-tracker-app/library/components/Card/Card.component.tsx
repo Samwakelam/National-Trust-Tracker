@@ -134,7 +134,7 @@ export const CardComponent = ({
                 {/* MARK: Footer */}
                 <footer
                     data-label='card-footer'
-                    className='flex flex-col sm:flex-row gap-16 justify-end items-center'
+                    className='flex flex-col lg:flex-row gap-16 justify-end items-center'
                 >
                     {indicators && (
                         <div className='flex flex-row w-full items-center gap-8'>
@@ -189,14 +189,12 @@ const indicatorMap = (indicator: IndicatorProps) => {
 // MARK: Resolve Functions
 
 const resolveConfirmCTADivergent = (
-    divergent: ButtonProps['divergent']
+    divergent: CardProps['divergent']
 ): ButtonProps['divergent'] => {
     switch (divergent) {
-        case 'ghost':
-            return 'ghost';
         case 'outline':
             return 'outline';
-        case 'soft':
+        case 'solidOutline':
             return 'solid';
         case 'solid':
             return 'solid';
@@ -204,14 +202,12 @@ const resolveConfirmCTADivergent = (
 };
 
 const resolveDeclineCTADivergent = (
-    divergent: ButtonProps['divergent']
+    divergent: CardProps['divergent']
 ): ButtonProps['divergent'] => {
     switch (divergent) {
-        case 'ghost':
-            return 'ghost';
         case 'outline':
             return 'ghost';
-        case 'soft':
+        case 'solidOutline':
             return 'outline';
         case 'solid':
             return 'outline';

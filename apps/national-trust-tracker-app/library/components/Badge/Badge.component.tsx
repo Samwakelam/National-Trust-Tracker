@@ -1,16 +1,27 @@
 import React, { ReactElement, ReactNode } from 'react';
+
 import { Icon, IconProps } from '../Icon';
 
-export type BadgeProps = { children?: ReactNode; icon?: IconProps };
+import { BadgeStyles, badgeStyles } from './Badge.styles';
+import { twMerge } from '../../utilities/twMerge.util';
+
+export interface BadgeProps extends BadgeStyles {
+    children?: ReactNode;
+    icon?: IconProps;
+}
 
 export const Badge = ({
+    colorScheme,
     children,
+    divergent,
     icon,
 }: BadgeProps): ReactElement<BadgeProps> => {
+    const styles = badgeStyles({ divergent, colorScheme });
+
     return (
         <span
             data-label='badge'
-            className='flex flex-row gap-4 w-fit items-center bg-slate-200 text-12 text-slate-700 capitalize font-semibold px-4 py-0 rounded-4'
+            className={twMerge(styles)}
         >
             {icon && (
                 <Icon

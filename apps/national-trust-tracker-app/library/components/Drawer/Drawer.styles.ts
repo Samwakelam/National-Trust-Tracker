@@ -8,7 +8,7 @@ export type DrawerStyles = VariantProps<typeof drawerStyles>;
 // MARK: Drawer Styles
 export const drawerStyles = cva(
     [
-        'absolute bg-pink-100  flex flex-col z-40 ',
+        'absolute bg-slate-50 shadow-lg flex flex-col z-40 ',
         'delay-75 duration-500 ease-in-out',
     ],
     {

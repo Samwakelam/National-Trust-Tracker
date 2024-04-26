@@ -5,6 +5,7 @@ import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
 import { Tag, TagProps } from './Tag.component';
 import { colorScheme } from '../../utilities/colorScheme.util';
+import { getCase } from '../../helpers';
 
 const divergents: Exclude<TagProps['divergent'], undefined | null>[] = [
     'outline',
@@ -41,8 +42,13 @@ const TagFixture = () => {
         <div className=' flex flex-flow flex-wrap gap-16 h-full p-16'>
             {divergents.map((divergent) => {
                 return (
-                    <div className='flex flex-col gap-16 h-fit items-center'>
-                        <h2 className='font-bold text-14'>{divergent}</h2>
+                    <div
+                        className='flex flex-col gap-16 h-fit items-center'
+                        key={`tag-${divergent}`}
+                    >
+                        <h2 className='font-bold text-14'>
+                            {getCase(divergent, 'sentence').toCapitalisedCase()}
+                        </h2>
                         <Tag
                             divergent={divergent}
                             {...props}

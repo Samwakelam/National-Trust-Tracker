@@ -1,31 +1,44 @@
 'use client';
 
-import clsx from 'clsx';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { Button } from '../Button';
 import { Icon, IconProps } from '../Icon';
+import { MenuItemStyles, MenuStyles, menuItemStyles } from './Menu.styles';
+import { twMerge } from '../../utilities/twMerge.util';
 
 // MARK: Types
 
-export type MenuProps = {
-    menuItems: MenuItemProps[];
+export interface MenuProps extends MenuStyles {
     align?: 'left' | 'right';
-};
+    alwaysOpen?: boolean;
+    menuItems: MenuItemProps[];
+}
 
-export type MenuItemProps = {
-    label: string;
+export interface MenuItemProps extends MenuItemStyles {
     icon?: IconProps;
+    label: string;
     onClick?: () => void;
-};
+}
 
 // MARK: Menu
 export const Menu = ({
-    menuItems,
     align = 'left',
+    alwaysOpen,
+    colorScheme,
+    menuItems,
 }: MenuProps): ReactElement<MenuProps> => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
+    // MARK: Effects
+
+    useEffect(() => {
+        if (alwaysOpen) {
+            setIsOpen(alwaysOpen);
+        } else {
+            setIsOpen(false);
+        }
+    }, [alwaysOpen]);
     // MARK: Return
 
     return (
@@ -35,13 +48,17 @@ export const Menu = ({
         >
             <Button
                 divergent='ghost'
+                colorScheme={colorScheme}
                 data-label='menu-button'
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                    if (alwaysOpen) return;
+                    setIsOpen(!isOpen);
+                }}
                 icon={{ icon: 'menu-dots-v', ariaLabel: 'menu' }}
             />
             <ul
                 data-label='menu-content'
-                className={clsx(
+                className={twMerge(
                     'absolute min-w-120 z-1 flex flex-col gap-2',
                     isOpen ? 'flex' : 'hidden',
                     align === 'left' ? 'left-0' : 'right-0'
@@ -60,10 +77,12 @@ export const Menu = ({
 
 // MARK: Menu Item
 const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
+    const styles = menuItemStyles({});
+
     return (
         <li
             data-label='menu-item'
-            className='bg-teal-300 py-12 px-16  first:rounded-t-8 first:rounded-b-0 last:rounded-b-8 last:rounded-t-0 hover:bg-teal-200 flex flex-row flex-nowrap items-center gap-8'
+            className={twMerge(styles)}
             onClick={onClick}
         >
             {icon && <Icon {...icon} />}

@@ -43,10 +43,9 @@ export const cardStyles = cva(
                 vertical: ['flex-col'],
             },
             divergent: {
-                ghost: ['bg-transparent'],
                 outline: ['bg-transparent border-[--color-400]'],
-                soft: ['bg-[--color-200]'],
-                solid: ['bg-[--color-300]'],
+                solid: ['bg-[--color-200]'],
+                solidOutline: ['bg-[--color-200] border-[--color-400]'],
             },
             size: {
                 sm: [],

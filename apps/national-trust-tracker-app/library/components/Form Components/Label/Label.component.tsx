@@ -67,7 +67,8 @@ export const Label = ({
                     )}
                 >
                     <Badge
-                    // colorScheme={isRequired ? 'red' : 'blue'}
+                        divergent='soft'
+                        colorScheme={isRequired ? 'red' : 'blue'}
                     >
                         {isRequired ? 'Required' : 'Optional'}
                     </Badge>
@@ -83,8 +84,8 @@ export const Label = ({
                     {addBadge.map((badge) => {
                         return (
                             <Badge
+                                divergent='soft'
                                 {...badge}
-                                // divergent='soft'
                             />
                         );
                     })}

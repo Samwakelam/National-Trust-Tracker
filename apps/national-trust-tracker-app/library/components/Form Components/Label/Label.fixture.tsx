@@ -7,7 +7,7 @@ import { useFixtureInput } from 'react-cosmos/client';
 
 const LabelFixture = () => {
     const [hasInfoTooltip] = useFixtureInput<boolean>(
-        'has Informational Tooltip',
+        'Has Informational Tooltip',
         false
     );
     const info: Exclude<LabelProps['tooltips'], undefined>[number] = {
@@ -17,7 +17,7 @@ const LabelFixture = () => {
     };
 
     const [hasWarningTooltip] = useFixtureInput<boolean>(
-        'has Warning Tooltip',
+        'Has Warning Tooltip',
         false
     );
     const warning: Exclude<LabelProps['tooltips'], undefined>[number] = {
@@ -26,11 +26,13 @@ const LabelFixture = () => {
         position: 'bottom',
     };
 
+    const [isRequired] = useFixtureInput<boolean>('Is Required', false);
+
     return (
         <div className='p-16'>
             <Label
                 htmlFor=''
-                isRequired={false}
+                isRequired={isRequired}
                 label='Label'
                 tooltips={
                     hasWarningTooltip || hasInfoTooltip

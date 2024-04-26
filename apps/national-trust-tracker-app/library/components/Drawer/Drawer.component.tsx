@@ -1,14 +1,14 @@
 'use client';
 
 import React, { ReactElement, useEffect, useState } from 'react';
-import clsx from 'clsx';
 
 import { scrollbar } from '../../utilities/className.utils';
+import { twMerge } from '../../utilities/twMerge.util';
 
 import { Button, ButtonProps } from '../Button';
-import { DrawerStyles, drawerStyles } from './Drawer.styles';
-import { twMerge } from '../../utilities/twMerge.util';
 import { IconProps } from '../Icon';
+
+import { DrawerStyles, drawerStyles } from './Drawer.styles';
 
 // MARK: Types
 
@@ -42,6 +42,7 @@ type DrawerOverlayProps = Pick<DrawerProps, 'onClose' | 'isOpen'>;
 export const Drawer = ({
     children,
     className,
+    colorScheme,
     confirmCTA,
     declineCTA,
     direction,
@@ -83,6 +84,7 @@ export const Drawer = ({
                     data-label='drawer-header'
                     className='grid grid-cols-[theme(spacing.40)_1fr_theme(spacing.40)] grid-rows-1  p-8'
                 >
+                    {/* MARK: Header */}
                     {heading && (
                         <h3
                             data-label='drawer-title'
@@ -95,6 +97,7 @@ export const Drawer = ({
                         <Button
                             icon={{ icon: 'cross', ariaLabel: 'cancel' }}
                             onClick={onClose}
+                            divergent='ghost'
                             className={twMerge(
                                 'col-span-1 row-start-1',
                                 direction === 'left'
@@ -128,15 +131,17 @@ export const Drawer = ({
                         />
                     )}
                 </header>
+                {/* MARK: Body */}
                 <div
                     data-label='drawer-body'
-                    className={clsx(
+                    className={twMerge(
                         'flex flex-col gap-16 flex-1 p-16 pt-0 mb-16 items-center overflow-y-auto overflow-x-hidden',
                         scrollbar
                     )}
                 >
                     {children}
                 </div>
+                {/* MARK: Footer */}
                 <footer
                     data-label='drawer-footer'
                     className='flex flex-row gap-16 justify-end p-16'
@@ -144,14 +149,25 @@ export const Drawer = ({
                     {declineCTA && (
                         <Button
                             onClick={onClose}
+                            colorScheme={colorScheme}
+                            divergent='soft'
                             {...declineCTA}
                         >
                             Cancel
                         </Button>
                     )}
-                    {confirmCTA && <Button {...confirmCTA}>Confirm</Button>}
+                    {confirmCTA && (
+                        <Button
+                            colorScheme={colorScheme}
+                            divergent='soft'
+                            {...confirmCTA}
+                        >
+                            Confirm
+                        </Button>
+                    )}
                 </footer>
             </aside>
+            {/* MARK: Overlay */}
             <DrawerOverlay
                 onClose={onClose}
                 isOpen={isOpen}
@@ -159,8 +175,6 @@ export const Drawer = ({
         </>
     );
 };
-
-// data-label='' className=''
 
 // MARK: Drawer Overlay
 
@@ -170,7 +184,7 @@ const DrawerOverlay = ({ onClose, isOpen }: DrawerOverlayProps) => {
     return (
         <div
             data-label='drawer-overlay'
-            className={clsx(
+            className={twMerge(
                 'flex absolute top-0 right-0 bottom-0 left-0 bg-black/50 z-30',
                 isOpen ? 'bg-black-500/50' : 'bg-black-500/0',
                 isVisible ? 'visible' : 'invisible',

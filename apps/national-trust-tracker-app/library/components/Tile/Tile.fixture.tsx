@@ -9,6 +9,7 @@ import { ButtonProps } from '../Button';
 import { IconProps } from '../Icon';
 
 import { Tile, TileProps } from './Tile.component';
+import { getCase } from '../../helpers';
 
 const divergents: Exclude<TileProps['divergent'], null | undefined>[] = [
     'outline',
@@ -59,11 +60,18 @@ const TileFixture = () => {
         <div className='flex gap-16 p-16'>
             {divergents.map((divergent) => {
                 return (
-                    <Tile
+                    <div
+                        className='flex flex-col gap-16 h-fit items-center'
                         key={divergent}
-                        divergent={divergent}
-                        {...props}
-                    />
+                    >
+                        <h2 className='font-bold text-14'>
+                            {getCase(divergent, 'sentence').toCapitalisedCase()}
+                        </h2>
+                        <Tile
+                            divergent={divergent}
+                            {...props}
+                        />
+                    </div>
                 );
             })}
         </div>

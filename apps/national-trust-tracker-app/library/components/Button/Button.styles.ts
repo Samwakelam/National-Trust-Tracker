@@ -76,7 +76,7 @@ const buttonStyles = cva(
                 ],
             },
             iconButton: {
-                true: ['w-40 px-0'],
+                true: ['w-40 min-w-40 px-0'],
                 false: [],
             },
             isLoading: {

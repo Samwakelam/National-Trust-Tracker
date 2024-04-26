@@ -10,12 +10,12 @@ import { ButtonProps } from '../Button';
 import { MenuProps } from '../Menu';
 
 import '../../prototypes/String.extensions';
+import { twMerge } from 'tailwind-merge';
 
 const divergents: Exclude<CardProps['divergent'], null | undefined>[] = [
-    'ghost',
     'outline',
-    'soft',
     'solid',
+    'solidOutline',
 ];
 
 const CardFixture = () => {
@@ -96,7 +96,12 @@ const CardFixture = () => {
     };
 
     return (
-        <div className='grid grid-cols-2 gap-16 mb-20 p-16'>
+        <div
+            className={twMerge(
+                'h-full grid grid-cols-1 md:grid-cols-2 gap-16 mb-20 p-16',
+                cardDirection === 'vertical' && 'sm:grid-cols-2'
+            )}
+        >
             {divergents.map((divergent) => {
                 return (
                     <div className='flex flex-col gap-16'>
