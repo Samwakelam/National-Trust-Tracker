@@ -1,37 +1,54 @@
-// Mark: Types
+// MARK: Types
+
+import { twMerge } from '../../../utilities/twMerge.util';
+import { Badge, BadgeProps } from '../../Badge/Badge.component';
+import { Icon, IconProps } from '../../Icon';
+import { Tooltip, TooltipProps } from '../../Tooltip/Tooltip.component';
+
+// MARK: Types
+
+interface LabelTooltip extends Omit<TooltipProps, 'children'> {
+    status: 'info' | 'warning';
+}
 
 export type LabelProps = {
-    // addBadge?: Chakra.BadgeProps[];
+    addBadge?: BadgeProps[];
     display?: 'stack' | 'linear';
     hideBadge?: boolean;
     htmlFor: string;
     isRequired: boolean;
     label?: string;
-    // tooltip?: Omit<Chakra.TooltipProps, 'children'>;
-    // warning?: Omit<Chakra.TooltipProps, 'children'>;
+    tooltips?: LabelTooltip[];
 };
-// Mark: Label
 
-// data-label='' className=''
+// MARK: Label
 
 export const Label = ({
-    // addBadge,
+    addBadge,
     display = 'linear',
     hideBadge,
     htmlFor,
     isRequired,
     label,
-    // tooltip,
-    // warning,
+    tooltips,
     ...props
 }: LabelProps) => {
-    // Mark: Return
+    // MARK: Return
 
     return (
-        <div className='grid grid-cols-auto grid-rows-auto gap-y-8 w-fit'>
+        <div
+            data-label='label'
+            className='grid grid-cols-auto grid-rows-auto gap-x-8 w-fit'
+        >
             <div
-                className='row-start-1 col-span-1'
-                // colSpan={display === 'linear' ? 1 : hideBadge ? 1 : 20}
+                className={twMerge(
+                    'row-start-1 ',
+                    display === 'linear'
+                        ? 'col-span-1'
+                        : hideBadge
+                          ? 'col-span-1'
+                          : 'col-span-20'
+                )}
             >
                 <label
                     className=''
@@ -44,79 +61,71 @@ export const Label = ({
             </div>
             {!hideBadge && (
                 <div
-                    className='row-start-1 flex items-center flex-wrap'
-                    // rowStart={display === 'linear' ? 1 : 2}
+                    className={twMerge(
+                        'row-start-1 flex items-center flex-wrap',
+                        display === 'linear' ? 'row-start-1' : 'row-start-2'
+                    )}
                 >
-                    <div
-                        className='text-14'
-                        data-label='badge'
-                        // colorScheme={isRequired ? 'red' : 'blue'}
+                    <Badge
+                    // colorScheme={isRequired ? 'red' : 'blue'}
                     >
                         {isRequired ? 'Required' : 'Optional'}
-                    </div>
+                    </Badge>
                 </div>
             )}
-            {/* {addBadge && (
-                <Chakra.GridItem
-                    rowStart={display === 'linear' ? 1 : 2}
-                    display='flex'
-                    alignContent='center'
-                    flexWrap='wrap'
+            {addBadge && (
+                <div
+                    className={twMerge(
+                        'flex flex-row content-center flex-wrap',
+                        display === 'linear' ? 'row-start-1' : 'row-start-2'
+                    )}
                 >
                     {addBadge.map((badge) => {
                         return (
-                            <Chakra.Badge
-                                __css={styles.badge}
-                                fontSize='x-small'
-                                variant='subtle'
+                            <Badge
                                 {...badge}
+                                // divergent='soft'
                             />
                         );
                     })}
-                </Chakra.GridItem>
-            )} */}
-            {/* {tooltip && (
-                <Chakra.GridItem
-                    display='flex'
-                    rowStart={display === 'linear' || hideBadge ? 1 : 2}
-                    alignContent='center'
-                    flexWrap='wrap'
+                </div>
+            )}
+            {tooltips && tooltips.length > 0 && (
+                <div
+                    className={twMerge(
+                        'flex flex-row row-start-1 items-center flex-wrap gap-8',
+                        display === 'linear' || hideBadge
+                            ? 'row-start-1'
+                            : 'row-start-2'
+                    )}
                 >
-                    <Chakra.Tooltip
-                        hasArrow={true}
-                        __css={styles.tooltip}
-                        {...tooltip}
-                    >
-                        <Chakra.chakra.span display='flex'>
-                            <Icon
-                                __css={styles.icon}
-                                icon='circle-info'
-                                ariaLabel='extra information'
-                            />
-                        </Chakra.chakra.span>
-                    </Chakra.Tooltip>
-                </Chakra.GridItem>
-            )} */}
-            {/* {warning && (
-                <Chakra.GridItem
-                    display='flex'
-                    rowStart={display === 'linear' || hideBadge ? 1 : 2}
-                >
-                    <Chakra.Tooltip
-                        hasArrow={true}
-                        __css={styles.tooltip}
-                        {...warning}
-                    >
-                        <Chakra.chakra.span transform='translateY(2px)'>
-                            <Icon
-                                __css={styles.warning}
-                                icon='warning'
-                                ariaLabel='warning information'
-                            />
-                        </Chakra.chakra.span>
-                    </Chakra.Tooltip>
-                </Chakra.GridItem>
-            )} */}
+                    {tooltips.map((tooltip) => {
+                        const icon: IconProps =
+                            tooltip.status === 'info'
+                                ? {
+                                      className: 'text-gray-600',
+                                      icon: 'circle-info',
+                                      ariaLabel: 'extra information',
+                                  }
+                                : {
+                                      className: 'text-orange-600',
+                                      icon: 'warning',
+                                      ariaLabel: 'warning information',
+                                  };
+
+                        return (
+                            <Tooltip
+                                {...tooltip}
+                                key={`label-${tooltip.status}-${tooltip.label}`}
+                            >
+                                <span className='flex flex-row'>
+                                    <Icon {...icon} />
+                                </span>
+                            </Tooltip>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };

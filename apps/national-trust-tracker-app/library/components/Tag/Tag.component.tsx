@@ -1,13 +1,34 @@
 import React, { ReactElement, ReactNode } from 'react';
+
+import { twMerge } from '../../utilities/twMerge.util';
+
 import { Icon, IconProps } from '../Icon';
 
-export type TagProps = { children?: ReactNode; icon?: IconProps };
+import { TagStyles, tagStyles } from './Tag.styles';
 
-export const Tag = ({ children, icon }: TagProps): ReactElement<TagProps> => {
+// MARK: Types
+
+export interface TagProps extends TagStyles {
+    children?: ReactNode;
+    icon?: IconProps;
+}
+
+// MARK: Tag
+
+export const Tag = ({
+    children,
+    icon,
+    divergent,
+    colorScheme,
+}: TagProps): ReactElement<TagProps> => {
+    const styles = tagStyles({ divergent, colorScheme });
+
+    // MARK: Return
+
     return (
         <span
             data-label='tag'
-            className='flex flex-row gap-4 w-fit items-center bg-slate-200 text-14 px-12 py-2 rounded-full'
+            className={twMerge(styles)}
         >
             {icon && (
                 <Icon

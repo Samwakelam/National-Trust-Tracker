@@ -5,17 +5,20 @@ import { RendererConfig, UserModuleWrappers } from 'react-cosmos-core';
 
 import './library/global.css';
 
-import * as fixture0 from './library/components/Tile/Tile.fixture';
-import * as fixture1 from './library/components/Tag/Tag.fixture';
-import * as fixture2 from './library/components/Modal/Modal.fixture';
-import * as fixture3 from './library/components/Menu/Menu.fixture';
-import * as fixture4 from './library/components/Icon/Icon.fixture';
-import * as fixture5 from './library/components/HTMLParser/HTMLParser.fixture';
-import * as fixture6 from './library/components/Frame/Frame.fixture';
-import * as fixture7 from './library/components/Drawer/Drawer.fixture';
-import * as fixture8 from './library/components/Colour Tools/Colours.fixture';
-import * as fixture9 from './library/components/Card/Card.fixture';
-import * as fixture10 from './library/components/Button/Button.fixture';
+import * as fixture0 from './library/components/Tooltip/Tooltip.fixture';
+import * as fixture1 from './library/components/Tile/Tile.fixture';
+import * as fixture2 from './library/components/Tag/Tag.fixture';
+import * as fixture3 from './library/components/Modal/Modal.fixture';
+import * as fixture4 from './library/components/Menu/Menu.fixture';
+import * as fixture5 from './library/components/Icon/Icon.fixture';
+import * as fixture6 from './library/components/HTMLParser/HTMLParser.fixture';
+import * as fixture7 from './library/components/Frame/Frame.fixture';
+import * as fixture8 from './library/components/Form Components/Label/Label.fixture';
+import * as fixture9 from './library/components/Drawer/Drawer.fixture';
+import * as fixture10 from './library/components/Colour Tools/Colours.fixture';
+import * as fixture11 from './library/components/Card/Card.fixture';
+import * as fixture12 from './library/components/Button/Button.fixture';
+import * as fixture13 from './library/components/Badge/Badge.fixture';
 
 import * as decorator0 from './library/components/cosmos.decorator';
 
@@ -25,17 +28,20 @@ export const rendererConfig: RendererConfig = {
 };
 
 const fixtures = {
-  'library/components/Tile/Tile.fixture.tsx': { module: fixture0 },
-  'library/components/Tag/Tag.fixture.tsx': { module: fixture1 },
-  'library/components/Modal/Modal.fixture.tsx': { module: fixture2 },
-  'library/components/Menu/Menu.fixture.tsx': { module: fixture3 },
-  'library/components/Icon/Icon.fixture.tsx': { module: fixture4 },
-  'library/components/HTMLParser/HTMLParser.fixture.tsx': { module: fixture5 },
-  'library/components/Frame/Frame.fixture.tsx': { module: fixture6 },
-  'library/components/Drawer/Drawer.fixture.tsx': { module: fixture7 },
-  'library/components/Colour Tools/Colours.fixture.tsx': { module: fixture8 },
-  'library/components/Card/Card.fixture.tsx': { module: fixture9 },
-  'library/components/Button/Button.fixture.tsx': { module: fixture10 }
+  'library/components/Tooltip/Tooltip.fixture.tsx': { module: fixture0 },
+  'library/components/Tile/Tile.fixture.tsx': { module: fixture1 },
+  'library/components/Tag/Tag.fixture.tsx': { module: fixture2 },
+  'library/components/Modal/Modal.fixture.tsx': { module: fixture3 },
+  'library/components/Menu/Menu.fixture.tsx': { module: fixture4 },
+  'library/components/Icon/Icon.fixture.tsx': { module: fixture5 },
+  'library/components/HTMLParser/HTMLParser.fixture.tsx': { module: fixture6 },
+  'library/components/Frame/Frame.fixture.tsx': { module: fixture7 },
+  'library/components/Form Components/Label/Label.fixture.tsx': { module: fixture8 },
+  'library/components/Drawer/Drawer.fixture.tsx': { module: fixture9 },
+  'library/components/Colour Tools/Colours.fixture.tsx': { module: fixture10 },
+  'library/components/Card/Card.fixture.tsx': { module: fixture11 },
+  'library/components/Button/Button.fixture.tsx': { module: fixture12 },
+  'library/components/Badge/Badge.fixture.tsx': { module: fixture13 }
 };
 
 const decorators = {
