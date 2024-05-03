@@ -11,7 +11,7 @@ export async function GET(request: Request, { params }: ParametersProps) {
 
     const action = await getPlaceById(placeId);
 
-    return action;
+    return NextResponse.json(action);
 }
 
 export async function PUT(request: Request, { params }: ParametersProps) {
@@ -20,5 +20,5 @@ export async function PUT(request: Request, { params }: ParametersProps) {
 
     const action = await putPlaceById(placeId, body);
 
-    return action;
+    return NextResponse.json(action);
 }

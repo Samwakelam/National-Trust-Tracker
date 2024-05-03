@@ -1,7 +1,6 @@
 'use client';
 
 import React, { ReactElement } from 'react';
-import clsx from 'clsx';
 
 import { scrollbar } from '../../utilities/className.utils';
 
@@ -114,7 +113,7 @@ const ModalComponent = ({
                 </header>
                 <div
                     data-label='modal-body'
-                    className={clsx(
+                    className={twMerge(
                         'flex flex-col gap-16 flex-1 p-16 pt-0 mb-16 items-center overflow-y-auto overflow-x-hidden',
                         scrollbar
                     )}

@@ -81,6 +81,14 @@ module.exports = {
                     950: '#132500',
                 },
             },
+            keyframes: {
+                slideIn: {
+                    from: {
+                        transform: 'translateY(-12px)',
+                    },
+                },
+            },
+            animation: { slideIn: 'slideIn 1s ease-in' },
         },
         spacing: {
             '0': '0',
@@ -147,6 +155,8 @@ module.exports = {
             14: '0.875rem',
             13: '0.8rem',
             12: '0.75rem',
+            10: '0.625rem',
+            8: '0.5rem',
         },
     },
     plugins: [

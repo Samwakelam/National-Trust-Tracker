@@ -7,5 +7,5 @@ export async function POST(request: Request) {
 
     const action = await postMemberships(body);
 
-    return action;
+    return NextResponse.json(action);
 }

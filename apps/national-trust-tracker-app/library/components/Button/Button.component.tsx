@@ -1,7 +1,6 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import clsx from 'clsx';
 
 import { ClickEvent } from '../../types';
 import { twMerge } from '../../utilities/twMerge.util';

@@ -8,6 +8,7 @@ import { twMerge } from '../../utilities/twMerge.util';
 export interface BadgeProps extends BadgeStyles {
     children?: ReactNode;
     icon?: IconProps;
+    className?: string;
 }
 
 export const Badge = ({
@@ -15,8 +16,9 @@ export const Badge = ({
     children,
     divergent,
     icon,
+    className,
 }: BadgeProps): ReactElement<BadgeProps> => {
-    const styles = badgeStyles({ divergent, colorScheme });
+    const styles = badgeStyles({ divergent, colorScheme, className });
 
     return (
         <span

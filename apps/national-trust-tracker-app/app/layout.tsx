@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 import { Providers } from './providers';
 
+import { scrollbar } from '../library/utilities/className.utils';
+import { twMerge } from '../library/utilities/twMerge.util';
+
 import '../library/prototypes/String.extensions';
 import '../library/global.css';
-import { scrollbar } from '../library/utilities/className.utils';
-import clsx from 'clsx';
-import { extendTailwindMerge } from 'tailwind-merge';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker App',
@@ -50,7 +50,7 @@ export default function RootLayout({
                         </div>
                     </div>
                     <main
-                        className={clsx(
+                        className={twMerge(
                             'flex flex-col w-full h-full overflow-y-auto bg-slate-100',
                             scrollbar
                         )}

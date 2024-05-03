@@ -10,6 +10,7 @@ import {
 } from 'react';
 
 import { twMerge } from '../../utilities/twMerge.util';
+import { useStyle } from '../../hooks/useStyle.hook';
 
 // MARK: Type
 
@@ -19,15 +20,6 @@ export type TooltipProps = {
     hasArrow?: boolean;
     alwaysOpen?: boolean;
     position?: 'top' | 'bottom' | 'left' | 'right';
-};
-
-// MARK: Use Style Hook
-
-const useStyle = <T extends CSSProperties>(
-    props: T,
-    deps: DependencyList
-): T => {
-    return useMemo(() => props, deps);
 };
 
 // MARK: Tooltip

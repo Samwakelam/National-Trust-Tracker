@@ -15,33 +15,17 @@ export const drawerStyles = cva(
         variants: {
             colorScheme: colorScheme,
             direction: {
-                left: [
-                    'transition-[left] left-[-75%] top-0',
-                    'h-full w-3/4',
-                    'rounded-r-24',
-                ],
-                right: [
-                    'transition-[right] right-[-75%] top-0',
-                    'h-full w-3/4',
-                    'rounded-l-24',
-                ],
-                top: [
-                    'transition-[top] top-[-75%]  left-0',
-                    ' h-3/4 w-full',
-                    'rounded-b-24',
-                ],
-                bottom: [
-                    'transition-[bottom] bottom-[-75%] left-0',
-                    ' h-3/4 w-full',
-                    'rounded-t-24',
-                ],
+                left: ['transition-[left]'],
+                right: ['transition-[right]'],
+                top: ['transition-[top]'],
+                bottom: ['transition-[bottom]'],
             },
             divergent: {
                 closed: [],
                 tab: ['h-4/5 top-1/10'],
             },
             isOpen: {
-                true: ['right-0'],
+                true: [],
                 false: [],
             },
             isVisible: {
@@ -54,16 +38,17 @@ export const drawerStyles = cva(
                 lg: [],
             },
         },
+
         compoundVariants: [
+            // MARK: Tab
+            { divergent: 'tab', isVisible: false, className: 'visible' },
             {
                 divergent: 'tab',
                 direction: ['right', 'top'],
                 isOpen: false,
-                isVisible: false,
                 className: [
-                    'right-[calc(-75%+56px)] visible',
-                    'w-3/4 left-[unset]',
-                    'rounded-l-24 rounded-r-0',
+                    'right-[calc(-75%+56px)] transition-[right] left-[unset]',
+                    'rounded-l-24 rounded-r-0 w-3/4',
                 ],
             },
             {
@@ -71,46 +56,86 @@ export const drawerStyles = cva(
                 direction: ['right', 'top'],
                 isOpen: true,
                 className: [
-                    'right-0',
-                    'w-3/4 left-[unset]',
-                    'rounded-l-24 rounded-r-0',
+                    'right-0 transition-[right] left-[unset]',
+                    'rounded-l-24 rounded-r-0 w-3/4',
                 ],
             },
             {
                 divergent: 'tab',
                 direction: ['left', 'bottom'],
                 isOpen: false,
-                isVisible: false,
                 className: [
-                    'left-[calc(-75%+56px)] visible',
-                    'w-3/4 right-[unset]',
-                    'rounded-r-24 rounded-l-0',
+                    'left-[calc(-75%+56px)] transition-[left] right-[unset]',
+                    'rounded-r-24 rounded-l-0 w-3/4',
                 ],
             },
             {
                 divergent: 'tab',
                 direction: ['left', 'bottom'],
                 isOpen: true,
-                className:
-                    'left-0 visible w-3/4 right-[unset] rounded-r-24 rounded-l-0',
+                className: [
+                    'left-0 transition-[left] right-[unset]',
+                    'rounded-r-24 rounded-l-0 w-3/4',
+                ],
             },
+            // MARK: Closed
             {
                 divergent: 'closed',
                 isOpen: true,
                 direction: 'left',
-                className: 'left-0',
+                className: 'left-0 rounded-r-24',
+            },
+            {
+                divergent: 'closed',
+                isOpen: true,
+                direction: 'right',
+                className: 'right-0 rounded-l-24',
             },
             {
                 divergent: 'closed',
                 isOpen: true,
                 direction: 'top',
-                className: 'top-0',
+                className: 'top-0 rounded-b-24',
             },
             {
                 divergent: 'closed',
                 isOpen: true,
                 direction: 'bottom',
-                className: 'bottom-0',
+                className: 'bottom-0 rounded-t-24',
+            },
+            {
+                divergent: 'closed',
+                isOpen: false,
+                direction: 'left',
+                className: 'left-[-75%] rounded-r-24',
+            },
+            {
+                divergent: 'closed',
+                isOpen: false,
+                direction: 'right',
+                className: 'right-[-75%] rounded-l-24',
+            },
+            {
+                divergent: 'closed',
+                isOpen: false,
+                direction: 'top',
+                className: 'top-[-75%] rounded-b-24',
+            },
+            {
+                divergent: 'closed',
+                isOpen: false,
+                direction: 'bottom',
+                className: 'bottom-[-75%] rounded-t-24',
+            },
+            {
+                divergent: 'closed',
+                direction: ['left', 'right'],
+                className: 'h-full w-3/4 top-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['top', 'bottom'],
+                className: 'h-3/4 w-full left-0',
             },
         ],
         defaultVariants: {

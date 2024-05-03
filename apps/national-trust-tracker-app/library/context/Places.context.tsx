@@ -11,6 +11,8 @@ import {
 import { getAllPlaces } from '../../actions/Places.actions';
 import { Place } from '../types/national-trust';
 
+// MARK: Types
+
 type PlacesContextProps = {
     isLoading: boolean;
     places: Place[];
@@ -25,6 +27,8 @@ type PlacesProviderProps = {
     children: ReactElement | ReactNode;
     initial: Place[];
 };
+
+// MARK: Initial State
 
 const initialState: PlacesContextProps = {
     isLoading: false,
@@ -46,11 +50,17 @@ const initialState: PlacesContextProps = {
     },
 };
 
+// MARK: Context
+
 const PlacesContext = createContext<PlacesContextProps>(initialState);
+
+// MARK: Provider
 
 export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [places, setPlaces] = useState<PlacesContextProps['places']>(initial);
+
+    // MARK: Handlers
 
     const getPlace: PlacesContextProps['getPlace'] = async (placeId) => {};
 
@@ -59,6 +69,8 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
 
         setPlaces(data);
     };
+
+    // MARK: Event Functions
 
     const onCreatePlace: PlacesContextProps['onCreatePlace'] = async (
         place
@@ -71,6 +83,8 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
     const onUpdatePlace: PlacesContextProps['onUpdatePlace'] = async (
         placeId
     ) => {};
+
+    // MARK: Return
 
     return (
         <PlacesContext.Provider
@@ -88,5 +102,7 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
         </PlacesContext.Provider>
     );
 };
+
+// MARK: UsePlaces
 
 export const usePlaces = () => useContext(PlacesContext);

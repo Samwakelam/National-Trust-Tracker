@@ -1,5 +1,4 @@
-import React, { ReactElement } from 'react';
-import clsx from 'clsx';
+import React, { ReactElement, ReactNode } from 'react';
 
 import { twMerge } from '../../utilities/twMerge.util';
 import { ClickEvent } from '../../types';
@@ -25,8 +24,14 @@ interface IndicatorTagProps extends TagProps {
 
 export type IndicatorProps = IndicatorIconProps | IndicatorTagProps;
 
+export type Children =
+    | ReactElement
+    | (ReactElement | ReactElement[] | undefined | false | null)[]
+    | false
+    | null;
+
 interface CardComponentProps extends CardStyles {
-    children?: ReactElement | ReactElement[] | null;
+    children?: ReactNode;
     className?: string;
     confirmCTA?: ButtonProps;
     declineCTA?: ButtonProps;

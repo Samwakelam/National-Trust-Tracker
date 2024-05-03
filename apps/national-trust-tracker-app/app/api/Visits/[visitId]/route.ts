@@ -14,7 +14,7 @@ export async function PATCH(request: Request, { params }: ParametersProps) {
 
     const action = await patchVisitById(visitId, body);
 
-    return action;
+    return NextResponse.json(action);
 }
 
 export async function DELETE(request: Request, { params }: ParametersProps) {
@@ -22,5 +22,5 @@ export async function DELETE(request: Request, { params }: ParametersProps) {
 
     const action = await deleteVisitById(visitId);
 
-    return action;
+    return NextResponse.json(action);
 }

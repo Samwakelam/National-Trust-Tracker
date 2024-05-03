@@ -9,5 +9,5 @@ export async function GET(request: Request, { params }: ParametersProps) {
 
     const action = await getMembership(groupName);
 
-    return action;
+    return NextResponse.json(action);
 }

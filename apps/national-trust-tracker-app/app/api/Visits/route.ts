@@ -6,7 +6,7 @@ export const revalidate = 0;
 export async function GET(request: Request) {
     const action = await getAllVisits();
 
-    return action;
+    return NextResponse.json(action);
 }
 
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     const action = await postVisit(body);
 
-    return action;
+    return NextResponse.json(action);
 }
 
 // export async function PUT(request: Request) {}

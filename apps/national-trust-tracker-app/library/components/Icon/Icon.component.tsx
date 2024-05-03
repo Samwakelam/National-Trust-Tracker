@@ -2,7 +2,6 @@
 
 import React, { ReactElement, createElement } from 'react';
 import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
 
 import {
     arrowsMap,

@@ -50,6 +50,7 @@ const buttonStyles = cva(
             divergent: {
                 ghost: [
                     `bg-transparent`,
+                    'disabled:bg-transparent disabled:text-slate-300',
                     `hover:bg-[--color-200]`,
                     `active:bg-[--color-200]`,
                     `data-[active=true]:bg-[--color-200]`,
@@ -89,6 +90,7 @@ const buttonStyles = cva(
             },
         },
         compoundVariants: [
+            { size: 'sm', iconButton: true, className: 'w-32 min-w-32' },
             {
                 divergent: ['solid', 'outline', 'soft', 'ghost'],
                 colorScheme: 'white',

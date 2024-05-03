@@ -14,6 +14,8 @@ import {
     Bus,
     Cafe,
     CarPark,
+    ChargingPoint,
+    CoffeeShop,
     Dogs,
     DropOff,
     Ferry,
@@ -38,6 +40,7 @@ import {
     Train,
     Underground,
     VirtualTour,
+    Weddings,
     Wheelchair,
 } from '../icons';
 
@@ -57,6 +60,8 @@ export type NationalTrustType =
     | 'nt-bus'
     | 'nt-cafe'
     | 'nt-car-park'
+    | 'nt-charging-point'
+    | 'nt-coffee-shop'
     | 'nt-dogs'
     | 'nt-drop-off'
     | 'nt-ferry'
@@ -80,6 +85,7 @@ export type NationalTrustType =
     | 'nt-train'
     | 'nt-underground'
     | 'nt-virtual-tour'
+    | 'nt-weddings'
     | 'nt-wheelchair';
 
 export const nationalTrustMap: { [key in NationalTrustType]: IconType } = {
@@ -98,6 +104,8 @@ export const nationalTrustMap: { [key in NationalTrustType]: IconType } = {
     'nt-bus': Bus,
     'nt-cafe': Cafe,
     'nt-car-park': CarPark,
+    'nt-charging-point': ChargingPoint,
+    'nt-coffee-shop': CoffeeShop,
     'nt-dogs': Dogs,
     'nt-drop-off': DropOff,
     'nt-ferry': Ferry,
@@ -121,5 +129,6 @@ export const nationalTrustMap: { [key in NationalTrustType]: IconType } = {
     'nt-train': Train,
     'nt-underground': Underground,
     'nt-virtual-tour': VirtualTour,
+    'nt-weddings': Weddings,
     'nt-wheelchair': Wheelchair,
 };

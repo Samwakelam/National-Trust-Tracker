@@ -11,8 +11,10 @@ import { MenuProps } from '../Menu';
 
 import '../../prototypes/String.extensions';
 import { twMerge } from 'tailwind-merge';
+import { getCase } from '../../helpers';
 
 const divergents: Exclude<CardProps['divergent'], null | undefined>[] = [
+    'ghost',
     'outline',
     'solid',
     'solidOutline',
@@ -43,6 +45,8 @@ const CardFixture = () => {
         children: 'Cancel',
         onClick: () => alert('Decline CTA Clicked'),
     };
+
+    const [hasHeading] = useFixtureInput<boolean>('Has Heading', false);
 
     const [hasImage] = useFixtureInput<boolean>('Has Image', false);
     const image = {
@@ -86,7 +90,7 @@ const CardFixture = () => {
     const props: Partial<CardProps> = {
         confirmCTA: hasConfirmCTA ? confirmCTA : undefined,
         declineCTA: hasDeclineCTA ? declineCTA : undefined,
-        heading: 'I am a basic Header',
+        heading: hasHeading ? 'I am a basic Header' : undefined,
         image: hasImage ? image : undefined,
         indicators: hasIndicators ? indicators : undefined,
         direction: cardDirection,
@@ -94,6 +98,8 @@ const CardFixture = () => {
         onClick: canClick ? () => onClick() : undefined,
         colorScheme: colors as CardProps['colorScheme'],
     };
+
+    // MARK: Return
 
     return (
         <div
@@ -106,7 +112,7 @@ const CardFixture = () => {
                 return (
                     <div className='flex flex-col gap-16'>
                         <h2 className='font-bold'>
-                            {divergent.toCapitalisedCase()}
+                            {getCase(divergent, 'sentence').toCapitalisedCase()}
                         </h2>
                         <Card
                             divergent={divergent}

@@ -46,6 +46,7 @@ export const cardStyles = cva(
                 outline: ['bg-transparent border-[--color-400]'],
                 solid: ['bg-[--color-200]'],
                 solidOutline: ['bg-[--color-200] border-[--color-400]'],
+                ghost: ['bg-transparent'],
             },
             size: {
                 sm: [],

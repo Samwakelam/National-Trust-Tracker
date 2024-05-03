@@ -5,7 +5,7 @@ import { createIcon } from '../createIcon.helper';
 
 export const Wheelchair = createIcon({
     viewBox: '0 0 48 48',
-    displayName: '',
+    displayName: 'WheelChair',
     path: (
         <>
             <path d='M22.972 39a11.622 11.622 0 008.933-4.065l-1.358-2.347a9.078 9.078 0 01-7.575 4c-5.48 0-8.987-3.32-8.987-8.643a8.127 8.127 0 012.715-6.063l-.908-2.52a10.677 10.677 0 00-4.292 8.59C11.5 34.592 16.077 39 22.972 39z'></path>

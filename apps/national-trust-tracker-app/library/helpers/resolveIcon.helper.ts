@@ -22,11 +22,15 @@ export const resolveIcon = (reference: string): IconProps | null => {
                 icon: 'nt-car-park',
                 ariaLabel: 'car-park',
             };
+        case 'TAG002506':
+            return { icon: 'nt-coffee-shop', ariaLabel: 'coffee shop' };
         case 'TAG002507':
             return {
                 icon: 'nt-dogs',
                 ariaLabel: 'dogs allowed',
             };
+        case 'TAG002508':
+            return { icon: 'nt-charging-point', ariaLabel: 'charing point' };
         case 'TAG002510':
             return {
                 icon: 'nt-guided-tour',
@@ -41,6 +45,11 @@ export const resolveIcon = (reference: string): IconProps | null => {
             return {
                 icon: 'nt-restaurant',
                 ariaLabel: 'restaurant',
+            };
+        case 'TAG002513':
+            return {
+                icon: 'nt-weddings',
+                ariaLabel: 'weddings',
             };
         case 'TAG002515':
             return {

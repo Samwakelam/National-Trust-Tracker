@@ -47,6 +47,7 @@ export const Menu = ({
             className='inline-block relative'
         >
             <Button
+                size='sm'
                 divergent='ghost'
                 colorScheme={colorScheme}
                 data-label='menu-button'

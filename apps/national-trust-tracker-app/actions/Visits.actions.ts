@@ -4,6 +4,7 @@ import { getDatabaseConnection } from '../library/helpers';
 import { Visit } from '../library/types/internal';
 import VisitsModel from '../library/models/Visits.model';
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 export const getAllVisits = async () => {
     try {
@@ -44,6 +45,7 @@ export const postVisit = async (body: Omit<Visit, '_id'>) => {
             data,
         });
 
+        revalidatePath('/');
         return await res.json();
     } catch (error) {
         console.log('Visits route Post error:', error);

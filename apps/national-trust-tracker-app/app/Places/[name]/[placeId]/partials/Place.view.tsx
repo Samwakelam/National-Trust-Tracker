@@ -165,7 +165,7 @@ export const PlaceView = ({
             )} */}
 
                 <Frame
-                    bgImage={place.images.PRIMARY.url}
+                    bgImage={place.images.PRIMARY.url || undefined}
                     id='frame-hero-image'
                 >
                     <div className='flex flex-col gap-16 w-full items-start'>
@@ -208,11 +208,13 @@ export const PlaceView = ({
                     colorScheme='slate'
                 >
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 items-center'>
-                        <img
-                            className='h-full object-cover'
-                            alt={place.images.PRIMARY.description}
-                            src={place.images.PRIMARY.url}
-                        />
+                        {place.images.PRIMARY.url && (
+                            <img
+                                className='h-full object-cover'
+                                alt={place.images.PRIMARY.description}
+                                src={place.images.PRIMARY.url}
+                            />
+                        )}
 
                         <div className='flex flex-col gap-16'>
                             <HtmlParser

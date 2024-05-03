@@ -86,12 +86,12 @@ export const Drawer = ({
                 >
                     {/* MARK: Header */}
                     {heading && (
-                        <h3
+                        <h2
                             data-label='drawer-title'
                             className='font-bold col-start-2 col-span-1 text-center my-auto'
                         >
                             {heading}
-                        </h3>
+                        </h2>
                     )}
                     {!onOpen && (
                         <Button

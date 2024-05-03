@@ -13,6 +13,7 @@ interface LabelTooltip extends Omit<TooltipProps, 'children'> {
 
 export type LabelProps = {
     addBadge?: BadgeProps[];
+    className?: string;
     display?: 'stack' | 'linear';
     hideBadge?: boolean;
     htmlFor: string;
@@ -25,6 +26,7 @@ export type LabelProps = {
 
 export const Label = ({
     addBadge,
+    className,
     display = 'linear',
     hideBadge,
     htmlFor,
@@ -38,9 +40,12 @@ export const Label = ({
     return (
         <div
             data-label='label'
-            className='grid grid-cols-auto grid-rows-auto gap-x-8 w-fit'
+            className={twMerge(
+                'grid grid-cols-auto grid-rows-auto gap-x-8 w-fit',
+                className
+            )}
         >
-            <div
+            <label
                 className={twMerge(
                     'row-start-1 ',
                     display === 'linear'
@@ -49,16 +54,12 @@ export const Label = ({
                           ? 'col-span-1'
                           : 'col-span-20'
                 )}
+                htmlFor={htmlFor}
+                {...props}
             >
-                <label
-                    className=''
-                    htmlFor={htmlFor}
-                    data-label='Label'
-                    {...props}
-                >
-                    {label}
-                </label>
-            </div>
+                {label}
+            </label>
+
             {!hideBadge && (
                 <div
                     className={twMerge(
