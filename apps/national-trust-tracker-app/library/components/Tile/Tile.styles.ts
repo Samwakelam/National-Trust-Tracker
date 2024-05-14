@@ -6,7 +6,7 @@ import { colorScheme } from '../../utilities/colorScheme.util';
 
 export const tileStyles = cva(
     [
-        'flex rounded-12 flex-col aspect-3/4 w-fit justify-center border border-solid border-transparent',
+        'flex rounded-12 flex-col aspect-3/4 justify-center border border-solid border-transparent',
     ],
     {
         variants: {

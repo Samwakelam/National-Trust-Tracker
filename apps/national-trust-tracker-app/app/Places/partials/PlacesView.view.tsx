@@ -1,17 +1,20 @@
 'use client';
 
 import React, { ReactElement, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { PlaceSummary } from '../../../library/types/national-trust';
 import { useVisits } from '../../../library/context/Visits.context';
 import { usePlaces } from '../../../library/context/Places.context';
-
-import { PlaceCard } from './PlaceCard.component';
 import { getCase } from '../../../library/helpers';
 import { Tile } from '../../../library/components/Tile/Tile.component';
-import { useRouter } from 'next/navigation';
 import { Button, Drawer } from '../../../library/components';
 import { twMerge } from '../../../library/utilities/twMerge.util';
+
+import { PlaceCard } from './PlaceCard.component';
+import { FilterPlaces } from './FilterPlaces';
+
+// MARK: Types
 
 type PlacesViewProps = { places: PlaceSummary[] };
 
@@ -42,7 +45,7 @@ export const PlacesView = ({
             ></aside>
             <section
                 data-label='places-container'
-                className='grid grid-cols-2 sm:grid-cols-3 grid-flow-row-dense h-full gap-16 w-full'
+                className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 grid-flow-row-dense h-full gap-16 w-full'
             >
                 {places.map((summary) => {
                     const { placeId } = summary;
@@ -57,53 +60,45 @@ export const PlacesView = ({
 
                     if (!place) {
                         return (
-                            <div
+                            <Tile
                                 key={`place-tile-${placeId}`}
-                                className='col-span-1'
-                            >
-                                <Tile
-                                    className='w-full h-full'
-                                    heading={summary.name}
-                                    colorScheme='forest'
-                                    icon={
-                                        summary.active
-                                            ? {
-                                                  icon: 'circle-tick',
-                                                  ariaLabel: 'active',
-                                              }
-                                            : {
-                                                  icon: 'circle-cross',
-                                                  ariaLabel: 'inactive',
-                                              }
-                                    }
-                                    cta={{
-                                        children: 'Go to Page',
-                                        onClick: () => {
-                                            router.push(
-                                                `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`
-                                            );
-                                        },
-                                    }}
-                                />
-                            </div>
+                                className='w-full h-full'
+                                heading={summary.name}
+                                colorScheme='forest'
+                                icon={
+                                    summary.active
+                                        ? {
+                                              icon: 'circle-tick',
+                                              ariaLabel: 'active',
+                                          }
+                                        : {
+                                              icon: 'circle-cross',
+                                              ariaLabel: 'inactive',
+                                          }
+                                }
+                                cta={{
+                                    children: 'Go to Page',
+                                    onClick: () => {
+                                        router.push(
+                                            `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`
+                                        );
+                                    },
+                                }}
+                            />
                         );
                     }
 
                     return (
-                        <div
+                        <PlaceCard
                             key={`place-card-${placeId}`}
-                            className='col-span-2 sm:col-span-3'
-                        >
-                            <PlaceCard
-                                key={`place-card-${placeId}`}
-                                link={{
-                                    href: `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`,
-                                }}
-                                place={place}
-                                summary={summary}
-                                visited={visited}
-                            />
-                        </div>
+                            className='col-span-2 sm:col-span-2 row-span-1 sm:row-span-2'
+                            link={{
+                                href: `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`,
+                            }}
+                            place={place}
+                            summary={summary}
+                            visited={visited}
+                        />
                     );
                 })}
             </section>
@@ -113,7 +108,9 @@ export const PlacesView = ({
                 onClose={() => setIsOpen(false)}
                 onOpen={() => setIsOpen(true)}
                 direction='left'
-            ></Drawer>
+            >
+                <FilterPlaces />
+            </Drawer>
         </div>
     );
 };

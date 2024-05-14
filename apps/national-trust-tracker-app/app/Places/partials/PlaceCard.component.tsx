@@ -8,6 +8,8 @@ import { PlaceSummary } from '../../../library/types/national-trust';
 import { getCase, resolveIcon } from '../../../library/helpers';
 import { Card, IndicatorProps, Tag } from '../../../library/components';
 
+// MARK: Types
+
 type Link = {
     href: string;
     target?: '_blank' | '_parent' | '_self' | '_top';
@@ -19,6 +21,7 @@ type PlaceCardProps = {
     place: SavedPlace;
     summary: PlaceSummary;
     visited: number | undefined;
+    className?: string;
 };
 
 // MARK: Place Card
@@ -28,11 +31,14 @@ export const PlaceCard = ({
     place,
     summary,
     visited,
+    className,
 }: PlaceCardProps) => {
     const router = useRouter();
 
     const { active, name } = summary;
     const today = new Date().toJSON().split('T')[0] as string;
+
+    // MARK: State
 
     const [indicators, setIndicators] = useState<IndicatorProps[]>([
         {
@@ -105,6 +111,7 @@ export const PlaceCard = ({
 
     return (
         <Card
+            className={className}
             colorScheme='white'
             indicators={indicators}
             heading={name}
@@ -117,7 +124,6 @@ export const PlaceCard = ({
                 src: place.images.PRIMARY.url,
                 alt: place.images.PRIMARY.description,
             }}
-            direction='horizontal'
             menu={{
                 menuItems: [
                     {
