@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { Icon, IconProps } from '../Icon';
 import { MenuItemStyles, MenuStyles, menuItemStyles } from './Menu.styles';
 import { twMerge } from '../../utilities/twMerge.util';
+import { isolateClickEvent } from '../../helpers/isolateClickEvent.helper';
 
 // MARK: Types
 
@@ -13,12 +14,6 @@ export interface MenuProps extends MenuStyles {
     align?: 'left' | 'right';
     alwaysOpen?: boolean;
     menuItems: MenuItemProps[];
-}
-
-export interface MenuItemProps extends MenuItemStyles {
-    icon?: IconProps;
-    label: string;
-    onClick?: () => void;
 }
 
 // MARK: Menu
@@ -51,7 +46,8 @@ export const Menu = ({
                 divergent='ghost'
                 colorScheme={colorScheme}
                 data-label='menu-button'
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation();
                     if (alwaysOpen) return;
                     setIsOpen(!isOpen);
                 }}
@@ -76,18 +72,56 @@ export const Menu = ({
     );
 };
 
+// MARK: Menu Item Types
+
+type MenuItemLinkProps = {
+    href: string;
+    target?: '_blank' | '_parent' | '_self' | '_top';
+    download?: boolean;
+    children: ReactElement | ReactElement[];
+};
+
+export interface MenuItemProps extends MenuItemStyles {
+    icon?: IconProps;
+    label: string;
+    onClick?: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
+    link?: Omit<MenuItemLinkProps, 'children'>;
+}
+
 // MARK: Menu Item
-const MenuItem = ({ onClick, label, icon }: MenuItemProps) => {
+
+const MenuItemComponent = ({
+    onClick,
+    label,
+    icon,
+}: Omit<MenuItemProps, 'link'>) => {
     const styles = menuItemStyles({});
 
     return (
         <li
             data-label='menu-item'
             className={twMerge(styles)}
-            onClick={onClick}
+            onClick={isolateClickEvent(onClick)}
         >
             {icon && <Icon {...icon} />}
             <span className='text-nowrap'>{label}</span>
         </li>
     );
+};
+
+const MenuItem = ({ link, ...props }: MenuItemProps) => {
+    if (link) {
+        const { target = '_blank', ...rest } = link;
+        return (
+            <a
+                target={target}
+                onClick={(e) => e.stopPropagation()}
+                {...rest}
+            >
+                <MenuItemComponent {...props} />
+            </a>
+        );
+    }
+
+    return <MenuItemComponent {...props} />;
 };

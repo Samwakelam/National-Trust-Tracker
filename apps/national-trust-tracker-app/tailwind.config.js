@@ -7,6 +7,7 @@ module.exports = {
     ],
     theme: {
         extend: {
+            animation: { slideIn: 'slideIn 1s ease-in' },
             aspectRatio: {
                 '4/3': '4 / 3',
                 '3/4': '3 / 4',
@@ -30,12 +31,6 @@ module.exports = {
                 48: '3rem',
                 56: '3.5rem',
                 60: '3.75rem',
-            },
-            flexGrow: {
-                2: '2',
-            },
-            flex: {
-                2: '2 2 0%',
             },
             boxShadow: {
                 focus: '0 0 0 4px var(--tw-shadow-color)',
@@ -81,6 +76,12 @@ module.exports = {
                     950: '#132500',
                 },
             },
+            flex: {
+                2: '2 2 0%',
+            },
+            flexGrow: {
+                2: '2',
+            },
             keyframes: {
                 slideIn: {
                     from: {
@@ -88,7 +89,10 @@ module.exports = {
                     },
                 },
             },
-            animation: { slideIn: 'slideIn 1s ease-in' },
+            screens: {
+                '3xl': '1600px',
+                '4xl': '1900px',
+            },
         },
         spacing: {
             '0': '0',

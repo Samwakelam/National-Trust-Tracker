@@ -7,6 +7,7 @@ import { SavedPlace } from '../../../library/types/internal';
 import { PlaceSummary } from '../../../library/types/national-trust';
 import { getCase, resolveIcon } from '../../../library/helpers';
 import { Card, IndicatorProps, Tag } from '../../../library/components';
+import { isolateClickEvent } from '../../../library/helpers/isolateClickEvent.helper';
 
 // MARK: Types
 
@@ -115,11 +116,11 @@ export const PlaceCard = ({
             colorScheme='white'
             indicators={indicators}
             heading={name}
-            onClick={(e) => {
+            onClick={isolateClickEvent(() => {
                 if (link) {
                     router.push(link.href);
                 }
-            }}
+            })}
             image={{
                 src: place.images.PRIMARY.url,
                 alt: place.images.PRIMARY.description,
@@ -133,32 +134,28 @@ export const PlaceCard = ({
                             ariaLabel: 'external',
                             variant: 'outline',
                         },
-                        // slug: place.websiteUrl,
-                        // target: '_blank',
+                        link: {
+                            href: place.websiteUrl,
+                        },
                     },
                 ],
             }}
         >
             <div
                 data-label=''
-                className='flex flex-col gap-16'
+                className='flex flex-row gap-8'
             >
-                <div
-                    data-label=''
-                    className='flex flex-row gap-8'
-                >
-                    <Tag>{place.location.region}</Tag>
-                    {place.opening && place.opening.days[today] && (
-                        <Tag>
-                            {getCase(
-                                place.opening.days[today]?.status || '',
-                                'sentence'
-                            )}
-                        </Tag>
-                    )}
-                </div>
-                {place.description && <p>{place.description.strapline}</p>}
+                <Tag>{place.location.region}</Tag>
+                {place.opening && place.opening.days[today] && (
+                    <Tag>
+                        {getCase(
+                            place.opening.days[today]?.status || '',
+                            'sentence'
+                        )}
+                    </Tag>
+                )}
             </div>
+            {place.description && <p>{place.description.strapline}</p>}
         </Card>
     );
 };

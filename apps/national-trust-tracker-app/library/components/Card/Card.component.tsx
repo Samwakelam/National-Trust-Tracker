@@ -12,6 +12,7 @@ import { Tag, TagProps } from '../Tag';
 import { CardStyles, useCardStyles } from './Card.Styles';
 
 // MARK: Types
+
 interface IndicatorIconProps extends IconProps {
     type: 'icon';
     id: string;
@@ -59,6 +60,7 @@ export const Card = ({ preset, ...props }: CardProps) => {
 };
 
 // MARK: CardComponent
+
 export const CardComponent = ({
     children,
     className,
@@ -97,7 +99,8 @@ export const CardComponent = ({
             )}
             onClick={onClick}
         >
-            {/* MARK: Image */}
+            {/* MARK: Image
+             */}
             {image && (
                 <div
                     data-label='card-image'
@@ -114,7 +117,8 @@ export const CardComponent = ({
                 data-label='card-content'
                 className='flex flex-col flex-2'
             >
-                {/* MARK: Header */}
+                {/* MARK: Header
+                 */}
                 <header
                     data-label='card-header'
                     className='w-full flex justify-between items-center g-24'
@@ -129,14 +133,20 @@ export const CardComponent = ({
                         />
                     )}
                 </header>
-                {/* MARK: Body */}
+
+                {/* MARK: Body
+                 */}
+
                 <div
                     data-label='card-body'
                     className='w-full py-16 h-full flex flex-col gap-16'
                 >
                     {children}
                 </div>
-                {/* MARK: Footer */}
+
+                {/* MARK: Footer
+                 */}
+
                 <footer
                     data-label='card-footer'
                     className='flex flex-col lg:flex-row gap-16 justify-end items-center'

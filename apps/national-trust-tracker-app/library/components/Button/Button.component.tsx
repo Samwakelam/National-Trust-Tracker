@@ -7,6 +7,7 @@ import { twMerge } from '../../utilities/twMerge.util';
 import { Icon, IconProps } from '../Icon';
 
 import { ButtonStyles, useButtonStyles } from './Button.styles';
+import { isolateClickEvent } from '../../helpers/isolateClickEvent.helper';
 
 // MARK: Types
 
@@ -57,10 +58,7 @@ export const Button = ({
     return (
         <button
             className={twMerge(button(className))}
-            onClick={(e) => {
-                e.stopPropagation();
-                if (onClick) onClick(e);
-            }}
+            onClick={isolateClickEvent(onClick)}
             disabled={isDisabled}
             form={form}
             type={type}
