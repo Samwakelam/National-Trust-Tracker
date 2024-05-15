@@ -25,46 +25,21 @@ export interface ButtonProps extends Omit<ButtonStyles, 'iconButton'> {
     name?: string;
     onClick?: (e: ClickEvent) => void;
     type?: 'button' | 'reset' | 'submit';
+    link?: any;
 }
 
-// MARK: Button
-export const Button = ({
-    children,
-    className,
-    colorScheme,
-    design,
-    divergent,
-    form,
-    icon,
-    isActive,
-    isDisabled,
+// MARK: Button Internals
+
+const ButtonInternals = ({
     isLoading,
-    name,
-    onClick,
-    size,
-    type = 'button',
-}: ButtonProps) => {
-    const { button, icon: iconStyles } = useButtonStyles({
-        design,
-        divergent,
-        size,
-        colorScheme,
-        iconButton: !children && !!icon,
-        isLoading,
-    });
-
-    // MARK: Return
-
+    icon,
+    children,
+    iconStyles,
+}: Pick<ButtonProps, 'isLoading' | 'icon' | 'children'> & {
+    iconStyles: (className?: string | undefined) => string;
+}) => {
     return (
-        <button
-            className={twMerge(button(className))}
-            onClick={isolateClickEvent(onClick)}
-            disabled={isDisabled}
-            form={form}
-            type={type}
-            name={name}
-            data-active={isActive}
-        >
+        <>
             <span
                 className={twMerge(
                     'flex flex-row gap-4 row-start-1 col-start-1 justify-center items-center',
@@ -102,6 +77,79 @@ export const Button = ({
                     )}
                 />
             </span>
+        </>
+    );
+};
+
+// MARK: Button
+
+export const Button = ({
+    children,
+    className,
+    colorScheme,
+    design,
+    divergent,
+    form,
+    icon,
+    isActive,
+    isDisabled,
+    isLoading,
+    link,
+    name,
+    onClick,
+    size,
+    type = 'button',
+}: ButtonProps) => {
+    const { button, icon: iconStyles } = useButtonStyles({
+        design,
+        divergent,
+        size,
+        colorScheme,
+        iconButton: !children && !!icon,
+        isLoading,
+    });
+
+    // MARK: Return
+
+    if (link) {
+        const { target = '_blank', ...rest } = link;
+
+        return (
+            <a
+                className={twMerge(button(className))}
+                target={target}
+                data-disabled={isDisabled}
+                data-active={isActive}
+                {...rest}
+            >
+                <ButtonInternals
+                    isLoading={isLoading}
+                    iconStyles={iconStyles}
+                    icon={icon}
+                >
+                    {children}
+                </ButtonInternals>
+            </a>
+        );
+    }
+
+    return (
+        <button
+            className={twMerge(button(className))}
+            onClick={isolateClickEvent(onClick)}
+            disabled={isDisabled}
+            form={form}
+            type={type}
+            name={name}
+            data-active={isActive}
+        >
+            <ButtonInternals
+                isLoading={isLoading}
+                iconStyles={iconStyles}
+                icon={icon}
+            >
+                {children}
+            </ButtonInternals>
         </button>
     );
 };

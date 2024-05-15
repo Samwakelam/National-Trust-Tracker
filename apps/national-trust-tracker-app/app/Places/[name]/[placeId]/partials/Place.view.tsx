@@ -171,10 +171,10 @@ export const PlaceView = ({
                     <div className='flex flex-col gap-16 w-full items-start'>
                         <h2>{place.name}</h2>
                         <Button
-                            // link={{
-                            //     href: place.websiteUrl,
-                            //     target: '_blank',
-                            // }}
+                            link={{
+                                href: place.websiteUrl,
+                                target: '_blank',
+                            }}
                             colorScheme='white'
                         >
                             Website
@@ -201,7 +201,8 @@ export const PlaceView = ({
                     />
                 </Frame>
 
-                {/* MARK: Description */}
+                {/* MARK: Description
+                 */}
 
                 <Frame
                     id='frame-place-description'
@@ -224,7 +225,8 @@ export const PlaceView = ({
                     </div>
                 </Frame>
 
-                {/* MARK: Location */}
+                {/* MARK: Location
+                 */}
 
                 <Frame
                     id='place-frame'
@@ -277,7 +279,8 @@ export const PlaceView = ({
                     </div>
                 </Frame>
 
-                {/* MARK: Admission Prices */}
+                {/* MARK: Admission Prices
+                 */}
 
                 {_admissionPrices && (
                     <Frame
@@ -344,7 +347,8 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
-                {/* MARK: Opening Times */}
+                {/* MARK: Opening Times
+                 */}
 
                 {opening && (
                     <Frame
@@ -399,7 +403,8 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
-                {/* MARK: Diresctions*/}
+                {/* MARK: Directions
+                */}
 
                 {directions && (
                     <Frame id='directions-frame'>
@@ -458,7 +463,8 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
-                {/* MARK: Facilities */}
+                {/* MARK: Facilities
+                 */}
 
                 {facilities && (
                     <Frame
@@ -494,7 +500,8 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
-                {/* MARK: Accessibility */}
+                {/* MARK: Accessibility
+                 */}
 
                 {accessTags && (
                     <Frame
@@ -525,7 +532,8 @@ export const PlaceView = ({
                     </Frame>
                 )}
 
-                {/* MARK: Notes */}
+                {/* MARK: Notes
+                 */}
 
                 {notes && (
                     <Frame id='notes-frame'>

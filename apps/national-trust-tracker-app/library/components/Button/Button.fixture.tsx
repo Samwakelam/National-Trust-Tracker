@@ -1,13 +1,14 @@
 'use client';
 
 import React, { Fragment } from 'react';
-import { useFixtureSelect } from 'react-cosmos/client';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
 import { colorScheme } from '../../utilities/colorScheme.util';
 
 import { Button, ButtonProps } from './Button.component';
 
 import '../../prototypes/String.extensions';
+import { LinkProps } from '../../types';
 
 const ButtonGroup = ({ icon, divergent, ...props }: ButtonProps) => {
     return (
@@ -72,11 +73,17 @@ const ButtonFixture = () => {
         variant: iconVariant === 'undefined' ? undefined : iconVariant,
     };
 
+    const [asLink] = useFixtureInput('As Link', false);
+    const link: LinkProps = {
+        href: 'https://www.google.com',
+    };
+
     const props: Partial<ButtonProps> = {
         icon,
         onClick: () => alert('clicked'),
         colorScheme: colors as ButtonProps['colorScheme'],
         size,
+        link: asLink ? link : undefined,
     };
 
     return (

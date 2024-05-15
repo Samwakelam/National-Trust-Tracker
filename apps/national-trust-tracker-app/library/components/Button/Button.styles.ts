@@ -40,6 +40,7 @@ const buttonStyles = cva(
     [
         'grid grid-rows-1 grid-cols-1 justify-center items-center py-0 capitalize font-semibold rounded-[24px] border border-solid border-transparent',
         'disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed',
+        'data-[disabled=true]:bg-slate-200 data-[disabled=true]:text-slate-400 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:pointer-events-none',
         'focus-visible:shadow-focus focus-visible:shadow-[--color-300] focus-visible:outline-none',
         `focus:shadow-focus focus:shadow-[--color-300] focus:outline-none`,
     ],
@@ -51,6 +52,7 @@ const buttonStyles = cva(
                 ghost: [
                     `bg-transparent`,
                     'disabled:bg-transparent disabled:text-slate-300',
+                    'data-[disabled=true]:bg-transparent data-[disabled=true]:text-slate-300',
                     `hover:bg-[--color-200]`,
                     `active:bg-[--color-200]`,
                     `data-[active=true]:bg-[--color-200]`,
@@ -58,6 +60,7 @@ const buttonStyles = cva(
                 ],
                 outline: [
                     `bg-transparent text-[--color-700] border-[--color-500]`,
+                    'disabled:border-slate-300 disabled:bg-transparent',
                     'disabled:border-slate-300 disabled:bg-transparent',
                     `hover:bg-[--color-200]`,
                     `active:bg-[--color-200]`,
@@ -94,7 +97,13 @@ const buttonStyles = cva(
             {
                 divergent: ['solid', 'outline', 'soft', 'ghost'],
                 colorScheme: 'white',
-                className: 'text-slate-800',
+                className: [
+                    'text-slate-800',
+                    'focus-visible:shadow-focus focus-visible:shadow-sky-200',
+                    'focus:shadow-focus focus:shadow-sky-200',
+                    'active:focus:shadow-sky-200 active:focus-visible:shadow-sky-200',
+                    'data-[active=true]:focus:shadow-sky-200 data-[active=true]:focus-visible:shadow-sky-200',
+                ],
             },
             {
                 divergent: ['outline'],
@@ -106,6 +115,17 @@ const buttonStyles = cva(
                 colorScheme: 'black',
                 className:
                     'text-slate-800 hover:text-slate-100 active:text-slate-100 data-[active=true]:text-slate-100',
+            },
+            {
+                divergent: ['solid', 'outline', 'soft', 'ghost'],
+                colorScheme: 'black',
+                className: [
+                    'text-slate-800',
+                    'focus-visible:shadow-focus focus-visible:shadow-sky-700',
+                    'focus:shadow-focus focus:shadow-sky-700',
+                    'active:focus:shadow-sky-700 active:focus-visible:shadow-sky-700',
+                    'data-[active=true]:focus:shadow-sky-700 data-[active=true]:focus-visible:shadow-sky-700',
+                ],
             },
             {
                 divergent: ['soft', 'solid'],

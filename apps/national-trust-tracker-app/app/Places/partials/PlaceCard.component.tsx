@@ -5,20 +5,17 @@ import { useRouter } from 'next/navigation';
 
 import { SavedPlace } from '../../../library/types/internal';
 import { PlaceSummary } from '../../../library/types/national-trust';
+import { LinkProps } from '../../../library/types';
+
 import { getCase, resolveIcon } from '../../../library/helpers';
-import { Card, IndicatorProps, Tag } from '../../../library/components';
 import { isolateClickEvent } from '../../../library/helpers/isolateClickEvent.helper';
+
+import { Card, IndicatorProps, Tag } from '../../../library/components';
 
 // MARK: Types
 
-type Link = {
-    href: string;
-    target?: '_blank' | '_parent' | '_self' | '_top';
-    rel?: 'external';
-};
-
 type PlaceCardProps = {
-    link?: Link;
+    link?: LinkProps;
     place: SavedPlace;
     summary: PlaceSummary;
     visited: number | undefined;

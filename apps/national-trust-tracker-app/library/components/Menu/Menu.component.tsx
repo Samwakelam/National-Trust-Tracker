@@ -7,6 +7,7 @@ import { Icon, IconProps } from '../Icon';
 import { MenuItemStyles, MenuStyles, menuItemStyles } from './Menu.styles';
 import { twMerge } from '../../utilities/twMerge.util';
 import { isolateClickEvent } from '../../helpers/isolateClickEvent.helper';
+import { LinkProps } from '../../types';
 
 // MARK: Types
 
@@ -17,6 +18,7 @@ export interface MenuProps extends MenuStyles {
 }
 
 // MARK: Menu
+
 export const Menu = ({
     align = 'left',
     alwaysOpen,
@@ -74,18 +76,11 @@ export const Menu = ({
 
 // MARK: Menu Item Types
 
-type MenuItemLinkProps = {
-    href: string;
-    target?: '_blank' | '_parent' | '_self' | '_top';
-    download?: boolean;
-    children: ReactElement | ReactElement[];
-};
-
 export interface MenuItemProps extends MenuItemStyles {
     icon?: IconProps;
     label: string;
     onClick?: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
-    link?: Omit<MenuItemLinkProps, 'children'>;
+    link?: LinkProps;
 }
 
 // MARK: Menu Item
