@@ -27,10 +27,17 @@ export const useCardStyles = ({
             className: className,
         });
 
-    return { card, img };
+    const bubble = (className?: string) =>
+        bubbleStyles({
+            divergent,
+            className,
+            colorScheme,
+        });
+
+    return { card, img, bubble };
 };
 
-//  MARK: cardStyles
+//  MARK: Card Styles
 
 export const cardStyles = cva(
     ['flex p-16 rounded-12 border border-solid border-transparent'],
@@ -65,9 +72,9 @@ export const cardStyles = cva(
 
 export type CardStyles = VariantProps<typeof cardStyles>;
 
-//  MARK: imageStyles
+//  MARK: Image Styles
 
-export const imageStyles = cva(
+const imageStyles = cva(
     [
         'flex flex-1 w-full h-full pb-16',
         '[&>img]:rounded-t-6 [&>img]:rounded-b-0',
@@ -84,6 +91,30 @@ export const imageStyles = cva(
         },
         defaultVariants: {
             direction: 'vertical',
+        },
+    }
+);
+
+// MARK: Bubble Styles
+
+const bubbleStyles = cva(
+    [
+        'py-4 px-16 rounded-16 w-fit row-start-1 row-span-2 col-start-1 mx-16 z-[2]',
+    ],
+    {
+        variants: {
+            colorScheme: colorScheme,
+            divergent: {
+                outline: ['bg-[--color-400]'],
+                solid: ['bg-[--color-400]'],
+                solidOutline: ['bg-[--color-400]'],
+                ghost: ['bg-[--color-200]'],
+            },
+        },
+        compoundVariants: [],
+        defaultVariants: {
+            colorScheme: 'slate',
+            divergent: 'solid',
         },
     }
 );

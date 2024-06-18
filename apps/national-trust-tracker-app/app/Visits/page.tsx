@@ -17,7 +17,6 @@ export const revalidate = 0;
 
 export default function Visits(): JSX.Element {
     const { visits, isLoading } = useVisits();
-    console.log('visits: ', visits);
 
     return (
         <div

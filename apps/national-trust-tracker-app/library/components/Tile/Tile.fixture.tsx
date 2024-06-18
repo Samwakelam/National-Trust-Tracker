@@ -11,6 +11,8 @@ import { IconProps } from '../Icon';
 import { Tile, TileProps } from './Tile.component';
 import { getCase } from '../../helpers';
 
+import '../../prototypes/String.extensions';
+
 const divergents: Exclude<TileProps['divergent'], null | undefined>[] = [
     'outline',
     'solid',

@@ -62,29 +62,25 @@ export const TileComponent = ({
             className={twMerge(styles)}
             onClick={onClick}
         >
-            <section className='flex flex-col flex-1 px-16 py-20 gap-8 items-center'>
+            <section className='flex flex-col flex-1 px-16 py-20 gap-8 items-center justify-between'>
                 {heading && (
                     <header
                         data-label='tile-header'
                         className='w-full flex flex-row justify-center mx-[-16px]'
                     >
-                        <h6 className='font-bold capitalised max-w-112 text-center'>
+                        <h6 className='font-bold capitalised max-w-112 text-center max-h-72 overflow-hidden'>
                             {heading}
                         </h6>
                     </header>
                 )}
-                <div
-                    data-label='tile-body'
-                    className='w-full h-full flex flex-col items-center justify-center gap-16'
-                >
-                    <Icon
-                        {...icon}
-                        className='w-48 h-48'
-                    />
-                    {description && (
-                        <p className='max-w-112 text-center'>{description}</p>
-                    )}
-                </div>
+
+                <Icon
+                    {...icon}
+                    className='w-48 h-48'
+                />
+                {description && (
+                    <p className='max-w-112 text-center'>{description}</p>
+                )}
             </section>
             <footer
                 data-label='tile-footer'

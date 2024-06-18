@@ -84,7 +84,8 @@ export const Drawer = ({
                     data-label='drawer-header'
                     className='grid grid-cols-[theme(spacing.40)_1fr_theme(spacing.40)] grid-rows-1  p-8'
                 >
-                    {/* MARK: Header */}
+                    {/* MARK: Header
+                     */}
                     {heading && (
                         <h2
                             data-label='drawer-title'
@@ -131,7 +132,8 @@ export const Drawer = ({
                         />
                     )}
                 </header>
-                {/* MARK: Body */}
+                {/* MARK: Body
+                 */}
                 <div
                     data-label='drawer-body'
                     className={twMerge(
@@ -141,7 +143,8 @@ export const Drawer = ({
                 >
                     {children}
                 </div>
-                {/* MARK: Footer */}
+                {/* MARK: Footer
+                 */}
                 <footer
                     data-label='drawer-footer'
                     className='flex flex-row gap-16 justify-end p-16'
@@ -167,7 +170,8 @@ export const Drawer = ({
                     )}
                 </footer>
             </aside>
-            {/* MARK: Overlay */}
+            {/* MARK: Overlay
+             */}
             <DrawerOverlay
                 onClose={onClose}
                 isOpen={isOpen}

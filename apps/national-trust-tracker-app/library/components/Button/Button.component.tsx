@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import Link from 'next/link';
 
 import { ClickEvent } from '../../types';
 import { twMerge } from '../../utilities/twMerge.util';
@@ -115,7 +116,7 @@ export const Button = ({
         const { target = '_blank', ...rest } = link;
 
         return (
-            <a
+            <Link
                 className={twMerge(button(className))}
                 target={target}
                 data-disabled={isDisabled}
@@ -129,7 +130,7 @@ export const Button = ({
                 >
                     {children}
                 </ButtonInternals>
-            </a>
+            </Link>
         );
     }
 

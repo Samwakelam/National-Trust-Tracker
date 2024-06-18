@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { MembershipView } from './partials/MembershipView.view';
+import { MembershipView } from './partials/Membership.view';
 import { getMembership } from '../../actions/Membership.actions';
 
 export const metadata: Metadata = {

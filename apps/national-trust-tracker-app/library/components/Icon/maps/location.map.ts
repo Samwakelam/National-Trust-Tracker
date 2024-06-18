@@ -13,7 +13,13 @@ import {
     MdOutlineWrongLocation,
     MdWrongLocation,
 } from 'react-icons/md';
-import { TbLocation, TbLocationOff, TbRoute, TbRouteOff } from 'react-icons/tb';
+import {
+    TbLocation,
+    TbLocationOff,
+    TbMap,
+    TbRoute,
+    TbRouteOff,
+} from 'react-icons/tb';
 
 export type LocationType =
     | 'location'
@@ -24,6 +30,7 @@ export type LocationType =
     | 'location-off'
     | 'location-arrow'
     | 'location-arrow-off'
+    | 'map'
     | 'route'
     | 'route-off';
 
@@ -36,6 +43,7 @@ export const locationOutlineMap: { [key in LocationType]: IconType } = {
     'location-unknown': MdOutlineNotListedLocation,
     'location-arrow': TbLocation,
     'location-arrow-off': TbLocationOff,
+    'map': TbMap,
     'route': TbRoute,
     'route-off': TbRouteOff,
 };
@@ -49,6 +57,7 @@ export const locationSolidMap: { [key in LocationType]: IconType } = {
     'location-unknown': MdNotListedLocation,
     'location-arrow': TbLocation,
     'location-arrow-off': TbLocationOff,
+    'map': TbMap,
     'route': TbRoute,
     'route-off': TbRouteOff,
 };

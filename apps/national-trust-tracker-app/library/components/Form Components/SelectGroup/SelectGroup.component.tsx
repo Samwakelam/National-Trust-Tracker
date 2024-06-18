@@ -1,10 +1,6 @@
-import React, {
-    ReactElement,
-    ReactNode,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+'use client';
+
+import React, { ReactElement, ReactNode, useState } from 'react';
 import {
     FieldErrors,
     FieldValues,
@@ -93,6 +89,7 @@ export const SelectGroup = <T extends FieldValues, K extends string>({
                     {/* {!defaultValue && !selectConfig?.placeholder && (
                             <option value=''>Select</option>
                         )} */}
+                    <option value=''>Select</option>
                     {options.map((option: K | [K, string | number], index) => {
                         if (Array.isArray(option)) {
                             return (

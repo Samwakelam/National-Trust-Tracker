@@ -70,6 +70,7 @@ import {
     MdStrikethroughS,
 } from 'react-icons/md';
 import { LuSettings2 } from 'react-icons/lu';
+import { PiPlaceholder, PiPlaceholderFill } from 'react-icons/pi';
 
 export type UtilsType =
     | 'bin'
@@ -106,6 +107,7 @@ export type UtilsType =
     | 'panel-or'
     | 'panel-ot'
     | 'pencil'
+    | 'placeholder'
     | 'search'
     | 'settings'
     | 'spinner'
@@ -132,8 +134,8 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'format-italics': MdFormatItalic,
     'format-strikethrough': MdStrikethroughS,
     'format-underline': MdFormatUnderlined,
-    'lasso': TbLasso,
     'lasso-poly': TbLassoPolygon,
+    'lasso': TbLasso,
     'link': HiOutlineLink,
     'login': TbArrowBarToLeft,
     'logout': TbArrowBarRight,
@@ -150,6 +152,7 @@ export const utilsOutlineMap: { [key in UtilsType]: IconType } = {
     'panel-or': LuPanelRightOpen,
     'panel-ot': LuPanelTopOpen,
     'pencil': MdOutlineEdit,
+    'placeholder': PiPlaceholder,
     'search': FiSearch,
     'settings': IoSettingsOutline,
     'spinner': ImSpinner8,
@@ -186,7 +189,6 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'menu-dots-v': HiDotsVertical,
     'menu-three': HiMenu,
     'menu-two': HiMenuAlt4,
-    'pencil': MdEdit,
     'panel-cb': LuPanelBottomClose,
     'panel-cl': LuPanelLeftClose,
     'panel-cr': LuPanelRightClose,
@@ -195,6 +197,8 @@ export const utilsSolidMap: { [key in UtilsType]: IconType } = {
     'panel-ol': LuPanelLeftOpen,
     'panel-or': LuPanelRightOpen,
     'panel-ot': LuPanelTopOpen,
+    'pencil': MdEdit,
+    'placeholder': PiPlaceholderFill,
     'search': FiSearch,
     'settings': IoSettingsSharp,
     'spinner': ImSpinner8,

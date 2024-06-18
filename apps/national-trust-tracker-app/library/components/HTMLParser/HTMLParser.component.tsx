@@ -15,19 +15,25 @@ export const HtmlParser = ({
         replace(node) {
             if (node.type === 'tag') {
                 switch (node.name) {
+                    case 'a':
+                        return (
+                            <a
+                                className='font-bold contents'
+                                target='_blank'
+                                {...node.attribs}
+                            >
+                                {domToReact(node.children, options)}
+                            </a>
+                        );
                     case 'p':
                         return <p>{domToReact(node.children, options)}</p>;
                     case 'ul':
                         return <ul>{domToReact(node.children, options)}</ul>;
                     case 'li':
-                        return (
-                            <li>
-                                {/* //@ts-ignore */}
-                                {domToReact(node.children, options)}
-                            </li>
-                        );
+                        return <li>{domToReact(node.children, options)}</li>;
                 }
             }
+
             return node;
         },
     };

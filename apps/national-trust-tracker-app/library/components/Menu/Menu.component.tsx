@@ -1,13 +1,16 @@
 'use client';
 
 import React, { ReactElement, useEffect, useState } from 'react';
+import Link from 'next/link';
 
-import { Button } from '../Button';
-import { Icon, IconProps } from '../Icon';
-import { MenuItemStyles, MenuStyles, menuItemStyles } from './Menu.styles';
 import { twMerge } from '../../utilities/twMerge.util';
 import { isolateClickEvent } from '../../helpers/isolateClickEvent.helper';
 import { LinkProps } from '../../types';
+
+import { Icon, IconProps } from '../Icon';
+import { Button } from '../Button';
+
+import { MenuItemStyles, MenuStyles, menuItemStyles } from './Menu.styles';
 
 // MARK: Types
 
@@ -108,13 +111,13 @@ const MenuItem = ({ link, ...props }: MenuItemProps) => {
     if (link) {
         const { target = '_blank', ...rest } = link;
         return (
-            <a
+            <Link
                 target={target}
                 onClick={(e) => e.stopPropagation()}
                 {...rest}
             >
                 <MenuItemComponent {...props} />
-            </a>
+            </Link>
         );
     }
 

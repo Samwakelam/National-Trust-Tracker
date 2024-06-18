@@ -8,7 +8,7 @@ export type DrawerStyles = VariantProps<typeof drawerStyles>;
 // MARK: Drawer Styles
 export const drawerStyles = cva(
     [
-        'absolute bg-slate-50 shadow-lg flex flex-col z-40 ',
+        'absolute bg-slate-50 shadow-lg flex flex-col z-40',
         'delay-75 duration-500 ease-in-out',
     ],
     {
@@ -36,6 +36,7 @@ export const drawerStyles = cva(
                 sm: [],
                 md: [],
                 lg: [],
+                xl: [],
             },
         },
 
@@ -130,12 +131,50 @@ export const drawerStyles = cva(
             {
                 divergent: 'closed',
                 direction: ['left', 'right'],
-                className: 'h-full w-3/4 top-0',
+                size: 'sm',
+                className: 'h-full w-1/3 top-0',
             },
             {
                 divergent: 'closed',
                 direction: ['top', 'bottom'],
-                className: 'h-3/4 w-full left-0',
+                size: 'sm',
+                className: 'h-1/3 w-full left-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['left', 'right'],
+                size: 'md',
+                className: 'h-full w-1/2 top-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['top', 'bottom'],
+                size: 'md',
+                className: 'h-1/2 w-full left-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['left', 'right'],
+                size: 'lg',
+                className: 'h-full w-2/3 top-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['top', 'bottom'],
+                size: 'lg',
+                className: 'h-2/3 w-full left-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['left', 'right'],
+                size: 'xl',
+                className: 'h-full w-4/5 top-0',
+            },
+            {
+                divergent: 'closed',
+                direction: ['top', 'bottom'],
+                size: 'xl',
+                className: 'h-4/5 w-full left-0',
             },
         ],
         defaultVariants: {

@@ -4,6 +4,7 @@ import {
     TbCameraHeart,
     TbClipboardHeart,
     TbHeart,
+    TbHeartbeat,
     TbHeartBroken,
     TbHeartCancel,
     TbHeartCheck,
@@ -18,15 +19,17 @@ import {
     TbHeartQuestion,
     TbHeartSearch,
     TbHeartX,
-    TbHeartbeat,
+    TbHomeHeart,
     TbMapHeart,
     TbMapPinHeart,
+    TbShoppingBagHeart,
+    // TbShoppingBagHeart,
 } from 'react-icons/tb';
 
 export type HeartsType =
-    | 'heart'
     | 'heart-alert'
     | 'heart-beat'
+    | 'heart-broken'
     | 'heart-cancel'
     | 'heart-cross'
     | 'heart-location'
@@ -38,17 +41,19 @@ export type HeartsType =
     | 'heart-tick'
     | 'heart-together'
     | 'heart-unknown'
+    | 'heart'
+    | 'house-heart'
+    | 'bag-heart'
     | 'camera-heart'
-    | 'record-heart'
     | 'event-heart'
-    | 'heart-broken'
     | 'location-heart'
-    | 'map-heart';
+    | 'map-heart'
+    | 'record-heart';
 
 export const heartsOutlineMap: { [key in HeartsType]: IconType } = {
-    'heart': TbHeart,
     'heart-alert': TbHeartExclamation,
     'heart-beat': TbHeartbeat,
+    'heart-broken': TbHeartBroken,
     'heart-cancel': TbHeartCancel,
     'heart-cross': TbHeartX,
     'heart-location': TbHeartPin,
@@ -60,12 +65,14 @@ export const heartsOutlineMap: { [key in HeartsType]: IconType } = {
     'heart-tick': TbHeartCheck,
     'heart-together': TbHeartHandshake,
     'heart-unknown': TbHeartQuestion,
+    'heart': TbHeart,
+    'bag-heart': TbShoppingBagHeart,
     'camera-heart': TbCameraHeart,
-    'record-heart': TbClipboardHeart,
     'event-heart': TbCalendarHeart,
-    'heart-broken': TbHeartBroken,
+    'house-heart': TbHomeHeart,
     'location-heart': TbMapPinHeart,
     'map-heart': TbMapHeart,
+    'record-heart': TbClipboardHeart,
 };
 
 export const heartsSolidMap: { [key in HeartsType]: IconType } = {

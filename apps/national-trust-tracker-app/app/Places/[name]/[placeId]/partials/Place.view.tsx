@@ -404,7 +404,7 @@ export const PlaceView = ({
                 )}
 
                 {/* MARK: Directions
-                */}
+                 */}
 
                 {directions && (
                     <Frame id='directions-frame'>
@@ -427,13 +427,13 @@ export const PlaceView = ({
                                                         {key.toCapitalisedCase()}
                                                     </p>
                                                 </div>
-                                                <p>
-                                                    {
+                                                <HtmlParser
+                                                    htmlString={
                                                         directions.directions[
                                                             key as DirectionType
                                                         ].htmlDescription
                                                     }
-                                                </p>
+                                                />
                                             </div>
                                         );
                                     }
@@ -550,7 +550,11 @@ export const PlaceView = ({
                                             <p className='font-bold'>
                                                 {category.name.toCapitalisedCase()}
                                             </p>
-                                            <p>{category.htmlNotes}</p>
+                                            <HtmlParser
+                                                htmlString={category.htmlNotes.join(
+                                                    ' '
+                                                )}
+                                            />
                                         </div>
                                     );
                                 }

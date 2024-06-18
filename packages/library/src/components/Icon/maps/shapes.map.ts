@@ -49,6 +49,7 @@ import {
     PiHouseSimple,
     PiHouseSimpleBold,
     PiHouseSimpleFill,
+    PiMoney,
     PiShoppingCart,
     PiShoppingCartFill,
     PiToolboxBold,
@@ -58,6 +59,7 @@ import {
     PiTreeEvergreenFill,
     PiTreeFill,
 } from 'react-icons/pi';
+import { RiMoneyPoundCircleFill, RiMoneyPoundCircleLine } from 'react-icons/ri';
 import {
     TbBulb,
     TbBulbFilled,
@@ -86,13 +88,15 @@ export type ShapesType =
     | 'lock-closed'
     | 'lock-open'
     | 'membership'
+    | 'money'
+    | 'money-bag'
+    | 'money-pound'
     | 'money-report'
     | 'moon'
     | 'passport'
     | 'people'
     | 'piggy-bank'
     | 'pirate'
-    | 'sack'
     | 'ship-off'
     | 'ship-on'
     | 'shop'
@@ -122,13 +126,15 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'lock-closed': HiOutlineLockClosed,
     'lock-open': HiOutlineLockOpen,
     'membership': MdCardMembership,
+    'money': PiMoney,
+    'money-bag': TbMoneybag,
+    'money-pound': RiMoneyPoundCircleLine,
     'money-report': TbReportMoney,
     'moon': BiMoon,
     'passport': FaPassport,
     'people': BsPeople,
     'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
-    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'shop': PiShoppingCartFill,
@@ -159,13 +165,15 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'lock-closed': HiLockClosed,
     'lock-open': HiLockOpen,
     'membership': MdCardMembership,
+    'money': PiMoney,
+    'money-bag': TbMoneybag,
+    'money-pound': RiMoneyPoundCircleFill,
     'money-report': TbReportMoney,
     'moon': BiSolidMoon,
     'passport': FaPassport,
     'people': BsPeopleFill,
     'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
-    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'shop': PiShoppingCart,

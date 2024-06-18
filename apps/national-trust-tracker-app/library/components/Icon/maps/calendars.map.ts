@@ -19,6 +19,7 @@ import {
     BiSolidCalendarWeek,
     BiSolidCalendarX,
 } from 'react-icons/bi';
+import { TbClock, TbClock12, TbClock24, TbClockFilled } from 'react-icons/tb';
 
 export type CalendarsType =
     | 'calendar-alert'
@@ -29,7 +30,10 @@ export type CalendarsType =
     | 'calendar-remove'
     | 'calendar-tick'
     | 'calendar-week'
-    | 'calendar';
+    | 'calendar'
+    | 'clock'
+    | 'clock-12'
+    | 'clock-24';
 
 export const calendarsSolidMap: { [key in CalendarsType]: IconType } = {
     'calendar-alert': BiSolidCalendarExclamation,
@@ -41,6 +45,9 @@ export const calendarsSolidMap: { [key in CalendarsType]: IconType } = {
     'calendar-tick': BiSolidCalendarCheck,
     'calendar-week': BiSolidCalendarWeek,
     'calendar': BiSolidCalendar,
+    'clock': TbClockFilled,
+    'clock-12': TbClock12,
+    'clock-24': TbClock24,
 };
 
 export const calendarsOutlineMap: { [key in CalendarsType]: IconType } = {
@@ -53,4 +60,7 @@ export const calendarsOutlineMap: { [key in CalendarsType]: IconType } = {
     'calendar-tick': BiCalendarCheck,
     'calendar-week': BiCalendarWeek,
     'calendar': BiCalendarAlt,
+    'clock': TbClock,
+    'clock-12': TbClock12,
+    'clock-24': TbClock24,
 };

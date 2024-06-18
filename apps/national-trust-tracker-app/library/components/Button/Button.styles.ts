@@ -38,7 +38,7 @@ export const useButtonStyles = ({
 
 const buttonStyles = cva(
     [
-        'grid grid-rows-1 grid-cols-1 justify-center items-center py-0 capitalize font-semibold rounded-[24px] border border-solid border-transparent',
+        'grid grid-rows-1 grid-cols-1 justify-center items-center py-0 capitalize font-semibold rounded-24 border border-solid border-transparent',
         'disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed',
         'data-[disabled=true]:bg-slate-200 data-[disabled=true]:text-slate-400 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:pointer-events-none',
         'focus-visible:shadow-focus focus-visible:shadow-[--color-300] focus-visible:outline-none',

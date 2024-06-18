@@ -14,6 +14,7 @@ interface FrameComponentProps extends Omit<FrameStyles, 'hero'> {
     id: string;
     overlayDirection?: 'to-left' | 'to-right' | 'to-top' | 'to-bottom';
     isWideWidth?: boolean;
+    className?: string;
 }
 
 interface FrameControlsProps
@@ -39,6 +40,7 @@ export const FrameComponent = ({
     id,
     overlayDirection = 'to-right',
     isWideWidth = false,
+    className,
 }: FrameComponentProps) => {
     const { frame, content } = useFrameStyles({
         colorScheme,
@@ -69,7 +71,12 @@ export const FrameComponent = ({
             <div
                 data-label='frame-content'
                 className={twMerge(
-                    content(twMerge(isWideWidth ? 'max-w-1280' : 'max-w-1120'))
+                    content(
+                        twMerge(
+                            isWideWidth ? 'max-w-1280' : 'max-w-1120',
+                            className
+                        )
+                    )
                 )}
                 id={id}
             >
@@ -101,7 +108,7 @@ export const Frame = ({ preset, children, ...props }: FrameProps) => {
                                 {...(props as FrameControlsProps).navigationCTA}
                             />
                         )}
-                        <div className='flex flex-row flex'>{children}</div>
+                        <div className='flex flex-row'>{children}</div>
                     </div>
                 </FrameComponent>
             );

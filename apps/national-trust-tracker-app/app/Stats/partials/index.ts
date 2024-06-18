@@ -1,1 +1,1 @@
-export * from './StatisticsView.view';
+export * from './Statistics.view';

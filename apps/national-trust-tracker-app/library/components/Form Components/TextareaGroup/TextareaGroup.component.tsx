@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import {
     FieldErrors,

@@ -34,6 +34,12 @@ const CardFixture = () => {
         defaultValue: 'slate',
     });
 
+    const [hasBubbleDetail] = useFixtureInput<boolean>(
+        'Has Bubble Detail',
+        false
+    );
+    const bubble = <h3 className='font-semibold'>Bubble Heading</h3>;
+
     const [hasConfirmCTA] = useFixtureInput<boolean>('Has Confirm CTA', false);
     const confirmCTA: ButtonProps = {
         children: 'Confirm',
@@ -90,6 +96,7 @@ const CardFixture = () => {
     const props: Partial<CardProps> = {
         confirmCTA: hasConfirmCTA ? confirmCTA : undefined,
         declineCTA: hasDeclineCTA ? declineCTA : undefined,
+        detail: hasBubbleDetail ? bubble : undefined,
         heading: hasHeading ? 'I am a basic Header' : undefined,
         image: hasImage ? image : undefined,
         indicators: hasIndicators ? indicators : undefined,
@@ -110,7 +117,10 @@ const CardFixture = () => {
         >
             {divergents.map((divergent) => {
                 return (
-                    <div className='flex flex-col gap-16'>
+                    <div
+                        className='flex flex-col gap-16'
+                        key={divergent}
+                    >
                         <h2 className='font-bold'>
                             {getCase(divergent, 'sentence').toCapitalisedCase()}
                         </h2>

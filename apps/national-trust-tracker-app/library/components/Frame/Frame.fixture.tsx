@@ -12,6 +12,12 @@ const divergents: Exclude<FrameProps['divergent'], null | undefined>[] = [
     'section',
 ];
 
+const sizes: Exclude<FrameProps['size'], null | undefined>[] = [
+    'lg',
+    'md',
+    'sm',
+];
+
 const FrameFixture = () => {
     const [colors] = useFixtureSelect('Colour Scheme', {
         options: Object.keys(colorScheme),
@@ -25,6 +31,11 @@ const FrameFixture = () => {
     const [overlayDirection] = useFixtureSelect('Show Overlay', {
         options: ['to-left', 'to-right', 'to-top', 'to-bottom'],
         defaultValue: 'to-right',
+    });
+
+    const size = useFixtureSelect('Size', {
+        options: sizes,
+        defaultValue: 'lg',
     });
 
     const props: Partial<FrameProps> = {

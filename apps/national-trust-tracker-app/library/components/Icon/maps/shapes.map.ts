@@ -1,6 +1,12 @@
 import { IconType } from 'react-icons';
 import { AiFillDashboard, AiOutlineDashboard } from 'react-icons/ai';
-import { BiMoon, BiSolidMoon, BiSolidSun, BiSun } from 'react-icons/bi';
+import {
+    BiAbacus,
+    BiMoon,
+    BiSolidMoon,
+    BiSolidSun,
+    BiSun,
+} from 'react-icons/bi';
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
 import { FaIndustry, FaPassport } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
@@ -49,6 +55,7 @@ import {
     PiHouseSimple,
     PiHouseSimpleBold,
     PiHouseSimpleFill,
+    PiMoney,
     PiShoppingCart,
     PiShoppingCartFill,
     PiToolboxBold,
@@ -58,6 +65,7 @@ import {
     PiTreeEvergreenFill,
     PiTreeFill,
 } from 'react-icons/pi';
+import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import {
     TbBulb,
     TbBulbFilled,
@@ -70,6 +78,7 @@ import {
 } from 'react-icons/tb';
 
 export type ShapesType =
+    | 'abacus'
     | 'boat'
     | 'bulb-off'
     | 'bulb-on'
@@ -86,13 +95,15 @@ export type ShapesType =
     | 'lock-closed'
     | 'lock-open'
     | 'membership'
+    | 'money'
+    | 'money-bag'
+    | 'money-pig'
+    | 'money-pound'
     | 'money-report'
     | 'moon'
     | 'passport'
     | 'people'
-    | 'piggy-bank'
     | 'pirate'
-    | 'sack'
     | 'ship-off'
     | 'ship-on'
     | 'shop'
@@ -106,6 +117,7 @@ export type ShapesType =
     | 'tree-pine';
 
 export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
+    'abacus': BiAbacus,
     'boat': MdOutlineDirectionsBoat,
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulb,
@@ -122,13 +134,15 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
     'lock-closed': HiOutlineLockClosed,
     'lock-open': HiOutlineLockOpen,
     'membership': MdCardMembership,
+    'money-bag': TbMoneybag,
+    'money-pig': TbPigMoney,
+    'money-pound': RiMoneyPoundCircleFill,
     'money-report': TbReportMoney,
+    'money': PiMoney,
     'moon': BiMoon,
     'passport': FaPassport,
     'people': BsPeople,
-    'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
-    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'shop': PiShoppingCartFill,
@@ -143,6 +157,7 @@ export const shapesOutlineMap: { [key in ShapesType]: IconType } = {
 };
 
 export const shapesSolidMap: { [key in ShapesType]: IconType } = {
+    'abacus': BiAbacus,
     'boat': MdDirectionsBoat,
     'bulb-off': TbBulbOff,
     'bulb-on': TbBulbFilled,
@@ -159,13 +174,15 @@ export const shapesSolidMap: { [key in ShapesType]: IconType } = {
     'lock-closed': HiLockClosed,
     'lock-open': HiLockOpen,
     'membership': MdCardMembership,
+    'money-bag': TbMoneybag,
+    'money-pig': TbPigMoney,
+    'money-pound': RiMoneyPoundCircleFill,
     'money-report': TbReportMoney,
+    'money': PiMoney,
     'moon': BiSolidMoon,
     'passport': FaPassport,
     'people': BsPeopleFill,
-    'piggy-bank': TbPigMoney,
     'pirate': GiPirateFlag,
-    'sack': TbMoneybag,
     'ship-off': TbShipOff,
     'ship-on': TbShip,
     'shop': PiShoppingCart,

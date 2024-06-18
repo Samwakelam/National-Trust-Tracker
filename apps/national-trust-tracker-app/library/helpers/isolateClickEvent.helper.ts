@@ -8,6 +8,7 @@ export const isolateClickEvent = (callback?: Function) => {
             return callback.apply('', args);
         }
     };
+
     const isolated = (...args: any[]) => {
         invoke(...args);
     };

@@ -1,5 +1,5 @@
 import { getCase } from '../../../library/helpers';
-import { InformationType, useVisits } from '../../../library/hooks/useVisits';
+
 import { Visit } from '../../../library/types/internal';
 
 export const useStatisticsCharts = ({

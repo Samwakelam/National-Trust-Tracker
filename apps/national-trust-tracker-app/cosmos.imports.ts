@@ -23,9 +23,12 @@ import * as fixture14 from './library/components/Form Components/InputGroup/Inpu
 import * as fixture15 from './library/components/Form Components/CheckboxGroup/CheckboxGroup.fixture';
 import * as fixture16 from './library/components/Drawer/Drawer.fixture';
 import * as fixture17 from './library/components/Colour Tools/Colours.fixture';
-import * as fixture18 from './library/components/Card/Card.fixture';
-import * as fixture19 from './library/components/Button/Button.fixture';
-import * as fixture20 from './library/components/Badge/Badge.fixture';
+import * as fixture18 from './library/components/Chart/Chart.fixture';
+import * as fixture19 from './library/components/Carousel/Carousel.fixture';
+import * as fixture20 from './library/components/Card/Card.fixture';
+import * as fixture21 from './library/components/Button/Button.fixture';
+import * as fixture22 from './library/components/Bar/Bar.fixture';
+import * as fixture23 from './library/components/Badge/Badge.fixture';
 
 import * as decorator0 from './library/components/cosmos.decorator';
 
@@ -53,9 +56,12 @@ const fixtures = {
   'library/components/Form Components/CheckboxGroup/CheckboxGroup.fixture.tsx': { module: fixture15 },
   'library/components/Drawer/Drawer.fixture.tsx': { module: fixture16 },
   'library/components/Colour Tools/Colours.fixture.tsx': { module: fixture17 },
-  'library/components/Card/Card.fixture.tsx': { module: fixture18 },
-  'library/components/Button/Button.fixture.tsx': { module: fixture19 },
-  'library/components/Badge/Badge.fixture.tsx': { module: fixture20 }
+  'library/components/Chart/Chart.fixture.tsx': { module: fixture18 },
+  'library/components/Carousel/Carousel.fixture.tsx': { module: fixture19 },
+  'library/components/Card/Card.fixture.tsx': { module: fixture20 },
+  'library/components/Button/Button.fixture.tsx': { module: fixture21 },
+  'library/components/Bar/Bar.fixture.tsx': { module: fixture22 },
+  'library/components/Badge/Badge.fixture.tsx': { module: fixture23 }
 };
 
 const decorators = {
