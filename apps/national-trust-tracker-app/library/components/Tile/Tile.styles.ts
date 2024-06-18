@@ -23,6 +23,13 @@ export const tileStyles = cva(
                 lg: [],
             },
         },
+        compoundVariants: [
+            {
+                colorScheme: 'black',
+                divergent: ['solid', 'solidOutline'],
+                className: 'text-white-300',
+            },
+        ],
         defaultVariants: {
             divergent: 'solid',
             size: 'md',

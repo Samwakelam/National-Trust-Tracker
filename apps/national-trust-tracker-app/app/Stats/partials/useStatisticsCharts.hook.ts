@@ -1,109 +1,237 @@
-import { getCase } from '../../../library/helpers';
+import { useMemo } from 'react';
+import { ScaleChartOptions, ChartDataset } from 'chart.js';
 
-import { Visit } from '../../../library/types/internal';
+import { getAmountInPounds, getCase } from '../../../library/helpers';
+import { ChartProps } from '../../../library/components';
+
+import { ReduceMapProps } from '../../../library/context/Visits.helpers';
+
+// MARK: Types
+
+type UseStatisticsChartProps = {
+    filters: {
+        year: string;
+        month: string;
+        type: string;
+    };
+    groupedStats: Record<string, ReduceMapProps>;
+    stats: ReduceMapProps;
+};
+// MARK: Hook
 
 export const useStatisticsCharts = ({
-    visits,
-    filterByDate,
-}: {
-    visits: Visit[];
-    filterByDate: string;
-}) => {
-    const { getByMonth, getAll, getByYear } = useVisits({
-        visits,
-    });
+    filters,
+    groupedStats,
+    stats,
+}: UseStatisticsChartProps) => {
+    // MARK: Chart Data
+    const chartData = useMemo((): ChartProps['data'] => {
+        const { type, year, month } = filters;
 
-    const data = getAll(filterByDate).statistics;
-    const dataByMonth = getByMonth(filterByDate).statistics;
-    const dataByYear = getByYear(filterByDate).statistics;
+        if (!year && !month && !type) {
+            const set = groupedStats;
+            const keys: (keyof typeof set)[] = Object.keys(set);
+            const labels = keys.map((key) =>
+                getCase(key, 'sentence').toCapitalisedCase()
+            );
 
-    const labels = Object.keys(filterByDate ? dataByMonth : dataByYear);
+            const _sets: (keyof ReduceMapProps)[] = ['visits', 'totalTickets'];
 
-    // const options: ChartProps['options'] = {
-    //     responsive: true,
-    //     plugins: {
-    //         legend: {
-    //             display: true,
-    //             position: 'left',
-    //         },
-    //     },
-    // };
+            const yDatasets: ChartDataset[] = _sets.map((_set, index) => {
+                return {
+                    label: getCase(_set, 'sentence').toCapitalisedCase(),
+                    data: keys.map((key) => set[key]![_set] as number),
+                    yAxisID: 'y',
+                };
+            });
 
-    const getData = (key: InformationType) =>
-        labels.flatMap((label): number | Record<string, number> | any[] => {
-            const stats = filterByDate ? dataByMonth[label] : dataByYear[label];
+            const y2Datasets: ChartDataset[] = [
+                {
+                    label: 'Total Spend £',
+                    data: keys.map((key) =>
+                        parseFloat(getAmountInPounds(set[key]!.totalPrice))
+                    ),
+                    yAxisID: 'y2',
+                    type: 'line',
+                },
+            ];
 
-            if (stats) {
-                return stats[key as keyof typeof stats];
-            }
-
-            return [];
-        });
-
-    const getDatasets = (information: InformationType) =>
-        Object.keys(data[information]).map((key) => {
-            const _data = getData(information);
             return {
-                label: getCase(key, 'sentence').toCapitalisedCase(),
-                data: _data.map((item) => {
-                    if (item[key]) {
-                        return item[key];
-                    }
-                    return 0;
-                }),
+                labels,
+                datasets: [...yDatasets, ...y2Datasets],
             };
-        });
+        }
 
-    // const assetsChart: ChartProps = {
-    //     type: 'bar',
-    //     data: {
-    //         labels,
-    //         datasets: getDatasets('assets'),
-    //     },
-    //     options,
-    // };
+        if (year && !month && !type) {
+            const set = groupedStats;
+            const keys: (keyof typeof set)[] = Object.keys(set);
+            const labels = keys.map((key) => key.split('-')[0]);
 
-    // const facilitiesChart: ChartProps = {
-    //     type: 'bar',
-    //     data: {
-    //         labels,
-    //         datasets: getDatasets('facilities'),
-    //     },
-    //     options,
-    // };
+            const _sets: (keyof ReduceMapProps)[] = ['visits', 'totalTickets'];
 
-    // const placesChart: ChartProps = {
-    //     type: 'bar',
-    //     data: {
-    //         labels,
-    //         datasets: getDatasets('places'),
-    //     },
-    //     options,
-    // };
+            const yDatasets: ChartDataset[] = _sets.map((_set, index) => {
+                return {
+                    label: getCase(_set, 'sentence').toCapitalisedCase(),
+                    data: keys.map((key) => set[key]![_set] as number),
+                    yAxisID: 'y',
+                };
+            });
 
-    // const regionsChart: ChartProps = {
-    //     type: 'bar',
-    //     data: {
-    //         labels,
-    //         datasets: getDatasets('regions'),
-    //     },
-    //     options,
-    // };
+            const y2Datasets: ChartDataset[] = [
+                {
+                    label: 'Total Spend £',
+                    data: keys.map((key) =>
+                        parseFloat(getAmountInPounds(set[key]!.totalPrice))
+                    ),
+                    yAxisID: 'y2',
+                    type: 'line',
+                },
+            ];
 
-    // const travelChart: ChartProps = {
-    //     type: 'bar',
-    //     data: {
-    //         labels,
-    //         datasets: getDatasets('travel'),
-    //     },
-    //     options,
-    // };
+            return {
+                labels,
+                datasets: [...yDatasets, ...y2Datasets],
+            };
+        }
 
-    return {
-        // assetsChart,
-        // facilitiesChart,
-        // placesChart,
-        // regionsChart,
-        // travelChart,
-    };
+        if (year && month && !type) {
+            const set = stats;
+
+            const keys: (keyof ReduceMapProps)[] = ['visits', 'totalTickets'];
+            const labels = keys.map((key) =>
+                getCase(key, 'sentence').toCapitalisedCase()
+            );
+
+            const datasets = [
+                {
+                    data: keys.map((key) => set[key] as number),
+                    yAxisID: 'y',
+                },
+            ];
+
+            return {
+                labels,
+                datasets,
+            };
+        }
+
+        if (type) {
+            const set = stats[type as keyof ReduceMapProps];
+            const keys = Object.keys(set);
+            const labels = keys.map((key) =>
+                getCase(key, 'sentence').toCapitalisedCase()
+            );
+
+            const datasets = [
+                {
+                    data: keys.map(
+                        (key) => set[key as keyof typeof set] as number
+                    ),
+                    yAxisID: 'y',
+                    label: getCase(type, 'sentence').toCapitalisedCase(),
+                },
+            ];
+
+            return {
+                labels,
+                datasets,
+            };
+        }
+
+        return {
+            labels: [],
+            datasets: [],
+        };
+    }, [stats, groupedStats, filters.type]);
+
+    // MARK: Chart Options
+    const chartOptions = useMemo((): ChartProps['options'] => {
+        const { type, year, month } = filters;
+
+        const singleScale: ScaleChartOptions<'line'>['scales'] = {
+            y: {
+                type: 'linear',
+                position: 'left',
+                // @ts-ignore - missing properties that are not necessary but typed as required
+                title: {
+                    display: true,
+                    text: 'Quantity',
+                    align: 'center',
+                    padding: 0,
+                },
+                grid: {
+                    color: 'pink',
+                },
+            },
+        };
+
+        const twoScales: ScaleChartOptions<'line'>['scales'] = {
+            y: singleScale.y!,
+            y2: {
+                type: 'linear',
+                position: 'right',
+                // @ts-ignore - missing properties that are not necessary but typed as required
+                title: {
+                    display: true,
+                    text: 'Total Spend £',
+                },
+                grid: {
+                    color: 'papayawhip',
+                },
+            },
+        };
+
+        const layout = {
+            padding: 24,
+        };
+
+        if (!month && !type) {
+            return {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    title: {
+                        display: true,
+                        text: year ? `Totals for ${year}` : `Totals`,
+                    },
+                },
+                layout,
+                scales: twoScales,
+            };
+        }
+
+        if (month && !type) {
+            return {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: year
+                            ? `Totals for ${month.split('-')[0]} ${year}`
+                            : `Totals`,
+                    },
+                },
+                layout,
+                scales: singleScale,
+            };
+        }
+
+        return {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: `${getCase(type, 'sentence').toCapitalisedCase()} - ${month && `${month.split('-')[0]} `}${year}`,
+                },
+            },
+            layout,
+            scales: singleScale,
+        };
+    }, [filters]);
+
+    // MARK: Return
+
+    return { chartData, chartOptions };
 };

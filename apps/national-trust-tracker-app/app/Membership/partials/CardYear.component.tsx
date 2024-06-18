@@ -2,6 +2,7 @@ import { Card, Tile } from '../../../library/components';
 import { getAmountInPounds } from '../../../library/helpers';
 
 type CardYearProps = {
+    year: string | undefined;
     yearSpend: number;
     averageYearSpend: number;
     membershipPrice: number;
@@ -9,17 +10,19 @@ type CardYearProps = {
 };
 
 export const CardYear = ({
+    year,
     yearSpend,
     averageYearSpend,
     membershipPrice,
     numberOfVisits,
 }: CardYearProps) => {
+    console.log('year: ', year);
     return (
         <Card
-            colorScheme='yellow'
+            colorScheme='white'
             preset='quartered'
             className='w-full'
-            heading='Year'
+            heading={year ? year : 'This Year'}
         >
             <Tile
                 icon={{

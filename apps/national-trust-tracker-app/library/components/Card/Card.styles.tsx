@@ -40,7 +40,9 @@ export const useCardStyles = ({
 //  MARK: Card Styles
 
 export const cardStyles = cva(
-    ['flex p-16 rounded-12 border border-solid border-transparent'],
+    [
+        'flex p-16 rounded-12 border border-solid border-transparent text-black-300',
+    ],
     {
         variants: {
             colorScheme: colorScheme,
@@ -61,6 +63,13 @@ export const cardStyles = cva(
                 lg: [],
             },
         },
+        compoundVariants: [
+            {
+                colorScheme: 'black',
+                divergent: ['solid', 'solidOutline'],
+                className: 'text-white-300',
+            },
+        ],
         defaultVariants: {
             divergent: 'solid',
             size: 'md',
@@ -99,7 +108,7 @@ const imageStyles = cva(
 
 const bubbleStyles = cva(
     [
-        'py-4 px-16 rounded-16 w-fit row-start-1 row-span-2 col-start-1 mx-16 z-[2]',
+        'py-4 px-16 rounded-16 w-fit row-start-1 row-span-2 col-start-1 mx-16 z-[2] text-black-300',
     ],
     {
         variants: {
@@ -111,7 +120,9 @@ const bubbleStyles = cva(
                 ghost: ['bg-[--color-200]'],
             },
         },
-        compoundVariants: [],
+        compoundVariants: [
+            { colorScheme: 'black', className: 'text-white-300' },
+        ],
         defaultVariants: {
             colorScheme: 'slate',
             divergent: 'solid',

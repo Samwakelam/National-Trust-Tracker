@@ -1,13 +1,6 @@
 'use client';
 
-import {
-    Children,
-    ReactElement,
-    useState,
-    useRef,
-    useEffect,
-    createElement,
-} from 'react';
+import { Children, ReactElement, useState, useRef, useEffect } from 'react';
 import { Button } from '../Button';
 import { CarouselStyles, useCarouselStyles } from './Carousel.styles';
 import { twMerge } from '../../utilities/twMerge.util';
@@ -16,6 +9,8 @@ export interface CarouselProps extends CarouselStyles {
     children: ReactElement | ReactElement[];
     visibleSlides?: 1 | 2 | 3 | 4;
 }
+
+// MARK: Component
 
 export const Carousel = ({
     children,
@@ -28,16 +23,22 @@ export const Carousel = ({
 
     const availableSlides = Children.toArray(children).length;
 
+    // MARK: Styles
+
     const { container, viewport, slide } = useCarouselStyles({
         divergents,
         colorScheme,
         isFullWidth,
     });
 
+    // MARK: State
+
     const [triggers, setTriggers] = useState({
         previous: false,
         next: true,
     });
+
+    // MARK: Handlers
 
     const next = (multiplier: number): void => {
         if (!carousel?.current) return;
@@ -49,6 +50,8 @@ export const Carousel = ({
             behavior: 'smooth',
         });
     };
+
+    // MARK: Effects
 
     useEffect(() => {
         if (!carousel.current) return;
@@ -74,6 +77,8 @@ export const Carousel = ({
         };
     }, []);
 
+    // MARK: Return
+
     return (
         <section
             data-label='carousel'
@@ -89,6 +94,7 @@ export const Carousel = ({
                     next(-1);
                 }}
                 isDisabled={!triggers.previous}
+                colorScheme={colorScheme}
             />
 
             <div
@@ -125,6 +131,7 @@ export const Carousel = ({
                     next(1);
                 }}
                 isDisabled={!triggers.next || availableSlides <= visibleSlides}
+                colorScheme={colorScheme}
             />
         </section>
     );

@@ -16,7 +16,7 @@ export const CardMembership = ({
 }: CardMembershipProps) => {
     return (
         <Card
-            colorScheme='yellow'
+            colorScheme='white'
             preset='quartered'
             className='w-full'
             heading='Membership'

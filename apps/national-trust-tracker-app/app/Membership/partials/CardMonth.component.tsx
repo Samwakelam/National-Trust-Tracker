@@ -2,6 +2,7 @@ import { Card, Tile } from '../../../library/components';
 import { getAmountInPounds } from '../../../library/helpers';
 
 type CardMonthProps = {
+    month: string | undefined;
     monthSpend: number;
     averageMonthSpend: number;
     averageVisits: number;
@@ -9,6 +10,7 @@ type CardMonthProps = {
 };
 
 export const CardMonth = ({
+    month,
     monthSpend,
     averageMonthSpend,
     averageVisits,
@@ -16,10 +18,10 @@ export const CardMonth = ({
 }: CardMonthProps) => {
     return (
         <Card
-            colorScheme='yellow'
+            colorScheme='white'
             preset='quartered'
             className='w-full'
-            heading='Month'
+            heading={month ? month : `This Month`}
         >
             <Tile
                 icon={{

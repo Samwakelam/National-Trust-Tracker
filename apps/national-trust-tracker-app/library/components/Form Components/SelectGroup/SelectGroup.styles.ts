@@ -3,7 +3,7 @@ import { colorScheme } from '../../../utilities/colorScheme.util';
 
 export const selectStyles = cva(
     [
-        'bg-white-100 py-8 pl-16 pr-56 placeholder:text-slate-400 z-[1] w-full mr-[-42px]',
+        'bg-white-100 py-8 pl-16 pr-56 placeholder:text-slate-400 z-[1] w-full mr-[-42px] text-black-300',
         'rounded-8 border-solid border',
         'focus:outline-none focus:shadow-focus',
         'focus-visible:outline-none focus-visible:shadow-focus',

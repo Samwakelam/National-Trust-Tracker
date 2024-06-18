@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -24,10 +24,18 @@ interface NavbarProps extends BarProps {
 }
 
 export const Navbar = ({ menuItems, colorScheme }: NavbarProps) => {
+    const prevPage = useRef<string>('');
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
     const pathname = usePathname();
     const page = pathname.split('/')[1];
+
+    useEffect(() => {
+        if (page !== prevPage.current) {
+            setIsMenuOpen(false);
+        }
+        prevPage.current === page;
+    }, [page]);
 
     return (
         <>

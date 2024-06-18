@@ -1,5 +1,5 @@
 {
-    "name": "@sam/library",
+    "name": "@sam/library/chakra",
     "version": "0.0.0",
     "private": true,
     "type": "module",

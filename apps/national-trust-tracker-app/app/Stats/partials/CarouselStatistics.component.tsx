@@ -79,7 +79,10 @@ export const CarouselStatistics = ({
     // MARK: Return
 
     return (
-        <Carousel visibleSlides={3}>
+        <Carousel
+            visibleSlides={3}
+            colorScheme='sky'
+        >
             {Array.from([
                 'Places',
                 'People',
@@ -139,7 +142,7 @@ export const CarouselStatistics = ({
                             }}
                             heading='Different'
                             description={count ? `${count} ${item}` : undefined}
-                            colorScheme='yellow'
+                            colorScheme='forest'
                         />
                         <Tile
                             description={
@@ -150,12 +153,14 @@ export const CarouselStatistics = ({
                             {...resolveTileThree(item, stats, [
                                 ...(favourite ? [favourite] : []),
                             ])}
+                            colorScheme='slate'
                         />
                         <Tile
                             {...resolveTileFour(item, stats, [
                                 ...(favourite ? [favourite] : []),
                                 'together',
                             ])}
+                            colorScheme='sky'
                         />
                     </Card>
                 );
@@ -171,11 +176,14 @@ const resolveTileThree = (
     stats: Record<string, number>,
     exclude: string[] = []
 ): TileProps => {
-    const keys = Object.keys(stats).filter((key) => !exclude.includes(key));
+    const keys = Object.keys(stats).filter((k) => {
+        if (Object.keys(stats).length === 1) return true;
+        return !exclude.includes(k);
+    });
     const randomIndex = Math.floor(keys.length * Math.random());
 
     const k = keys[randomIndex]!;
-    const v = stats[k];
+    const v = stats[k] || 'No Record';
 
     switch (key) {
         case 'Regions':
@@ -229,11 +237,15 @@ const resolveTileFour = (
     stats: Record<string, number>,
     exclude: string[] = []
 ): TileProps => {
-    const keys = Object.keys(stats).filter((key) => !exclude.includes(key));
+    const keys = Object.keys(stats).filter((k) => {
+        if (Object.keys(stats).length === 1) return true;
+        return !exclude.includes(k);
+    });
+
     const randomIndex = Math.floor(keys.length * Math.random());
 
     const k = keys[randomIndex]!;
-    const v = stats[k];
+    const v = stats[k] || 'No Record';
 
     switch (key) {
         case 'Regions':
