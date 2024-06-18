@@ -1,46 +1,31 @@
 export type CaseType = 'camel' | 'kebab' | 'sentence' | 'pascal' | 'snake';
 
-export const getSentenceCase = (array: string[]): string => {
-    for (let i = 0; i < array.length; i += 1) {
-        const word: string | undefined = array[i]?.toLowerCase();
-        array[i] = word || '';
+const getCamelCase = (array: string[]): string => {
+    const firstWord = array[0]!.toLowerCase();
+    array[0] = firstWord;
+
+    for (let i = 1; i < array.length; i += 1) {
+        const word = array[i]!.toLowerCase();
+        if (word.length > 0) {
+            const splitWord = word.split('');
+            splitWord[0] = splitWord[0]!.toUpperCase();
+            const newWord = splitWord.join('');
+            array[i] = newWord;
+        } else {
+            array[i] = word;
+        }
     }
 
-    const string = array.join(' ');
+    const string: string = array.join('');
 
     return string;
 };
 
-export const getCamelCase = (array: string[]): string => {
-    if (array.length > 0) {
-        const firstWord = array[0]!.toLowerCase();
-        array[0] = firstWord;
-
-        for (let i = 1; i < array.length; i += 1) {
-            const word = array[i]?.toLowerCase();
-            if (word && word.length > 0) {
-                const splitWord = word.split('');
-                splitWord[0] = splitWord[0]!.toUpperCase();
-                const newWord = splitWord.join('');
-                array[i] = newWord;
-            } else if (word) {
-                array[i] = word;
-            }
-        }
-
-        const string: string = array.join('');
-
-        return string;
-    }
-    return '';
-};
-
-export const getKebabCase = (array: string[]): string => {
+const getKebabCase = (array: string[]): string => {
     for (let i = 0; i < array.length; i += 1) {
         const word: string | undefined = array[i];
 
         const test = /[0-9]/g;
-
         if (word && test.test(word)) {
             array[i] = word;
         } else if (word) {
@@ -53,13 +38,7 @@ export const getKebabCase = (array: string[]): string => {
     return string;
 };
 
-export const getSnakeCase = (array: string[]): string => {
-    const string: string = array.join('-');
-
-    return string;
-};
-
-export const getPascalCase = (array: string[]): string => {
+const getPascalCase = (array: string[]): string => {
     for (let i = 0; i < array.length; i += 1) {
         const word: string | undefined = array[i];
 
@@ -78,18 +57,47 @@ export const getPascalCase = (array: string[]): string => {
     return string;
 };
 
+const getSentenceCase = (array: string[]): string => {
+    for (let i = 0; i < array.length; i += 1) {
+        const word = array[i]!.toLowerCase();
+        array[i] = word;
+    }
+
+    const string = array.join(' ');
+
+    return string;
+};
+
+const getSnakeCase = (array: string[]): string => {
+    for (let i = 0; i < array.length; i += 1) {
+        const word: string | undefined = array[i];
+
+        const test = /[0-9]/g;
+        if (word && test.test(word)) {
+            array[i] = word;
+        } else if (word) {
+            array[i] = word.trim().toLowerCase();
+        }
+    }
+
+    const string: string = array.join('_');
+
+    return string;
+};
+
 export const getCase = (item: string, type: CaseType): string => {
     const kebabCaseTest = /-+/;
-    const snakeCaseTest = /_+/;
     const camelCaseTest = /^[a-z][A-Za-z]*$/;
     const pascalCaseTest = /^[A-Z][A-Za-z]*$/;
     const sentenceCaseTest = /\s/;
     const containsNumbers = /\d+/g;
+    const snakeCaseTest = /_+/;
 
     let array: string[] = [];
 
     if (containsNumbers.test(item.trim())) {
         // Splits the item at the numbers
+
         array = item
             .trim()
             .split(/(\^\d+|[a-zA-Z]+|\d+)/)
@@ -143,12 +151,12 @@ export const getCase = (item: string, type: CaseType): string => {
         array = item.split(' ');
     } else if (kebabCaseTest.test(item.trim())) {
         array = item.split('-');
+    } else if (snakeCaseTest.test(item.trim())) {
+        array = item.split('_');
     } else if (pascalCaseTest.test(item.trim())) {
         array = item.split(/(?=[A-Z])/);
     } else if (camelCaseTest.test(item.trim())) {
         array = item.split(/(?=[A-Z])/);
-    } else if (snakeCaseTest.test(item.trim())) {
-        array = item.split('_');
     } else {
         array.push(item);
     }
