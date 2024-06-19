@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 import {
     AdmissionCategory,
@@ -11,11 +11,9 @@ import {
     NoteCategory,
     PostalAddress,
     AccessTag,
-    AdmissionPrice,
     AdmissionPrices,
 } from '../../../../../library/types/national-trust';
 import {
-    getAmountInPence,
     getAmountInPounds,
     getCase,
     resolveCurrency,
@@ -36,7 +34,9 @@ import {
     Tag,
 } from '../../../../../library/components';
 
-// MARK: Place View
+import 'leaflet/dist/leaflet.css';
+
+// MARK: View
 
 export const PlaceView = ({
     place,
@@ -50,7 +50,7 @@ export const PlaceView = ({
     openingTimes,
     ...props
 }: PlaceViewProps) => {
-    // const markerRef = useRef<LeafletMarker<any>>(null);
+    const markerRef = useRef(null);
     const router = useRouter();
 
     // const [position, setPosition] = useState<LatLngExpression | null>(null);
@@ -61,11 +61,22 @@ export const PlaceView = ({
         log: false,
     });
 
-    // const {
-    //     register,
-    //     formState: { errors },
-    //     watch,
-    // } = useForm<Form>({ mode: 'onChange' });
+    const Map = useMemo(
+        () =>
+            dynamic(
+                () =>
+                    import(
+                        '../../../../../library/components/Map/Map.component'
+                    ).then((module) => module.Map),
+                {
+                    ssr: false,
+                    loading: () => (
+                        <div className='w-full h-full'>Loading Map</div>
+                    ),
+                }
+            ),
+        []
+    );
 
     // const mapEventHandlers = useMemo(() => {
     //     return {
@@ -232,8 +243,7 @@ export const PlaceView = ({
                     id='place-frame'
                     colorScheme='white'
                 >
-                    <div className='flex flex-row gap-16'>
-                        <div className='flex flex-row max-h-[200px]'></div>
+                    <div className='flex flex-row gap-16 w-full '>
                         <Card>
                             <div className='flex flex-row gap-8'>
                                 <Icon
@@ -276,6 +286,18 @@ export const PlaceView = ({
                                 </div>
                             </div>
                         </Card>
+                        <div
+                            data-label='map-container'
+                            className='aspect-video h-full flex-1'
+                        >
+                            <Map
+                                ref={markerRef}
+                                position={[
+                                    place.location.latitudeLongitude.latitude,
+                                    place.location.latitudeLongitude.longitude,
+                                ]}
+                            />
+                        </div>
                     </div>
                 </Frame>
 
