@@ -12,7 +12,7 @@ import { Tile } from '../../../library/components/Tile/Tile.component';
 import { Drawer } from '../../../library/components';
 
 import { PlaceCard } from './PlaceCard.component';
-import { FilterPlaces } from './FilterPlaces';
+import { FilterPlaces } from './FilterPlaces.component';
 
 // MARK: Types
 

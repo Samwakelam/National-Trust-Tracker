@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
-import { Drawer, DrawerProps, InputGroup } from '../../../library/components';
+import { InputGroup } from '../../../library/components';
 import { PlaceSummary } from '../../../library/types/national-trust';
 import { twMerge } from '../../../library/utilities/twMerge.util';
 

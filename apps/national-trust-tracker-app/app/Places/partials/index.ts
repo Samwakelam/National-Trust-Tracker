@@ -1,1 +1,1 @@
-export * from './PlacesView.view';
+export * from './Places.view';

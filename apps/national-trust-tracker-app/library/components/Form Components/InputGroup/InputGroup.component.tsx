@@ -51,6 +51,7 @@ export interface InputGroupProps<T extends FieldValues> extends InputStyles {
     label?: LabelProps['label'];
     labelConfig?: Omit<LabelProps, 'isRequired' | 'htmlFor'>;
     type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
+    placeholder?: string;
 }
 
 // MARK: Input Group
@@ -67,6 +68,7 @@ export const InputGroup = <T extends FieldValues>({
     labelConfig = { hideBadge: false },
     name,
     type = 'text',
+    placeholder,
 }: InputGroupProps<T>): ReactElement<InputGroupProps<T>> => {
     const { register, options } = formRegister;
 
@@ -138,7 +140,7 @@ export const InputGroup = <T extends FieldValues>({
                     id={name}
                     onBlur={() => setHasFocus(false)}
                     onFocus={() => setHasFocus(true)}
-                    placeholder='Placeholder'
+                    placeholder={placeholder}
                     required={isRequired}
                     type={type}
                 />

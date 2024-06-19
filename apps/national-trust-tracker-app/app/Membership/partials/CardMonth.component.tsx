@@ -1,8 +1,9 @@
 import { Card, Tile } from '../../../library/components';
 import { getAmountInPounds } from '../../../library/helpers';
+import { getDateKeyFormat } from '../../../library/helpers/getDateKeyFormat.helper';
 
 type CardMonthProps = {
-    month: string | undefined;
+    month: string;
     monthSpend: number;
     averageMonthSpend: number;
     averageVisits: number;
@@ -16,12 +17,14 @@ export const CardMonth = ({
     averageVisits,
     numberOfVisits,
 }: CardMonthProps) => {
+    const thisMonth = getDateKeyFormat(new Date());
+
     return (
         <Card
             colorScheme='white'
             preset='quartered'
             className='w-full'
-            heading={month ? month : `This Month`}
+            heading={month !== thisMonth ? month : `This Month`}
         >
             <Tile
                 icon={{

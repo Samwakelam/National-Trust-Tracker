@@ -16,13 +16,16 @@ export const CardYear = ({
     membershipPrice,
     numberOfVisits,
 }: CardYearProps) => {
-    console.log('year: ', year);
     return (
         <Card
             colorScheme='white'
             preset='quartered'
             className='w-full'
-            heading={year ? year : 'This Year'}
+            heading={
+                year && year !== new Date().getFullYear().toString()
+                    ? year
+                    : 'This Year'
+            }
         >
             <Tile
                 icon={{

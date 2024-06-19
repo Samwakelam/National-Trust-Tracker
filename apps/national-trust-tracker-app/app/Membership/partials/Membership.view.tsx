@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useVisits } from '../../../library/context/Visits.context';
 
 import { ReduceMapProps } from '../../../library/context/Visits.helpers';
 import { getDateKeyFormat } from '../../../library/helpers/getDateKeyFormat.helper';
-import { getAmountInPounds } from '../../../library/helpers';
+import { getAmountInPounds, getCase } from '../../../library/helpers';
 
 import {
     Card,
@@ -14,6 +14,8 @@ import {
     Icon,
     SelectGroup,
     Carousel,
+    ChartProps,
+    Chart,
 } from '../../../library/components';
 
 import { useDataFiltering } from '../../useDataFiltering.hook';
@@ -80,6 +82,137 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
         yearVisits: 0,
     });
 
+    // MARK: Memos
+
+    const chartData = useMemo((): ChartProps['data'] => {
+        const { year } = filters;
+
+        const setByYear = getStatistics({ specificity: 'year' }) as Record<
+            string,
+            ReduceMapProps
+        >;
+
+        const yearKeys: (keyof typeof setByYear)[] = [
+            ...Object.keys(setByYear),
+        ];
+
+        let total = membership.totalCost;
+
+        const startOfYearTotals = yearKeys.reduce(
+            (prev, current: string, index: number) => {
+                if (index === 0) {
+                    prev[current] = membership.totalCost;
+                    total = total - setByYear[current]!.totalPrice;
+                    return prev;
+                }
+
+                prev[current] = total;
+                total = total - setByYear[current]!.totalPrice;
+                return prev;
+            },
+            {} as Record<(typeof yearKeys)[number], number>
+        );
+
+        if (!year) {
+            const labels = ['start', ...yearKeys].map((key) =>
+                getCase(key, 'sentence').toCapitalisedCase()
+            );
+            const datasets = [
+                {
+                    label: 'Spend Depreciation',
+                    data: ['start', ...yearKeys]
+                        .reduce((array: number[], key: string) => {
+                            if (key === 'start') {
+                                array.push(membership.totalCost);
+                                return array;
+                            }
+
+                            const lastItem = array[array.length - 1]!;
+                            const value = lastItem - setByYear[key]!.totalPrice;
+                            array.push(value);
+                            return array;
+                        }, [])
+                        .map((total) => parseInt(getAmountInPounds(total))),
+                },
+            ];
+            return { labels, datasets };
+        }
+
+        if (year) {
+            const set = getStatistics({ specificity: 'month' }) as Record<
+                string,
+                ReduceMapProps
+            >;
+            const keys: (keyof typeof set)[] = [
+                'start',
+                ...Object.keys(set).filter((key) => key.includes(year)),
+            ];
+            const labels = keys.map((key) =>
+                key.split('-')[0]!.toCapitalisedCase()
+            );
+            const datasets = [
+                {
+                    label: 'Total Spend',
+                    data: keys
+                        .reduce((array: number[], key: string) => {
+                            if (key === 'start') {
+                                array.push(startOfYearTotals[year]!);
+                                return array;
+                            }
+
+                            const lastItem = array[array.length - 1]!;
+                            const value = lastItem - set[key]!.totalPrice;
+                            array.push(value);
+                            return array;
+                        }, [])
+                        .map((total) => parseInt(getAmountInPounds(total))),
+                },
+            ];
+
+            return {
+                labels,
+                datasets,
+            };
+        }
+
+        return {
+            labels: [],
+            datasets: [],
+        };
+    }, [filters.year]);
+
+    const chartOptions = useMemo((): ChartProps['options'] => {
+        const layout = {
+            padding: 24,
+        };
+
+        return {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: `Spend Depreciation`,
+                },
+            },
+            layout,
+            scales: {
+                y: {
+                    type: 'linear',
+                    position: 'left',
+                    // @ts-ignore - missing properties that are not necessary but typed as required
+                    title: {
+                        display: true,
+                        text: 'Pounds £',
+                    },
+                    grid: {
+                        color: 'papayawhip',
+                    },
+                },
+            },
+        };
+    }, []);
+
     // MARK: Effects
 
     useEffect(() => {
@@ -90,9 +223,12 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
             ReduceMapProps
         >;
 
+        const today = new Date();
+        const date = today;
+
         const thisMonth = filters.month
             ? monthStats[filters.month]
-            : monthStats[getDateKeyFormat(new Date())];
+            : monthStats[getDateKeyFormat(date)];
 
         const yearStats = getStatistics({ specificity: 'year' }) as Record<
             string,
@@ -129,7 +265,18 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
         }));
     }, [membership, filters]);
 
-    useEffect(() => {}, [state]);
+    useEffect(() => {
+        if (!filters.month) {
+            const month = new Date().getMonth();
+            const year = filters.year
+                ? parseInt(filters.year)
+                : new Date().getFullYear();
+
+            handleFilters({
+                month: getDateKeyFormat(new Date(year, month, 1)),
+            });
+        }
+    }, [filters.year]);
 
     // MARK: Return
 
@@ -257,9 +404,14 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
             </Frame>
             <Frame
                 id='membership-heat-map-frame'
+                className='[&>canvas]:bg-white-200 [&>canvas]:rounded-8'
                 colorScheme='forest'
             >
-                <div className='rounded-8 bg-white-300 h-208 w-full'></div>
+                <Chart
+                    type='line'
+                    data={chartData}
+                    options={chartOptions}
+                />
             </Frame>
         </div>
     );

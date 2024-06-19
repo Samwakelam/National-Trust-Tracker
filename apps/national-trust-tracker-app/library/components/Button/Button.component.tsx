@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 
 import { ClickEvent } from '../../types';
 import { twMerge } from '../../utilities/twMerge.util';
