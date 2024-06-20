@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { Providers } from './providers';
 
@@ -36,6 +37,7 @@ export default function RootLayout({
                 }}
             >
                 <Providers>
+                    <SpeedInsights />
                     <Navbar
                         menuItems={[
                             {

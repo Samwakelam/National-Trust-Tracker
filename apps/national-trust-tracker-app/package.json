@@ -9,6 +9,7 @@
         "lint": "eslint . --max-warnings 0"
     },
     "dependencies": {
+        "@vercel/speed-insights": "^1.0.12",
         "chart.js": "^4.4.3",
         "cva": "npm:class-variance-authority@^0.7.0",
         "html-react-parser": "^5.1.10",
@@ -29,8 +30,6 @@
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "^14.0.4",
-        "repo-eslint-config": "*",
-        "repo-typescript-config": "*",
         "@types/chart.js": "^2.9.41",
         "@types/eslint": "^8.56.1",
         "@types/geojson": "^7946.0.14",
@@ -44,6 +43,8 @@
         "postcss": "^8.4.38",
         "react-cosmos": "^6.1.1",
         "react-cosmos-next": "^6.1.1",
+        "repo-eslint-config": "*",
+        "repo-typescript-config": "*",
         "tailwindcss": "^3.4.3",
         "typescript": "^5.3.3"
     }
