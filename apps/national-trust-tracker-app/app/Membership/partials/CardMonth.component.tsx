@@ -24,7 +24,7 @@ export const CardMonth = ({
             colorScheme='white'
             preset='quartered'
             className='w-full'
-            heading={month !== thisMonth ? month : `This Month`}
+            heading={month && month !== thisMonth ? month : `This Month`}
         >
             <Tile
                 icon={{

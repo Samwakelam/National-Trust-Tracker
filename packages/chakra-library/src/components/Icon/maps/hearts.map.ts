@@ -22,7 +22,6 @@ import {
     TbHomeHeart,
     TbMapHeart,
     TbMapPinHeart,
-    // TbShoppingBagHeart,
 } from 'react-icons/tb';
 
 export type HeartsType =
@@ -70,7 +69,6 @@ export const heartsOutlineMap: { [key in HeartsType]: IconType } = {
     'location-heart': TbMapPinHeart,
     'map-heart': TbMapHeart,
     'house-heart': TbHomeHeart,
-    // 'bag-heart': TbShoppingBagHeart,
 };
 
 export const heartsSolidMap: { [key in HeartsType]: IconType } = {
