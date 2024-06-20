@@ -11,7 +11,7 @@
     "dependencies": {
         "@vercel/speed-insights": "^1.0.12",
         "chart.js": "^4.4.3",
-        "cva": "npm:class-variance-authority@^0.7.0",
+        "class-variance-authority": "^0.7.0",
         "html-react-parser": "^5.1.10",
         "leaflet": "^1.9.4",
         "leaflet-defaulticon-compatibility": "^0.1.2",

@@ -1,6 +1,6 @@
 // Note: React must be declared in all files for cosmos to work
 import React from 'react';
-import { cva } from 'cva';
+import { cva } from 'class-variance-authority';
 
 import { colorScheme } from '../../utilities/colorScheme.util';
 import { twMerge } from 'tailwind-merge';

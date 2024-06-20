@@ -1,4 +1,4 @@
-import { VariantProps, cva } from 'cva';
+import { VariantProps, cva } from 'class-variance-authority';
 import { colorScheme } from '../../utilities/colorScheme.util';
 
 export const modalStyles = cva(
