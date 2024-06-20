@@ -29,8 +29,8 @@
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "^14.0.4",
-        "@repo/eslint-config": "*",
-        "@repo/typescript-config": "*",
+        "repo-eslint-config": "*",
+        "repo-typescript-config": "*",
         "@types/chart.js": "^2.9.41",
         "@types/eslint": "^8.56.1",
         "@types/geojson": "^7946.0.14",

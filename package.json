@@ -1,27 +1,27 @@
 {
-  "name": "national-trust-tracker",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "dev:nt": "concurrently \"cd apps/national-trust-tracker-app && npm run dev\" \"npm run dev:packages\"",
-    "dev:packages": "turbo run dev --filter=./packages/*",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "concurrently": "^8.2.2",
-    "prettier": "^3.1.1",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "npm@9.6.6",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+    "name": "national-trust-tracker",
+    "private": true,
+    "scripts": {
+        "build": "turbo build",
+        "dev": "turbo dev",
+        "dev:nt": "concurrently \"cd apps/national-trust-tracker-app && npm run dev\" \"npm run dev:packages\"",
+        "dev:packages": "turbo run dev --filter=./packages/*",
+        "lint": "turbo lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    },
+    "devDependencies": {
+        "repo-eslint-config": "*",
+        "repo-typescript-config": "*",
+        "concurrently": "^8.2.2",
+        "prettier": "^3.1.1",
+        "turbo": "latest"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "packageManager": "npm@9.6.6",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ]
 }

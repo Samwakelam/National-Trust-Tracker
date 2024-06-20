@@ -88,7 +88,9 @@ export type NationalTrustType =
     | 'nt-weddings'
     | 'nt-wheelchair';
 
-export const nationalTrustMap: { [key in NationalTrustType]: IconType } = {
+export const nationalTrustMap: {
+    [key in NationalTrustType]: React.JSX.Element;
+} = {
     'nt': NationalTrust,
     'nt-acc-dogs': AccessibilityDogs,
     'nt-acc-food-outlet': AccessibleFoodOutlet,

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+
 import { MembershipView } from './partials/Membership.view';
 import { getMembership } from '../../actions/Membership.actions';
 
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 export default async function Membership(): Promise<JSX.Element> {
     const membership = await getMembership('King');
 
-    return <MembershipView membership={membership.data} />;
+    return membership ? (
+        <MembershipView membership={membership.data} />
+    ) : (
+        <div>loading</div>
+    );
 }

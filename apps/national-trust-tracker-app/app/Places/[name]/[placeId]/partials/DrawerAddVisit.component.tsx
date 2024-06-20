@@ -105,7 +105,6 @@ export const DrawerAddVisit = ({
     // MARK: Handlers
 
     const handleClose = () => {
-        console.log('closed');
         reset();
         onClose();
     };
@@ -115,7 +114,6 @@ export const DrawerAddVisit = ({
         description,
         status,
     }: Omit<ToastProps, 'onClose' | 'id'>) => {
-        console.log('handled');
         toast({
             title,
             description,
@@ -129,7 +127,6 @@ export const DrawerAddVisit = ({
     // MARK: On Submit
 
     const onSubmit: SubmitHandler<Form> = async (data: Form) => {
-        console.log('data: ', data);
         const assetsUsed = data.assetsUsed
             ? ([...data.assetsUsed]
                   .map((asset) =>

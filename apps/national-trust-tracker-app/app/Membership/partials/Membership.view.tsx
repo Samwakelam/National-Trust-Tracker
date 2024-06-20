@@ -18,7 +18,7 @@ import {
     Chart,
 } from '../../../library/components';
 
-import { useDataFiltering } from '../../useDataFiltering.hook';
+import { useDataFiltering } from '../../../library/hooks/useDataFiltering.hook';
 
 import { CardMembership } from './CardMembership.component';
 import { CardMonth } from './CardMonth.component';

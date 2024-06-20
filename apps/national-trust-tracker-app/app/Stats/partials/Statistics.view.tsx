@@ -20,7 +20,7 @@ import { CarouselStatistics } from './CarouselStatistics.component';
 
 import '../../../library/prototypes/String.extensions';
 import { useStatisticsCharts } from './useStatisticsCharts.hook';
-import { useDataFiltering } from '../../useDataFiltering.hook';
+import { useDataFiltering } from '../../../library/hooks/useDataFiltering.hook';
 
 // MARK: Types
 

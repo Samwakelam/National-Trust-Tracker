@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useVisits } from '../library/context/Visits.context';
+import { useVisits } from '../context/Visits.context';
 import { UseFormReturn, useForm } from 'react-hook-form';
-import { ReduceMapProps } from '../library/context/Visits.helpers';
+import { ReduceMapProps } from '../context/Visits.helpers';
 
 // MARK: Types
 

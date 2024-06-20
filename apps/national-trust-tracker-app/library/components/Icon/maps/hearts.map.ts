@@ -23,7 +23,6 @@ import {
     TbMapHeart,
     TbMapPinHeart,
     TbShoppingBagHeart,
-    // TbShoppingBagHeart,
 } from 'react-icons/tb';
 
 export type HeartsType =
