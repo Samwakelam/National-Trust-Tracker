@@ -50,6 +50,7 @@ export const generateStaticParams = async () => {
         });
     } catch (error) {
         console.log('Place generateStaticParams error: ', error);
+        return [];
     }
 };
 
