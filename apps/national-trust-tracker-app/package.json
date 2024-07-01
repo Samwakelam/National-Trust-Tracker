@@ -44,8 +44,8 @@
         "react-cosmos": "^6.1.1",
         "react-cosmos-next": "^6.1.1",
         "react-cosmos-plugin-open-fixture": "^6.1.1",
-        "repo-eslint-config": "*",
-        "repo-typescript-config": "*",
+        "@repo/eslint-config": "*",
+        "@repo/typescript-config": "*",
         "tailwindcss": "^3.4.3",
         "typescript": "^5.3.3"
     }
