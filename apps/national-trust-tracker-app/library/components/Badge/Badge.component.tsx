@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-import { Icon, IconProps } from '../Icon';
+import { Icon } from '../Icon/Icon.component';
+import { IconProps } from '../Icon/Icon.definition';
 
 import { BadgeStyles, badgeStyles } from './Badge.styles';
 import { twMerge } from '../../utilities/twMerge.util';

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-    transpilePackages: [],
+    transpilePackages: ['repo-eslint-config', 'repo-typescript-config'],
 
     async redirects() {
         return [

@@ -1,5 +1,6 @@
 {
     "$schema": "./node_modules/react-cosmos/config.schema.json",
+    "plugins": ["react-cosmos-plugin-open-fixture"],
     "port": 5001,
     "staticPath": "public",
     "globalImports": ["./library/global.css"],

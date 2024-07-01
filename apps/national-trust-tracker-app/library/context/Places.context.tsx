@@ -9,7 +9,7 @@ import {
 } from 'react';
 
 import { getAllPlaces } from '../../actions/Places.actions';
-import { Place } from '../types/national-trust';
+import { Place } from '../types/national-trust/place.type';
 
 // MARK: Types
 

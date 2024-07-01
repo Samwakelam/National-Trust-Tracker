@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode, ReactElement } from 'react';
 
 export default ({ children }: { children: ReactNode | ReactElement }) => (
