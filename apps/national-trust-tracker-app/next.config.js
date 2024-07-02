@@ -2,6 +2,9 @@
 
 module.exports = {
     transpilePackages: ['@repo/eslint-config', '@repo/typescript-config'],
+    env: {
+        MONGODB_URI: process.env.MONGODB_URI,
+    },
 
     async redirects() {
         return [
