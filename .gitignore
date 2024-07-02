@@ -5,6 +5,7 @@ node_modules
 .pnp
 .pnp.js
 *.local
+.npmrc
 
 # Local env files
 .env
