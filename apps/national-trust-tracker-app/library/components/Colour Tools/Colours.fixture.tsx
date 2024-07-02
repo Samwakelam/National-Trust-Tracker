@@ -11,7 +11,6 @@ const ColoursFixture = () => {
     return (
         <div className='h-full p-16'>
             {colorsKeys.map((color) => {
-                console.log('color: ', color);
                 const styles = colorStyles({ colorScheme: color as any });
 
                 const colorStops = [

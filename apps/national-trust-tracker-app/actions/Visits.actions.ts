@@ -10,10 +10,10 @@ import VisitsModel from '../library/models/Visits.model';
 export const getAllVisits = async () => {
     try {
         await getDatabaseConnection();
-        console.log('getDatabaseConnection: ', await getDatabaseConnection());
 
         //@ts-ignore
         const data = await VisitsModel.find({});
+        console.log('data: ', data);
 
         const res = NextResponse.json({
             status: 200,
