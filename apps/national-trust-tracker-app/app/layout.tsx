@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import dotenv from 'dotenv';
 
 import { Providers } from './providers';
 
@@ -10,6 +11,8 @@ import { Navbar } from './Navbar.component';
 
 import '../library/prototypes/String.extensions';
 import '../library/global.css';
+
+dotenv.config();
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker App',
