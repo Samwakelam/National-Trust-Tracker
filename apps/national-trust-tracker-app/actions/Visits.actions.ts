@@ -1,14 +1,16 @@
 'use server';
 
+import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+
 import { getDatabaseConnection } from '../library/helpers';
 import { Visit } from '../library/types/internal';
 import VisitsModel from '../library/models/Visits.model';
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
 
 export const getAllVisits = async () => {
     try {
         await getDatabaseConnection();
+        console.log('getDatabaseConnection: ', await getDatabaseConnection());
 
         //@ts-ignore
         const data = await VisitsModel.find({});
