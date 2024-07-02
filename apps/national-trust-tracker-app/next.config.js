@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+require('dotenv').config();
+
 module.exports = {
     transpilePackages: ['@repo/eslint-config', '@repo/typescript-config'],
     env: {
