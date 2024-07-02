@@ -1,15 +1,17 @@
-//@ts-nocheck
 'use-client';
 
 import React, { ReactElement } from 'react';
 import parse, { HTMLReactParserOptions, domToReact } from 'html-react-parser';
+import { twMerge } from '../../utilities/twMerge.util';
 
 export type HtmlParserProps = {
     htmlString: string;
+    align?: 'left' | 'center' | 'right';
 };
 
 export const HtmlParser = ({
     htmlString,
+    align = 'center',
 }: HtmlParserProps): ReactElement<HtmlParserProps> => {
     const options: HTMLReactParserOptions = {
         replace(node) {
@@ -22,15 +24,36 @@ export const HtmlParser = ({
                                 target='_blank'
                                 {...node.attribs}
                             >
+                                {/* @ts-ignore */}
                                 {domToReact(node.children, options)}
                             </a>
                         );
                     case 'p':
-                        return <p>{domToReact(node.children, options)}</p>;
+                        return (
+                            <p>
+                                {/* @ts-ignore */}
+                                {domToReact(node.children, options)}
+                            </p>
+                        );
                     case 'ul':
-                        return <ul>{domToReact(node.children, options)}</ul>;
+                        return (
+                            <ul
+                                className={twMerge(
+                                    align === 'left' && 'list-disc pl-24'
+                                )}
+                            >
+                                {/* @ts-ignore */}
+                                {domToReact(node.children, options)}
+                            </ul>
+                        );
                     case 'li':
-                        return <li>{domToReact(node.children, options)}</li>;
+                        // @ts-ignore
+                        return (
+                            <li>
+                                {/* @ts-ignore */}
+                                {domToReact(node.children, options)}
+                            </li>
+                        );
                 }
             }
 
@@ -41,9 +64,25 @@ export const HtmlParser = ({
     return (
         <div
             data-label='html-parser'
-            className='flex flex-col gap-8 max-w-800 items-center text-center'
+            className={twMerge(
+                'flex flex-col gap-8 max-w-800 items-center',
+                resolveAlignment(align)
+            )}
         >
             {parse(htmlString, options)}
         </div>
     );
+};
+
+const resolveAlignment = (align: HtmlParserProps['align']): string => {
+    switch (align) {
+        case 'center':
+            return 'text-center';
+        case 'left':
+            return 'text-left';
+        case 'right':
+            return 'text-right';
+        default:
+            return 'text-center';
+    }
 };

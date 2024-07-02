@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
@@ -31,10 +31,20 @@ import {
     Frame,
     HtmlParser,
     Icon,
+    InputGroup,
     Tag,
 } from '../../../../../library/components';
 
 import 'leaflet/dist/leaflet.css';
+import { Alert } from '../../../../../library/components/Alert';
+import { useForm } from 'react-hook-form';
+import { twMerge } from '../../../../../library/utilities/twMerge.util';
+
+// MARK: Types
+
+type Form = {
+    date: string;
+};
 
 // MARK: View
 
@@ -53,13 +63,29 @@ export const PlaceView = ({
     const markerRef = useRef(null);
     const router = useRouter();
 
-    // const [position, setPosition] = useState<LatLngExpression | null>(null);
+    // MARK: State
+
     const [openingDate, setOpeningDate] = useState<string | undefined>(
         new Date().toJSON().split('T')[0]
     );
     const [isOpen, setIsOpen] = useState<Record<DisclosureType, boolean>>({
         log: false,
     });
+
+    // MARK: Form
+
+    const {
+        register,
+        formState: { errors },
+        watch,
+    } = useForm<Form>({
+        mode: 'onChange',
+        defaultValues: {
+            date: new Date().toJSON().split('T')[0],
+        },
+    });
+
+    // MARK: Memos
 
     const Map = useMemo(
         () =>
@@ -136,28 +162,19 @@ export const PlaceView = ({
 
     // MARK: Effects
 
-    // useEffect(() => {
-    //     if (place) {
-    //         setPosition({
-    //             lat: place.location.latitudeLongitude.latitude,
-    //             lng: place.location.latitudeLongitude.longitude,
-    //         });
-    //     }
-    // }, [place]);
+    useEffect(() => {
+        const date = watch('date');
+        if (!date) {
+            setOpeningDate(undefined);
+            setTimeout(() => {
+                setOpeningDate(new Date().toJSON().split('T')[0]);
+            }, 10000);
+        }
 
-    // useEffect(() => {
-    //     const date = watch('date');
-    //     if (!date) {
-    //         setOpeningDate(undefined);
-    //         setTimeout(() => {
-    //             setOpeningDate(new Date().toJSON().split('T')[0]);
-    //         }, 10000);
-    //     }
-
-    //     if (date) {
-    //         setOpeningDate(date);
-    //     }
-    // }, [watch('date')]);
+        if (date) {
+            setOpeningDate(date);
+        }
+    }, [watch('date')]);
 
     // MARK: Return
 
@@ -167,13 +184,13 @@ export const PlaceView = ({
                 data-label='place-view'
                 className='flex flex-col bg-slate-100 min-h-full'
             >
-                {/* {place.emergencyNotice && (
-                <Alert
-                    title='Notice'
-                    status='warning'
-                    description={place.emergencyNotice}
-                />
-            )} */}
+                {place.emergencyNotice && (
+                    <Alert
+                        heading='Notice'
+                        status='warning'
+                        description={place.emergencyNotice}
+                    />
+                )}
 
                 <Frame
                     bgImage={place.images.PRIMARY.url || undefined}
@@ -313,7 +330,13 @@ export const PlaceView = ({
 
                         <HtmlParser htmlString={_admissionPrices.htmlNote} />
 
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-20'>
+                        <div
+                            className={twMerge(
+                                'grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-20',
+                                _admissionPrices.categories.length <= 1 &&
+                                    'sm:grid-cols-1'
+                            )}
+                        >
                             {_admissionPrices.categories.map(
                                 (
                                     category: AdmissionCategory,
@@ -381,17 +404,14 @@ export const PlaceView = ({
 
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 w-full'>
                             <div className='flex flex-col gap-20'>
-                                {/* <InputGroup<Form>
+                                <InputGroup<Form>
                                     name='date'
                                     label='Choose Date'
                                     labelConfig={{ hideBadge: true }}
-                                    inputConfig={{
-                                        type: 'date',
-                                        defaultValue: openingDate,
-                                    }}
+                                    type='date'
                                     formRegister={{ register }}
                                     errors={errors}
-                                /> */}
+                                />
 
                                 {openingDate && (
                                     <div className='flex flex-col gap-16'>
@@ -432,55 +452,32 @@ export const PlaceView = ({
                     <Frame id='directions-frame'>
                         <h2>Directions</h2>
 
-                        <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-x-32 gap-y-20'>
-                            <div className='flex flex-col gap-20'>
-                                {Object.keys(directions.directions).map(
-                                    (key) => {
-                                        const icon = resolveIcon(key);
+                        <div className='grid grid-cols-1 sm:grid-cols-2  gap-x-32 gap-y-20'>
+                            {Object.keys(directions.directions).map((key) => {
+                                const icon = resolveIcon(key);
 
-                                        return (
-                                            <div
-                                                className='flex flex-col gap-8'
-                                                key={`direction-${key}`}
-                                            >
-                                                <div className='flex flex-row gap-8 items-center'>
-                                                    {icon && <Icon {...icon} />}
-                                                    <p className='font-bold'>
-                                                        {key.toCapitalisedCase()}
-                                                    </p>
-                                                </div>
-                                                <HtmlParser
-                                                    htmlString={
-                                                        directions.directions[
-                                                            key as DirectionType
-                                                        ].htmlDescription
-                                                    }
-                                                />
-                                            </div>
-                                        );
-                                    }
-                                )}
-                            </div>
-
-                            {/* {position && (
-                          
-                                    <Suspense fallback={<Spinner />}>
-                                            <MiniMap
-                                                mapConfig={{ zoom: 12 }}
-                                                ref={markerRef}
-                                                eventHandlers={mapEventHandlers}
-                                                position={{
-                                                    lat: place.location
-                                                        .latitudeLongitude
-                                                        .latitude,
-                                                    lng: place.location
-                                                        .latitudeLongitude
-                                                        .longitude,
-                                                }}
-                                            />
-                                        </Suspense> 
-                            
-                            )} */}
+                                return (
+                                    <div
+                                        className='flex flex-col gap-8'
+                                        key={`direction-${key}`}
+                                    >
+                                        <div className='flex flex-row gap-8 items-center'>
+                                            {icon && <Icon {...icon} />}
+                                            <p className='font-bold'>
+                                                {key.toCapitalisedCase()}
+                                            </p>
+                                        </div>
+                                        <HtmlParser
+                                            htmlString={
+                                                directions.directions[
+                                                    key as DirectionType
+                                                ].htmlDescription
+                                            }
+                                            align='left'
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </Frame>
                 )}
@@ -495,7 +492,7 @@ export const PlaceView = ({
                     >
                         <h2>Facilities</h2>
 
-                        <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-y-20 gap-x-32'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2  gap-y-20 gap-x-32'>
                             {facilities.facilities.map((facility) => {
                                 if (!facility.available || !facility.reference)
                                     return null;
@@ -531,7 +528,7 @@ export const PlaceView = ({
                         colorScheme='white'
                     >
                         <h2>Accessibility</h2>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 items-center gap-y-20 gap-x-32'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2  gap-y-20 gap-x-32'>
                             {accessTags.tags.map((tag: AccessTag) => {
                                 const icon = resolveIcon(tag.reference);
                                 return (
@@ -561,7 +558,7 @@ export const PlaceView = ({
                     <Frame id='notes-frame'>
                         <h2>Notes</h2>
 
-                        <div className='flex flex-col gap-20 w-full sm:w-4/5'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32'>
                             {notes.noteCategories.map(
                                 (category: NoteCategory) => {
                                     return (
@@ -576,6 +573,7 @@ export const PlaceView = ({
                                                 htmlString={category.htmlNotes.join(
                                                     ' '
                                                 )}
+                                                align='left'
                                             />
                                         </div>
                                     );

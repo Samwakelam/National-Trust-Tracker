@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { twMerge } from '../../utilities/twMerge.util';
 import { Button } from '../Button';
 import { Icon, IconProps } from '../Icon';
 import { useStyle } from '../../hooks/useStyle.hook';
+
 import { ToastStyles, toastStyles } from './Toast.styles';
 
 // MARK: Type

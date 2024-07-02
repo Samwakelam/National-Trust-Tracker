@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useValue, useSelect } from 'react-cosmos/client';
+import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
 
-import { Badge, BadgeProps } from './Badge.component';
 import { colorScheme } from '../../utilities/colorScheme.util';
 import { getCase } from '../../helpers/getCase.helper';
+
+import { Badge, BadgeProps } from './Badge.component';
 
 const divergents: Exclude<BadgeProps['divergent'], undefined | null>[] = [
     'outline',
@@ -15,15 +16,13 @@ const divergents: Exclude<BadgeProps['divergent'], undefined | null>[] = [
 ];
 
 const BadgeFixture = () => {
-    const [colors] = useSelect('Colour Scheme', {
+    const [colors] = useFixtureSelect('Colour Scheme', {
         options: Object.keys(colorScheme),
         defaultValue: 'slate',
     });
 
-    const [hasIcon] = useValue<boolean>('Has Icon', {
-        defaultValue: false,
-    });
-    const [iconVariant] = useSelect('Icon Variant', {
+    const [hasIcon] = useFixtureInput<boolean>('Has Icon', false);
+    const [iconVariant] = useFixtureSelect('Icon Variant', {
         options: ['outline', 'solid', 'undefined'],
         defaultValue: 'undefined',
     });

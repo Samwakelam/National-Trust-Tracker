@@ -13,7 +13,6 @@ export const getAllVisits = async () => {
 
         //@ts-ignore
         const data = await VisitsModel.find({});
-        console.log('data: ', data);
 
         const res = NextResponse.json({
             status: 200,

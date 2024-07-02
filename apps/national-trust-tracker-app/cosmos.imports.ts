@@ -29,6 +29,7 @@ import * as fixture20 from './library/components/Card/Card.fixture';
 import * as fixture21 from './library/components/Button/Button.fixture';
 import * as fixture22 from './library/components/Bar/Bar.fixture';
 import * as fixture23 from './library/components/Badge/Badge.fixture';
+import * as fixture24 from './library/components/Alert/Alert.fixture';
 
 import * as decorator0 from './library/components/cosmos.decorator';
 
@@ -61,7 +62,8 @@ const fixtures = {
   'library/components/Card/Card.fixture.tsx': { module: fixture20 },
   'library/components/Button/Button.fixture.tsx': { module: fixture21 },
   'library/components/Bar/Bar.fixture.tsx': { module: fixture22 },
-  'library/components/Badge/Badge.fixture.tsx': { module: fixture23 }
+  'library/components/Badge/Badge.fixture.tsx': { module: fixture23 },
+  'library/components/Alert/Alert.fixture.tsx': { module: fixture24 }
 };
 
 const decorators = {

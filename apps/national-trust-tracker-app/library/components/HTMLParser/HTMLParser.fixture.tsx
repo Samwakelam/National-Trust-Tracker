@@ -1,6 +1,7 @@
 'use-client';
 
 import React from 'react';
+import { useFixtureSelect } from 'react-cosmos/client';
 
 import { HtmlParser } from './HTMLParser.component';
 
@@ -28,9 +29,22 @@ const stringOne = `
 const stringTwo = `There&#39;s something for everyone at Parke, found on the outskirts of the small market town of Bovey Tracey, gateway to mystical Dartmoor. You can walk from the town (about one mile) or stop off as you drive to the open moor, where the next stop is the rugged crag of <a href='http://www.google.com' target='_blank'>Haytor</a>.  This compact estate was once the home of a wealthy local family and probably enabled them to be self-sufficient for all their day-to-day needs with`;
 
 const HtmlParserFixture = () => {
+    // const [align] = useFixtureSelect('Text Align', {
+    //     options: ['left', 'center', 'right'],
+    //     defaultValue: 'left',
+    // });
+
+    // const [test] = useFixtureSelect('Test String', {
+    //     options: ['One', 'Two'],
+    //     defaultValue: 'One',
+    // });
+
     return (
         <div className='p-16'>
-            <HtmlParser htmlString={stringOne} />
+            <HtmlParser
+                htmlString={stringOne}
+                // align={align}
+            />
         </div>
     );
 };

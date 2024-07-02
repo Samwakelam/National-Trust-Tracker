@@ -43,7 +43,8 @@ export const Map = forwardRef(
                 zoom={zoom}
                 scrollWheelZoom={true}
                 ref={ref}
-                className='w-full h-full rounded-12'
+                className='w-full h-full rounded-12 [&>.leaflet-pane]:z-0 [&_.leaflet-top]:z-0 [&_.leaflet-left]:z-0 [&_.leaflet-right]:z-0 [&_.leaflet-bottom]:z-0'
+                data-label='map'
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

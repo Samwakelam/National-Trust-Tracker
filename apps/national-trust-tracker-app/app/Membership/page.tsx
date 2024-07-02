@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function Membership(): Promise<JSX.Element> {
     const membership = await getMembership('King');
 
-    return membership ? (
+    return membership.data ? (
         <MembershipView membership={membership.data} />
     ) : (
         <div>loading</div>
