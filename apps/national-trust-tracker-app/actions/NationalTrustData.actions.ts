@@ -4,8 +4,9 @@ import { NextResponse } from 'next/server';
 
 import { getDatabaseConnection } from '../library/helpers';
 import NationalTrustDataModel from '../library/models/NationalTrustData.model';
+import { ActionResponse } from '../library/types';
 
-export const getNationalTrustData = async () => {
+export const getNationalTrustData = async (): Promise<ActionResponse> => {
     await getDatabaseConnection();
 
     try {

@@ -5,12 +5,13 @@ import { revalidatePath } from 'next/cache';
 
 import { getDatabaseConnection } from '../library/helpers';
 import PlacesModel from '../library/models/Places.model';
+import { ActionResponse } from '../library/types';
 
 const revalidate = () => {
     revalidatePath('/places');
 };
 
-export const getAllPlaces = async () => {
+export const getAllPlaces = async (): Promise<ActionResponse> => {
     await getDatabaseConnection();
 
     try {
@@ -36,7 +37,7 @@ export const getAllPlaces = async () => {
     }
 };
 
-export const postPlace = async (body: JSON) => {
+export const postPlace = async (body: JSON): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
@@ -65,7 +66,9 @@ export const postPlace = async (body: JSON) => {
     }
 };
 
-export const getPlaceById = async (placeId: string) => {
+export const getPlaceById = async (
+    placeId: string
+): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
         //@ts-ignore - unsure
@@ -90,7 +93,10 @@ export const getPlaceById = async (placeId: string) => {
     }
 };
 
-export const putPlaceById = async (placeId: string, body: JSON) => {
+export const putPlaceById = async (
+    placeId: string,
+    body: JSON
+): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 

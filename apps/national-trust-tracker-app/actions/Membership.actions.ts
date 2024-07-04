@@ -4,13 +4,16 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
 import { getDatabaseConnection } from '../library/helpers';
+import { ActionResponse } from '../library/types';
 import MembershipsModel from '../library/models/Memberships.model';
 
 const revalidate = () => {
     revalidatePath('/membership');
 };
 
-export const getMembership = async (groupName: string) => {
+export const getMembership = async (
+    groupName: string
+): Promise<ActionResponse> => {
     await getDatabaseConnection();
 
     try {
@@ -36,7 +39,7 @@ export const getMembership = async (groupName: string) => {
     }
 };
 
-export const postMemberships = async (body: JSON) => {
+export const postMemberships = async (body: JSON): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
