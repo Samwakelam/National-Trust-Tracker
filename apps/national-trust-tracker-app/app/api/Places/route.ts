@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 
 import { getAllPlaces, postPlace } from '../../../actions/Places.actions';
 
-export const revalidate = 0;
-
 export async function GET(request: Request) {
     const action = await getAllPlaces();
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFixtureInput, useFixtureSelect } from 'react-cosmos/client';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Menu, MenuItemProps } from './Menu.component';
 
@@ -23,10 +23,20 @@ const MenuFixture = () => {
         variant: iconVariant === 'undefined' ? undefined : iconVariant,
     };
 
+    const [isLoading, setIsLoading] = useState<number>(0);
+
+    const handleClick = (item: number) => {
+        setIsLoading(item);
+        setTimeout(() => {
+            setIsLoading(0);
+        }, 500);
+    };
+
     const menuItems = [
         {
             label: 'Item One',
-            onClick: () => alert('Item One Clicked'),
+            onClick: () => handleClick(1),
+            isLoading: isLoading === 1,
             icon,
         },
         ...(hasSingleItem
@@ -34,11 +44,13 @@ const MenuFixture = () => {
             : [
                   {
                       label: 'Item Two',
-                      onClick: () => alert('Item Two Clicked'),
+                      onClick: () => handleClick(2),
+                      isLoading: isLoading === 2,
                   },
                   {
                       label: 'Item Three',
-                      onClick: () => alert('Item Three Clicked'),
+                      onClick: () => handleClick(3),
+                      isLoading: isLoading === 3,
                   },
               ]),
     ];

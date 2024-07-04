@@ -1,9 +1,14 @@
 'use server';
 
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 import { getDatabaseConnection } from '../library/helpers';
 import PlacesModel from '../library/models/Places.model';
+
+const revalidate = () => {
+    revalidatePath('/places');
+};
 
 export const getAllPlaces = async () => {
     await getDatabaseConnection();
@@ -44,9 +49,12 @@ export const postPlace = async (body: JSON) => {
             data,
         });
 
+        revalidate();
+
         return await res.json();
     } catch (error) {
         console.log('Places route POST error:', error);
+
         const res = NextResponse.json({
             status: 404,
             message: 'Error',
@@ -90,6 +98,8 @@ export const putPlaceById = async (placeId: string, body: JSON) => {
         const data = await PlacesModel.updateOne({ placeId }, body, {
             upsert: true,
         });
+
+        revalidate();
 
         const res = NextResponse.json({
             status: 200,

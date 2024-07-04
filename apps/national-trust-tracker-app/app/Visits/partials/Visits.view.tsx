@@ -47,8 +47,6 @@ export const VisitsView = () => {
         const dateFrom = visitsFilters.dateFrom;
         const region = visitsFilters.region;
 
-        if (!name && !dateTo && !dateFrom) setVisitsList(visits);
-
         const newVisits = visits.filter((visit) => {
             return (
                 (name
@@ -64,7 +62,7 @@ export const VisitsView = () => {
             );
         });
         setVisitsList(newVisits);
-    }, [visitsFilters]);
+    }, [visitsFilters, visits]);
 
     // MARK: Return
 

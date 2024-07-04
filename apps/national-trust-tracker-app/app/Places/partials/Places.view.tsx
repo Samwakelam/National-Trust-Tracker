@@ -56,7 +56,7 @@ export const PlacesView = ({
             });
 
         setPropertyList(list);
-    }, [propertyFilter]);
+    }, [propertyFilter, savedPlaces]);
 
     // MARK: Return
 
@@ -64,7 +64,7 @@ export const PlacesView = ({
         <>
             <div
                 data-label='page-container'
-                className='grid grid-cols-[auto_1fr] lg:grid-cols-[2fr_1fr] 3xl:grid-cols-[3fr_1fr] gap-16 p-16 h-auto'
+                className='grid grid-cols-[auto_1fr] lg:grid-cols-[2fr_1fr] 3xl:grid-cols-[3fr_1fr] gap-16 p-16 h-auto items-start'
             >
                 <aside
                     data-label='drawer-container'
@@ -84,7 +84,7 @@ export const PlacesView = ({
                     data-label='places-container'
                     className={twMerge(
                         'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 4xl:grid-cols-8',
-                        'grid-flow-row-dense h-full gap-16 w-full',
+                        'grid-flow-row-dense gap-16 w-full',
                         'lg:order-1'
                     )}
                 >
@@ -99,13 +99,20 @@ export const PlacesView = ({
                             (visit) => visit.place.placeId === placeId
                         ).length;
 
+                        const url = `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`;
+
                         if (!place) {
+                            const handleClick = () => {
+                                router.push(url);
+                            };
+
                             return (
                                 <Tile
                                     key={`place-tile-${placeId}`}
                                     className='w-full h-full'
                                     heading={summary.name}
                                     colorScheme='white'
+                                    onClick={handleClick}
                                     icon={
                                         summary.active
                                             ? {
@@ -119,11 +126,7 @@ export const PlacesView = ({
                                     }
                                     cta={{
                                         children: 'Go to Page',
-                                        onClick: () => {
-                                            router.push(
-                                                `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`
-                                            );
-                                        },
+                                        onClick: handleClick,
                                     }}
                                 />
                             );
@@ -134,7 +137,7 @@ export const PlacesView = ({
                                 key={`place-card-${placeId}`}
                                 className='col-span-2 sm:col-span-2 row-span-1 sm:row-span-2'
                                 link={{
-                                    href: `Places/${getCase(summary.name, 'pascal')}/${summary.placeId}`,
+                                    href: url,
                                 }}
                                 place={place}
                                 summary={summary}

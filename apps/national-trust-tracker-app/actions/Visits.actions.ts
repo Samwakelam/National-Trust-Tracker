@@ -6,8 +6,13 @@ import { revalidatePath } from 'next/cache';
 import { getDatabaseConnection } from '../library/helpers';
 import { Visit } from '../library/types/internal';
 import VisitsModel from '../library/models/Visits.model';
+import { ActionResponse } from '../library/types';
 
-export const getAllVisits = async () => {
+const revalidate = () => {
+    revalidatePath('/', 'layout');
+};
+
+export const getAllVisits = async (): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
@@ -33,12 +38,16 @@ export const getAllVisits = async () => {
     }
 };
 
-export const postVisit = async (body: Omit<Visit, '_id'>) => {
+export const postVisit = async (
+    body: Omit<Visit, '_id'>
+): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
         //@ts-ignore
         const data = await VisitsModel.create(body);
+
+        revalidate();
 
         const res = NextResponse.json({
             status: 200,
@@ -46,7 +55,6 @@ export const postVisit = async (body: Omit<Visit, '_id'>) => {
             data,
         });
 
-        revalidatePath('/');
         return await res.json();
     } catch (error) {
         console.log('Visits route Post error:', error);
@@ -60,11 +68,16 @@ export const postVisit = async (body: Omit<Visit, '_id'>) => {
     }
 };
 
-export const patchVisitById = async (visitId: string, body: JSON) => {
+export const patchVisitById = async (
+    visitId: string,
+    body: JSON
+): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
         const data = await VisitsModel.updateOne({ _id: visitId }, body);
+
+        revalidate();
 
         const res = NextResponse.json({
             status: 200,
@@ -74,6 +87,7 @@ export const patchVisitById = async (visitId: string, body: JSON) => {
         return await res.json();
     } catch (error) {
         console.log('Visit[visitId] route PATCH error:', error);
+
         const res = NextResponse.json({
             status: 404,
             message: 'Error',
@@ -83,20 +97,26 @@ export const patchVisitById = async (visitId: string, body: JSON) => {
     }
 };
 
-export const deleteVisitById = async (visitId: string) => {
+export const deleteVisitById = async (
+    visitId: string
+): Promise<ActionResponse> => {
     try {
         await getDatabaseConnection();
 
         const data = await VisitsModel.deleteOne({ _id: visitId });
+
+        revalidate();
 
         const res = NextResponse.json({
             status: 200,
             message: 'Success',
             data,
         });
+
         return await res.json();
     } catch (error) {
         console.log('Visit[visitId] route DELETE error:', error);
+
         const res = NextResponse.json({
             status: 404,
             message: 'Error',

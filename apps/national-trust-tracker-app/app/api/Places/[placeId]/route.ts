@@ -4,8 +4,6 @@ import { getPlaceById, putPlaceById } from '../../../../actions/Places.actions';
 
 type ParametersProps = { params: { placeId: string } };
 
-export const revalidate = 0;
-
 export async function GET(request: Request, { params }: ParametersProps) {
     const placeId = params.placeId;
 

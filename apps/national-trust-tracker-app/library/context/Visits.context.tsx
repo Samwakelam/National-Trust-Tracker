@@ -6,11 +6,18 @@ import {
     ReactElement,
     useState,
     ReactNode,
+    useEffect,
 } from 'react';
 
-import { VisitDB } from '../types/internal';
+import {
+    deleteVisitById,
+    getAllVisits,
+    postVisit,
+} from '../../actions/Visits.actions';
 
-import { deleteVisitById, getAllVisits } from '../../actions/Visits.actions';
+import { Visit, VisitDB } from '../types/internal';
+import { ActionResponse } from '../types';
+
 import {
     ReduceMapProps,
     getReduced,
@@ -18,6 +25,8 @@ import {
     getReducedByYear,
     getReducedSpecificity,
 } from './Visits.helpers';
+
+// MARK: Type
 
 type Filter = {
     specificity?: 'month' | 'year' | 'all';
@@ -32,15 +41,17 @@ type VisitsContextProps = {
     ) => ReduceMapProps | Record<string, ReduceMapProps>;
     getVisit: (visitId: string) => void;
     getVisits: () => void;
-    onCreateVisit: () => void;
-    onDeleteVisit: (visitId: string) => void;
-    onUpdateVisit: (visitId: string) => void;
+    onCreateVisit: (visit: Visit) => Promise<ActionResponse>;
+    onDeleteVisit: (visitId: string) => Promise<ActionResponse>;
+    onUpdateVisit: (visitId: string) => Promise<ActionResponse>;
 };
 
 type VisitsProviderProps = {
     children: ReactElement | ReactNode;
     initial: VisitDB[];
 };
+
+// MARK: Initial State
 
 const initialState: VisitsContextProps = {
     visits: [],
@@ -54,22 +65,32 @@ const initialState: VisitsContextProps = {
     getVisits: function (): void {
         throw new Error('Function not implemented.');
     },
-    onCreateVisit: function (): void {
+    onCreateVisit: function (visit: Visit): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
-    onDeleteVisit: function (visitId: string): void {
+    onDeleteVisit: function (visitId: string): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
-    onUpdateVisit: function (visitId: string): void {
+    onUpdateVisit: function (visitId: string): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
 };
 
+// MARK: Context
+
 const VisitsContext = createContext<VisitsContextProps>(initialState);
+
+// MARK: Provider
 
 export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [visits, setVisits] = useState<VisitsContextProps['visits']>(initial);
+
+    useEffect(() => {
+        console.log('visits:', visits);
+    }, [visits]);
+
+    // MARK: Handlers
 
     const getStatistics: VisitsContextProps['getStatistics'] = (
         filter = {}
@@ -94,19 +115,52 @@ export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
 
     const getVisits: VisitsContextProps['getVisits'] = () => {};
 
-    const onCreateVisit: VisitsContextProps['onCreateVisit'] = async () => {};
+    // MARK: Action Functions
+
+    const onCreateVisit: VisitsContextProps['onCreateVisit'] = async (
+        visit
+    ) => {
+        try {
+            setIsLoading(true);
+
+            const postBody = JSON.parse(JSON.stringify(visit));
+            const res = await postVisit(postBody);
+
+            if (res.message === 'Error' && res.error)
+                throw new Error(res.error);
+
+            if (res.message === 'Success') onReadVisits();
+
+            return res;
+        } catch (error) {
+            console.log('error onCreateVisit: ', error);
+            return { status: 500, message: 'Error', error };
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const onDeleteVisit: VisitsContextProps['onDeleteVisit'] = async (
         visitId
     ) => {
         try {
             setIsLoading(true);
-            const { status, message, data, error } =
-                await deleteVisitById(visitId);
+            const res = await deleteVisitById(visitId);
 
-            if (data && data.deletedCount === 1) onReadVisits();
+            if (res.message === 'Error' && res.error)
+                throw new Error(res.error);
+
+            if (
+                res.message === 'Success' &&
+                res.data &&
+                res.data.deletedCount === 1
+            )
+                onReadVisits();
+
+            return res;
         } catch (error) {
             console.log('error onReadVisits: ', error);
+            return { status: 500, message: 'Error', error };
         } finally {
             setIsLoading(false);
         }
@@ -115,11 +169,17 @@ export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
     const onReadVisits: () => void = async () => {
         try {
             setIsLoading(true);
-            const { status, message, data, error } = await getAllVisits();
+            const res = await getAllVisits();
 
-            setVisits(data);
+            if (res.message === 'Error' && res.error)
+                throw new Error(res.error);
+
+            if (res.message === 'Success' && res.data) setVisits(res.data);
+
+            return res;
         } catch (error) {
             console.log('error onReadVisits: ', error);
+            return { status: 500, message: 'Error', error };
         } finally {
             setIsLoading(false);
         }
@@ -127,7 +187,11 @@ export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
 
     const onUpdateVisit: VisitsContextProps['onUpdateVisit'] = async (
         visitId
-    ) => {};
+    ) => {
+        return { status: 501, message: 'Error', error: 'not implemented' };
+    };
+
+    // MARK: Return
 
     return (
         <VisitsContext.Provider
@@ -146,6 +210,8 @@ export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
         </VisitsContext.Provider>
     );
 };
+
+// MARK: Hook
 
 export const useVisits = () => {
     return useContext(VisitsContext);

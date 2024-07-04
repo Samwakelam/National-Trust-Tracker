@@ -59,7 +59,7 @@ const TileFixture = () => {
     };
 
     return (
-        <div className='flex gap-16 p-16'>
+        <div className='flex flex-row gap-16 p-16'>
             {divergents.map((divergent) => {
                 return (
                     <div

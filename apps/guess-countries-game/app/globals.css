@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-50: theme(colors.gray.50);
+    --color-100: theme(colors.gray.100);
+    --color-200: theme(colors.gray.200);
+    --color-300: theme(colors.gray.300);
+    --color-400: theme(colors.gray.400);
+    --color-500: theme(colors.gray.500);
+    --color-600: theme(colors.gray.600);
+    --color-700: theme(colors.gray.700);
+    --color-800: theme(colors.gray.800);
+    --color-900: theme(colors.gray.900);
+    --color-950: theme(colors.gray.950);
+}
+
+* {
+    box-sizing: border-box;
+}

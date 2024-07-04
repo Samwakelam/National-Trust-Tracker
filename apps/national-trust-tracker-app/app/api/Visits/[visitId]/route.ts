@@ -6,8 +6,6 @@ import {
 
 type ParametersProps = { params: { visitId: string } };
 
-export const revalidate = 0;
-
 export async function PATCH(request: Request, { params }: ParametersProps) {
     const visitId = params.visitId;
     const body = await request.json();

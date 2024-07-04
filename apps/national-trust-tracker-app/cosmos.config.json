@@ -7,8 +7,8 @@
     "ui": {
         "responsivePreview": {
             "devices": [
-                { "label": "mobile", "width": 320, "height": 667 },
-                { "label": "sm", "width": 640, "height": 667 },
+                { "label": "mobile", "width": 320, "height": 640 },
+                { "label": "sm", "width": 640, "height": 960 },
                 { "label": "md", "width": 768, "height": 1024 },
                 { "label": "lg", "width": 1024, "height": 768 },
                 { "label": "xl", "width": 1280, "height": 929 },

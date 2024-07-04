@@ -1,4 +1,5 @@
 import { IconType } from 'react-icons';
+import { LuTrendingDown, LuTrendingUp } from 'react-icons/lu';
 import { MdOutlinePublishedWithChanges } from 'react-icons/md';
 import {
     // TbArrowBarDown,
@@ -54,7 +55,9 @@ export type ArrowsType =
     | 'sort-by-u'
     | 'sort-by-d'
     | 'sort-by-l'
-    | 'sort-by-r';
+    | 'sort-by-r'
+    | 'trend-d'
+    | 'trend-u';
 
 export const arrowsMap: { [key in ArrowsType]: IconType } = {
     'arrow-d': TbArrowDown,
@@ -83,4 +86,6 @@ export const arrowsMap: { [key in ArrowsType]: IconType } = {
     'sort-by-d': TbArrowsDown,
     'sort-by-l': TbArrowsLeft,
     'sort-by-r': TbArrowsRight,
+    'trend-d': LuTrendingDown,
+    'trend-u': LuTrendingUp,
 };

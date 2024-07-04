@@ -36,7 +36,7 @@ type FormType = {
 // MARK: Component
 
 export const StatisticsView = ({ membership }: StatisticsViewProps) => {
-    const { getStatistics } = useVisits();
+    const { visits, getStatistics } = useVisits();
 
     const {
         filters,
@@ -111,7 +111,7 @@ export const StatisticsView = ({ membership }: StatisticsViewProps) => {
             setStats(allStats);
             setGroupedStats(yearStats);
         }
-    }, [filters]);
+    }, [filters, visits]);
 
     // MARK: Return
 

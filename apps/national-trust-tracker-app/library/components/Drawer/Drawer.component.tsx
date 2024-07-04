@@ -137,7 +137,7 @@ export const Drawer = ({
                 <div
                     data-label='drawer-body'
                     className={twMerge(
-                        'flex flex-col gap-16 flex-1 p-16 pt-0 mb-16 items-center overflow-y-auto overflow-x-hidden',
+                        'flex flex-col gap-16 flex-1 p-16 pt-8 mb-16 items-center overflow-y-auto overflow-x-hidden',
                         scrollbar
                     )}
                 >

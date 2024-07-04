@@ -1,8 +1,8 @@
-import { ChartData, ChartOptions } from 'chart.js';
-import { Membership, Visit } from '../../../library/types/internal';
+import { Membership, NationalTrustData } from '../../../library/types/internal';
 
 export type MembershipViewProps = {
     membership: Membership;
+    nationalTrustData: NationalTrustData | null;
 };
 
 export type FormMembership = Membership;

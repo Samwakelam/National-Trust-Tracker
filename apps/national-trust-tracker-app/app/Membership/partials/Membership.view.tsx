@@ -36,8 +36,11 @@ type FormType = {
 
 // MARK: Component
 
-export const MembershipView = ({ membership }: MembershipViewProps) => {
-    const { getStatistics } = useVisits();
+export const MembershipView = ({
+    membership,
+    nationalTrustData,
+}: MembershipViewProps) => {
+    const { visits, getStatistics } = useVisits();
 
     const {
         filters,
@@ -179,7 +182,7 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
             labels: [],
             datasets: [],
         };
-    }, [filters.year]);
+    }, [filters.year, visits]);
 
     const chartOptions = useMemo((): ChartProps['options'] => {
         const layout = {
@@ -256,14 +259,13 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
                 ? Math.ceil(thisYear.totalPrice / numberOfMonths)
                 : 0,
             monthAverageVisits: thisYear
-                ? Math.ceil(thisYear.visits) / numberOfMonths
+                ? Math.ceil(thisYear.visits / numberOfMonths)
                 : 0,
             yearAverageSpend: Math.ceil(allStats.totalPrice) / numberOfYears,
-            yearMembershipPrice: 0,
             totalYears: numberOfYears,
             totalSpend: allStats.totalPrice,
         }));
-    }, [membership, filters]);
+    }, [membership, filters, visits]);
 
     useEffect(() => {
         if (!filters.month) {
@@ -277,6 +279,16 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
             });
         }
     }, [filters.year]);
+
+    useEffect(() => {
+        setState((prev) => ({
+            ...prev,
+            yearMembershipPrice:
+                nationalTrustData?.annualMembership[filters.year] ||
+                nationalTrustData?.annualMembership[new Date().getFullYear()] ||
+                0,
+        }));
+    }, [nationalTrustData, filters.year]);
 
     // MARK: Return
 
@@ -331,19 +343,21 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
                                     <Icon
                                         icon='clock'
                                         ariaLabel='clock'
+                                        variant='outline'
                                     />
-                                    <p>Number of Years</p>
+                                    <p className='font-semibold'>
+                                        Number of years of membership:
+                                    </p>
                                     <p>{state.totalYears}</p>
                                 </div>
                                 <div className='flex flex-row gap-8 items-center'>
                                     <Icon
-                                        icon='money-pig'
-                                        ariaLabel='savings'
+                                        icon='calendar-event'
+                                        ariaLabel='calendar event'
+                                        variant='outline'
                                     />
-                                    <p>Total savings</p>
-                                    <p>
-                                        £{getAmountInPounds(state.totalSpend)}
-                                    </p>
+                                    <p className='font-semibold'>Start date:</p>
+                                    <p>{membership.startDate}</p>
                                 </div>
                             </div>
                         </div>
@@ -381,9 +395,11 @@ export const MembershipView = ({ membership }: MembershipViewProps) => {
                     isFullWidth
                 >
                     <CardMembership
-                        numberOfYears={state.totalYears}
+                        projection={Math.ceil(
+                            state.balance / state.yearAverageSpend
+                        )}
                         remainingBalance={state.balance}
-                        startDate={membership.startDate}
+                        savings={state.totalSpend}
                         totalPrice={membership.totalCost}
                     />
                     <CardMonth

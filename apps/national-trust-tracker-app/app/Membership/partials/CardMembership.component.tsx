@@ -3,16 +3,16 @@ import { getAmountInPounds } from '../../../library/helpers';
 
 type CardMembershipProps = {
     totalPrice: number;
-    startDate: string;
+    projection: number;
     remainingBalance: number;
-    numberOfYears: number;
+    savings: number;
 };
 
 export const CardMembership = ({
     totalPrice,
-    startDate,
+    projection,
     remainingBalance,
-    numberOfYears,
+    savings,
 }: CardMembershipProps) => {
     return (
         <Card
@@ -32,11 +32,11 @@ export const CardMembership = ({
             />
             <Tile
                 icon={{
-                    icon: 'membership',
-                    ariaLabel: 'membership',
+                    icon: 'trend-u',
+                    ariaLabel: 'trending up',
                 }}
-                heading='Start Date'
-                description={startDate}
+                heading='Projection'
+                description={`${projection} years`}
                 className='h-full'
             />
             <Tile
@@ -50,11 +50,11 @@ export const CardMembership = ({
             />
             <Tile
                 icon={{
-                    icon: 'calendar-event',
-                    ariaLabel: 'date',
+                    icon: 'money-pig',
+                    ariaLabel: 'piggy bank',
                 }}
-                heading='Number of Years'
-                description={numberOfYears.toString()}
+                heading='Total Savings'
+                description={`£${getAmountInPounds(savings)}`}
                 className='h-full'
             />
         </Card>

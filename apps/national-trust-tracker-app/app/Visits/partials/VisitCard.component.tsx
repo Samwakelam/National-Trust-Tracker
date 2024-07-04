@@ -17,7 +17,6 @@ import {
     getCase,
     resolveCurrency,
     resolveIcon,
-    resolvePersonMap,
 } from '../../../library/helpers';
 import { VisitDB } from '../../../library/types/internal';
 import { Asset } from '../../../library/types/national-trust';
@@ -135,6 +134,7 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                         {
                             label: 'Delete Visit',
                             onClick: () => onDeleteVisit(visit._id),
+                            isLoading,
                         },
                     ],
                 }}
@@ -198,7 +198,10 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                         <h3 className='font-bold text-24'>Visitors</h3>
                         <div className='flex flex-col gap-8'>
                             {visit.people.map((person) => (
-                                <div className='flex flex-row gap-8'>
+                                <div
+                                    className='flex flex-row gap-8'
+                                    key={`visit-people-${person}`}
+                                >
                                     <Icon
                                         icon='user'
                                         ariaLabel='person'

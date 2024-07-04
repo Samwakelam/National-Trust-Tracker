@@ -1,9 +1,14 @@
 'use server';
 
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 import { getDatabaseConnection } from '../library/helpers';
 import MembershipsModel from '../library/models/Memberships.model';
+
+const revalidate = () => {
+    revalidatePath('/membership');
+};
 
 export const getMembership = async (groupName: string) => {
     await getDatabaseConnection();
@@ -38,6 +43,8 @@ export const postMemberships = async (body: JSON) => {
         //@ts-ignore - unsure
         const data = await MembershipsModel.create(body);
 
+        revalidate();
+
         const res = NextResponse.json({
             status: 200,
             message: 'Success',
@@ -47,6 +54,7 @@ export const postMemberships = async (body: JSON) => {
         return await res.json();
     } catch (error) {
         console.log('Memberships route POST error:', error);
+
         const res = NextResponse.json({
             status: 404,
             message: 'Error',

@@ -84,6 +84,7 @@ export interface MenuItemProps extends MenuItemStyles {
     label: string;
     onClick?: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
     link?: LinkProps;
+    isLoading?: boolean;
 }
 
 // MARK: Menu Item
@@ -92,6 +93,7 @@ const MenuItemComponent = ({
     onClick,
     label,
     icon,
+    isLoading,
 }: Omit<MenuItemProps, 'link'>) => {
     const styles = menuItemStyles({});
 
@@ -101,8 +103,29 @@ const MenuItemComponent = ({
             className={twMerge(styles)}
             onClick={isolateClickEvent(onClick)}
         >
-            {icon && <Icon {...icon} />}
-            <span className='text-nowrap'>{label}</span>
+            <span
+                className={twMerge(
+                    'flex flex-row gap-4 row-start-1 col-start-1 justify-center items-center text-nowrap',
+                    isLoading && 'invisible cursor-not-allowed'
+                )}
+                aria-hidden={isLoading ? 'true' : 'false'}
+            >
+                {icon && <Icon {...icon} />}
+                {label}
+            </span>
+            <span
+                className={twMerge(
+                    'flex-row row-start-1 col-start-1 justify-center',
+                    !isLoading ? 'hidden' : 'flex'
+                )}
+                aria-hidden={!isLoading ? 'true' : 'false'}
+            >
+                <Icon
+                    icon='spinner'
+                    ariaLabel='loading spinner'
+                    className={twMerge('animate-spin', icon?.className)}
+                />
+            </span>
         </li>
     );
 };

@@ -17,6 +17,7 @@ import {
 import { PlaceViewProps } from './Place.definition';
 
 import { Form, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+
 import { isAsset, isReferencedFacility } from '../../../../../library/guards';
 import {
     SavedPlace,
@@ -33,12 +34,10 @@ import {
 } from '../../../../../library/components';
 import { resolveIcon } from '../../../../../library/helpers';
 import { ToastProps } from '../../../../../library/components/Toast/Toast.component';
-import {
-    UseToastReturn,
-    useToast,
-} from '../../../../../library/context/Toast.context';
-import { putPlaceById } from '../../../../../actions/Places.actions';
-import { postVisit } from '../../../../../actions/Visits.actions';
+import { useToast } from '../../../../../library/context/Toast.context';
+import { useVisits } from '../../../../../library/context/Visits.context';
+
+import { usePlaces } from '../../../../../library/context/Places.context';
 
 // MARK: Types
 
@@ -66,7 +65,7 @@ type Form = {
 
 type ResponseAndMessage = Response & { message: 'Success' | 'Error' };
 
-// MARK: Drawer Add Visit
+// MARK: Component
 
 export const DrawerAddVisit = ({
     isOpen,
@@ -74,6 +73,8 @@ export const DrawerAddVisit = ({
     place,
 }: DrawerAddVisitProps): ReactElement<DrawerAddVisitProps> => {
     const toast = useToast();
+    const { onCreateVisit } = useVisits();
+    const { onUpdatePlace } = usePlaces();
 
     // MARK: State
     const [admissionCategory, setAdmissionCategory] = useState<string>('');
@@ -101,6 +102,11 @@ export const DrawerAddVisit = ({
         control,
         name: 'people',
     });
+
+    // MARK: Variables
+
+    const checkBoxGroupStyle =
+        'flex flex-col flex-wrap sm:flex-row gap-16 sm:gap-24 ';
 
     // MARK: Handlers
 
@@ -195,10 +201,9 @@ export const DrawerAddVisit = ({
         };
 
         if (isDirty && isValid) {
-            const postBody = JSON.parse(JSON.stringify(visit));
-            const post = await postVisit(postBody);
+            const res = await onCreateVisit(visit);
 
-            if (post.message === 'Success') {
+            if (res.message === 'Success') {
                 handleToast({
                     title: 'Visit Logged',
                     description: 'Your Visit has been saved successfully',
@@ -206,10 +211,10 @@ export const DrawerAddVisit = ({
                 });
             }
 
-            if (post.message === 'Error') {
+            if (res.message === 'Error') {
                 handleToast({
                     title: 'Error',
-                    description: post.error,
+                    description: res.error,
                     status: 'error',
                 });
             }
@@ -238,8 +243,7 @@ export const DrawerAddVisit = ({
             websiteUrl: place.place.websiteUrl,
         };
 
-        const putBody = JSON.parse(JSON.stringify(compiledPlace));
-        const put = await putPlaceById(`${compiledPlace.placeId}`, putBody);
+        const put = await onUpdatePlace(compiledPlace);
 
         if (put.message === 'Success') {
             handleToast({
@@ -321,6 +325,7 @@ export const DrawerAddVisit = ({
                 onClick: () => handleClose(),
                 colorScheme: 'red',
             }}
+            size='md'
         >
             <form
                 id='drawer-add-visit-form'
@@ -510,8 +515,11 @@ export const DrawerAddVisit = ({
                 {/* MARK: Visitors
                  */}
 
-                <div className='flex flex-col p-16 gap-8'>
-                    <h4 className='font-bold mb-16'>Visitors</h4>
+                <Card
+                    divergent='ghost'
+                    className='w-full py-0'
+                    heading='Visitors'
+                >
                     <div className='flex flex-col sm:flex-row flex-wrap items-start justify-start gap-16'>
                         {fields.map((field, index) => {
                             return (
@@ -559,43 +567,47 @@ export const DrawerAddVisit = ({
                     >
                         Add Another visitor
                     </Button>
-                </div>
+                </Card>
 
                 {/* MARK: Assets
                  */}
 
                 {assets.length > 0 && (
                     <Card
-                        colorScheme='gray'
                         divergent='outline'
                         heading='Assets'
+                        className='w-full'
                     >
                         <p className='text-14'>
                             Which parts of the property did you use on this
                             visit?
                         </p>
 
-                        {assets.map((asset: Asset) => {
-                            return (
-                                <CheckboxGroup<Form>
-                                    key={asset.name}
-                                    name='assetsUsed'
-                                    formRegister={{
-                                        register,
-                                    }}
-                                    errors={errors}
-                                    isDisabled={asset.description === 'Closed'}
-                                    checkboxes={[
-                                        {
-                                            label: asset.name,
-                                            labelConfig: {
-                                                hideBadge: true,
+                        <div className={checkBoxGroupStyle}>
+                            {assets.map((asset: Asset) => {
+                                return (
+                                    <CheckboxGroup<Form>
+                                        key={asset.name}
+                                        name='assetsUsed'
+                                        formRegister={{
+                                            register,
+                                        }}
+                                        errors={errors}
+                                        isDisabled={
+                                            asset.description === 'Closed'
+                                        }
+                                        checkboxes={[
+                                            {
+                                                label: asset.name,
+                                                labelConfig: {
+                                                    hideBadge: true,
+                                                },
                                             },
-                                        },
-                                    ]}
-                                />
-                            );
-                        })}
+                                        ]}
+                                    />
+                                );
+                            })}
+                        </div>
                     </Card>
                 )}
 
@@ -604,40 +616,42 @@ export const DrawerAddVisit = ({
 
                 {availableFacilities.length > 0 && (
                     <Card
-                        colorScheme='gray'
                         divergent='outline'
                         heading='Facilities'
+                        className='w-full'
                     >
                         <p className='text-14'>
                             Which facilities did you use on this visit?
                         </p>
 
-                        {availableFacilities.map((facility) => {
-                            const icon = resolveIcon(facility.reference);
-                            return (
-                                <div
-                                    className='flex flex-row gap-8 items-center'
-                                    key={facility.reference}
-                                >
-                                    {icon && <Icon {...icon} />}
-                                    <CheckboxGroup<Form>
-                                        name='facilitiesUsed'
-                                        formRegister={{
-                                            register,
-                                        }}
-                                        errors={errors}
-                                        checkboxes={[
-                                            {
-                                                label: facility.name,
-                                                labelConfig: {
-                                                    hideBadge: true,
+                        <div className={checkBoxGroupStyle}>
+                            {availableFacilities.map((facility) => {
+                                const icon = resolveIcon(facility.reference);
+                                return (
+                                    <div
+                                        className='flex flex-row gap-8 items-center'
+                                        key={facility.reference}
+                                    >
+                                        {icon && <Icon {...icon} />}
+                                        <CheckboxGroup<Form>
+                                            name='facilitiesUsed'
+                                            formRegister={{
+                                                register,
+                                            }}
+                                            errors={errors}
+                                            checkboxes={[
+                                                {
+                                                    label: facility.name,
+                                                    labelConfig: {
+                                                        hideBadge: true,
+                                                    },
                                                 },
-                                            },
-                                        ]}
-                                    />
-                                </div>
-                            );
-                        })}
+                                            ]}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </Card>
                 )}
 
@@ -645,13 +659,16 @@ export const DrawerAddVisit = ({
                  */}
 
                 {place.directions && (
-                    <div className='flex flex-col p-16 gap-16'>
-                        <h4 className='font-bold'>Travel</h4>
+                    <Card
+                        divergent='outline'
+                        heading='Travel'
+                        className='w-full'
+                    >
                         <p className='text-14'>
                             How did you travel to the National Trust Property?
                         </p>
 
-                        <div className='flex flex-col gap-16'>
+                        <div className={checkBoxGroupStyle}>
                             {Object.keys(place.directions.directions).map(
                                 (key) => {
                                     const icon = resolveIcon(key);
@@ -681,7 +698,7 @@ export const DrawerAddVisit = ({
                                 }
                             )}
                         </div>
-                    </div>
+                    </Card>
                 )}
             </form>
         </Drawer>

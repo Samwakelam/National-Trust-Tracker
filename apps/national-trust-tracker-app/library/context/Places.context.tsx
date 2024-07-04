@@ -8,8 +8,11 @@ import {
     ReactNode,
 } from 'react';
 
-import { getAllPlaces } from '../../actions/Places.actions';
+import { getAllPlaces, putPlaceById } from '../../actions/Places.actions';
+
 import { Place } from '../types/national-trust/place.type';
+import { SavedPlace } from '../types/internal';
+import { ActionResponse } from '../types';
 
 // MARK: Types
 
@@ -18,9 +21,9 @@ type PlacesContextProps = {
     places: Place[];
     getPlace: (placeId: string) => void;
     getPlaces: () => void;
-    onCreatePlace: (place: Place) => void;
-    onDeletePlace: (placeId: string) => void;
-    onUpdatePlace: (placeId: string) => void;
+    onCreatePlace: (place: Place) => Promise<ActionResponse>;
+    onDeletePlace: (placeId: string) => Promise<ActionResponse>;
+    onUpdatePlace: (place: SavedPlace) => Promise<ActionResponse>;
 };
 
 type PlacesProviderProps = {
@@ -39,13 +42,13 @@ const initialState: PlacesContextProps = {
     getPlaces: function (): void {
         throw new Error('Function not implemented.');
     },
-    onCreatePlace: function (place: Place): void {
+    onCreatePlace: function (place: Place): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
-    onDeletePlace: function (placeId: string): void {
+    onDeletePlace: function (placeId: string): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
-    onUpdatePlace: function (placeId: string): void {
+    onUpdatePlace: function (place: SavedPlace): Promise<ActionResponse> {
         throw new Error('Function not implemented.');
     },
 };
@@ -74,15 +77,35 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
 
     const onCreatePlace: PlacesContextProps['onCreatePlace'] = async (
         place
-    ) => {};
+    ) => {
+        return { status: 501, message: 'Error', error: 'not implemented' };
+    };
 
     const onDeletePlace: PlacesContextProps['onDeletePlace'] = async (
         placeId
-    ) => {};
+    ) => {
+        return { status: 501, message: 'Error', error: 'not implemented' };
+    };
 
     const onUpdatePlace: PlacesContextProps['onUpdatePlace'] = async (
-        placeId
-    ) => {};
+        place
+    ) => {
+        try {
+            setIsLoading(true);
+
+            const putBody = JSON.parse(JSON.stringify(place));
+            const res = await putPlaceById(`${place.placeId}`, putBody);
+
+            if (res.error) throw new Error(res.error);
+
+            return res;
+        } catch (error) {
+            console.log('error onUpdatePlace: ', error);
+            return { status: 500, message: 'Error', error };
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     // MARK: Return
 
