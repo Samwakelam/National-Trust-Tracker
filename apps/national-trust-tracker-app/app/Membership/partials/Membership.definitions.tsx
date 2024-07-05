@@ -8,3 +8,9 @@ export type MembershipViewProps = {
 export type FormMembership = Membership;
 export type MembershipChartType = 'ticket' | 'price';
 export type MembershipData = any;
+
+export type UpdateNationalTrustDataHandlerProps = {
+    collection: string;
+    key: string;
+    value: string | number;
+};

@@ -51,6 +51,7 @@ export interface InputGroupProps<T extends FieldValues> extends InputStyles {
     label?: LabelProps['label'];
     labelConfig?: Omit<LabelProps, 'isRequired' | 'htmlFor'>;
     type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
+    step?: React.InputHTMLAttributes<HTMLInputElement>['step'];
     placeholder?: string;
 }
 

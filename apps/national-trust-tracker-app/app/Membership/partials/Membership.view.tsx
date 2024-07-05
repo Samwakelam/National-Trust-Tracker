@@ -23,9 +23,16 @@ import { useDataFiltering } from '../../../library/hooks/useDataFiltering.hook';
 import { CardMembership } from './CardMembership.component';
 import { CardMonth } from './CardMonth.component';
 import { CardYear } from './CardYear.component';
-import { MembershipViewProps } from './Membership.definitions';
+import {
+    MembershipViewProps,
+    UpdateNationalTrustDataHandlerProps,
+} from './Membership.definitions';
 
 import '../../../library/prototypes/String.extensions';
+import { putNationalTrustData } from '../../../actions/NationalTrustData.actions';
+import { useToast } from '../../../library/context/Toast.context';
+import { ToastProps } from '../../../library/components/Toast/Toast.component';
+import { ActionResponse } from '../../../library/types';
 
 // MARK: Types
 
@@ -41,6 +48,7 @@ export const MembershipView = ({
     nationalTrustData,
 }: MembershipViewProps) => {
     const { visits, getStatistics } = useVisits();
+    const toast = useToast();
 
     const {
         filters,
@@ -62,6 +70,7 @@ export const MembershipView = ({
         monthAverageVisits: number;
         monthSpend: number;
         monthVisits: number;
+        ntId: string | undefined;
         totalSpend: number;
         totalYears: number;
         year: string;
@@ -76,6 +85,7 @@ export const MembershipView = ({
         monthAverageVisits: 0,
         monthSpend: 0,
         monthVisits: 0,
+        ntId: undefined,
         totalSpend: 0,
         totalYears: 0,
         year: '',
@@ -216,6 +226,59 @@ export const MembershipView = ({
         };
     }, []);
 
+    // MARK: Handlers
+
+    const handleToast = ({
+        title,
+        description,
+        status,
+    }: Omit<ToastProps, 'onClose' | 'id'>) => {
+        toast({
+            title,
+            description,
+            status,
+            // duration: 5000,
+            // isClosable: true,
+            position: 'top',
+        });
+    };
+
+    const onUpdateNationalTrustData = async ({
+        collection,
+        key,
+        value,
+    }: UpdateNationalTrustDataHandlerProps): Promise<ActionResponse> => {
+        const update = { $set: { [`${collection}.${key}`]: value } };
+
+        if (!nationalTrustData)
+            return {
+                status: 501,
+                message: 'Error',
+                error: 'Missing The National Trust DB Information',
+            };
+
+        const res = await putNationalTrustData(nationalTrustData._id, update);
+
+        if (res.message === 'Success') {
+            handleToast({
+                title: `Updated ${collection}`,
+                description:
+                    'You have successfully updated the National Trust Data',
+                status: 'success',
+            });
+        }
+
+        if (res.message === 'Error') {
+            handleToast({
+                title: `Error`,
+                description: res.error,
+                status: 'error',
+            });
+        }
+
+        return res;
+    };
+
     // MARK: Effects
 
     useEffect(() => {
@@ -283,10 +346,9 @@ export const MembershipView = ({
     useEffect(() => {
         setState((prev) => ({
             ...prev,
+            ntId: nationalTrustData?._id,
             yearMembershipPrice:
-                nationalTrustData?.annualMembership[filters.year] ||
-                nationalTrustData?.annualMembership[new Date().getFullYear()] ||
-                0,
+                nationalTrustData?.annualMembership[filters.year] || 0,
         }));
     }, [nationalTrustData, filters.year]);
 
@@ -415,6 +477,7 @@ export const MembershipView = ({
                         yearSpend={state.yearSpend}
                         membershipPrice={state.yearMembershipPrice}
                         numberOfVisits={state.yearVisits}
+                        handleSubmit={(d) => onUpdateNationalTrustData(d)}
                     />
                 </Carousel>
             </Frame>

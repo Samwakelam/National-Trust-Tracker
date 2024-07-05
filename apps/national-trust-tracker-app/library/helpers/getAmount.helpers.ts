@@ -1,7 +1,7 @@
 export const getAmountInPence = (pounds: string): number => {
     const pence = parseFloat(pounds) * 100;
 
-    return pence;
+    return Math.ceil(pence);
 };
 
 export const getAmountInPounds = (pence: number): string => {
