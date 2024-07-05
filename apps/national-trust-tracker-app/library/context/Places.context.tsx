@@ -68,9 +68,11 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
     const getPlace: PlacesContextProps['getPlace'] = async (placeId) => {};
 
     const getPlaces: PlacesContextProps['getPlaces'] = async () => {
-        const { status, message, data, error } = await getAllPlaces();
+        const res = await getAllPlaces();
 
-        setPlaces(data);
+        if (res.message === 'Success') {
+            setPlaces(res.data);
+        }
     };
 
     // MARK: Event Functions
@@ -96,7 +98,8 @@ export const PlacesProvider = ({ initial, children }: PlacesProviderProps) => {
             const putBody = JSON.parse(JSON.stringify(place));
             const res = await putPlaceById(`${place.placeId}`, putBody);
 
-            if (res.error) throw new Error(res.error);
+            if (res.message === 'Error' && res.error)
+                throw new Error(res.error);
 
             return res;
         } catch (error) {
