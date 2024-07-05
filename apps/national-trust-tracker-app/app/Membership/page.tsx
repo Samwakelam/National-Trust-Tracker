@@ -15,9 +15,13 @@ export default async function Membership(): Promise<JSX.Element> {
     ]);
 
     const membership =
-        data[0].status === 'fulfilled' ? data[0].value.data : null;
+        data[0].status === 'fulfilled' && data[0].value.message === 'Success'
+            ? data[0].value.data
+            : null;
     const nationalTrustData =
-        data[1].status === 'fulfilled' ? data[1].value.data[0] : null;
+        data[1].status === 'fulfilled' && data[1].value.message === 'Success'
+            ? data[1].value.data[0]
+            : null;
 
     return membership ? (
         <MembershipView
