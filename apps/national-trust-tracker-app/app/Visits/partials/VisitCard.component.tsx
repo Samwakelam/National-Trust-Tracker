@@ -65,8 +65,8 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
         });
 
         const people: IndicatorProps = {
-            type: 'tag',
-            id: `${visit.date}-people-tag`,
+            type: 'badge',
+            id: `${visit.date}-people-badge`,
             children: `${visit.people.length} visitors`,
             // tooltip: {
             //     label: visit.people.map(resolvePersonMap),

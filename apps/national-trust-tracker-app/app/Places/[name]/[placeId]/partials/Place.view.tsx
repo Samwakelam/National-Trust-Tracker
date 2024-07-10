@@ -39,6 +39,7 @@ import 'leaflet/dist/leaflet.css';
 import { Alert } from '../../../../../library/components/Alert';
 import { useForm } from 'react-hook-form';
 import { twMerge } from '../../../../../library/utilities/twMerge.util';
+import { useVisits } from '../../../../../library/context/Visits.context';
 
 // MARK: Types
 
@@ -62,6 +63,7 @@ export const PlaceView = ({
 }: PlaceViewProps) => {
     const markerRef = useRef(null);
     const router = useRouter();
+    const { visits } = useVisits();
 
     // MARK: State
 
@@ -71,6 +73,7 @@ export const PlaceView = ({
     const [isOpen, setIsOpen] = useState<Record<DisclosureType, boolean>>({
         log: false,
     });
+    const [lastVisited, setLastVisited] = useState<string>('');
 
     // MARK: Form
 
@@ -176,6 +179,22 @@ export const PlaceView = ({
         }
     }, [watch('date')]);
 
+    useEffect(() => {
+        const visitsHere = visits.filter((visit) => {
+            return visit.place.placeId === place.placeId;
+        });
+        if (visitsHere.length > 0) {
+            const sorted = visitsHere.sort((a, b) => {
+                if (a.date === b.date) return 0;
+                if (a.date > b.date) return -1;
+                if (a.date < b.date) return 1;
+                return 0;
+            });
+
+            setLastVisited(sorted[0]!.date);
+        }
+    }, [visits]);
+
     // MARK: Return
 
     return (
@@ -236,6 +255,16 @@ export const PlaceView = ({
                     id='frame-place-description'
                     colorScheme='slate'
                 >
+                    <>
+                        {lastVisited && (
+                            <h2 className=''>
+                                <span className='font-semibold'>
+                                    Last Visited:{' '}
+                                </span>
+                                {new Date(lastVisited).toDateString()}
+                            </h2>
+                        )}
+                    </>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 items-center'>
                         {place.images.PRIMARY.url && (
                             <img

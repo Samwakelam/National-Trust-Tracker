@@ -173,7 +173,7 @@ export const PlaceCard = ({
 // MARK: Resolve Functions
 
 const resolveTagColorScheme = (
-    status: Day['status']
+    status: Day['status'] | undefined
 ): TagProps['colorScheme'] => {
     switch (status) {
         case 'FULLY_OPEN':
