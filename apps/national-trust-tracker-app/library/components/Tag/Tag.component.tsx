@@ -11,6 +11,7 @@ import { TagStyles, tagStyles } from './Tag.styles';
 export interface TagProps extends TagStyles {
     children?: ReactNode;
     icon?: IconProps;
+    className?: string;
 }
 
 // MARK: Tag
@@ -20,8 +21,9 @@ export const Tag = ({
     icon,
     divergent,
     colorScheme,
+    className,
 }: TagProps): ReactElement<TagProps> => {
-    const styles = tagStyles({ divergent, colorScheme });
+    const styles = tagStyles({ divergent, colorScheme, className });
 
     // MARK: Return
 

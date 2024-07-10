@@ -68,9 +68,9 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
             type: 'badge',
             id: `${visit.date}-people-badge`,
             children: `${visit.people.length} visitors`,
-            // tooltip: {
-            //     label: visit.people.map(resolvePersonMap),
-            // },
+            className: 'text-nowrap',
+            colorScheme: 'forest',
+            divergent: 'outline',
         };
 
         const travelIcons = visit.travel.flatMap((vehicle) => {
@@ -150,7 +150,7 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
             >
                 <div className='flex flex-col gap-8'>
                     <p className='font-bold'>{visit.place.name}</p>
-                    <div className='flex flex-row gap-8'>
+                    <div className='flex flex-row gap-8 flex-wrap'>
                         {visit.assetsUsed.map(resolveAssetMap)}
                     </div>
                 </div>
@@ -309,6 +309,7 @@ export const resolveAssetMap = (asset: Asset) => {
             key={`asset-tag-${asset.name}`}
             colorScheme={getColourScheme()}
             divergent='solidOutline'
+            className='text-nowrap'
         >
             {asset.name.split('|')[0]}
         </Tag>
