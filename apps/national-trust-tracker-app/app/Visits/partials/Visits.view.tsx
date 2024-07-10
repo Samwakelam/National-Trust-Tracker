@@ -6,6 +6,7 @@ import { twMerge } from '../../../library/utilities/twMerge.util';
 import { FilterVisits } from './FilterVisits.component';
 import { VisitCard } from './VisitCard.component';
 import { VisitDB } from '../../../library/types/internal';
+import { Drawer } from '../../../library/components';
 
 type FiltersState = {
     name: string;
@@ -19,6 +20,7 @@ export const VisitsView = () => {
 
     // MARK: State
 
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [visitsFilters, setVisitsFilters] = useState<FiltersState>({
         name: '',
         dateTo: '',
@@ -113,6 +115,19 @@ export const VisitsView = () => {
                         })}
                 </section>
             </div>
+            <Drawer
+                divergent='tab'
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                onOpen={() => setIsOpen(true)}
+                direction='left'
+                className='lg:hidden'
+            >
+                <FilterVisits
+                    handleVisitsFilter={(e) => handleVisitsFilter(e)}
+                    visitsList={visitsList}
+                />
+            </Drawer>
         </>
     );
 };
