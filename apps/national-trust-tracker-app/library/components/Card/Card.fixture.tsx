@@ -68,7 +68,7 @@ const CardFixture = () => {
             ariaLabel: 'great',
             id: 'thumbs-up',
         },
-        { type: 'tag', children: 'tag', id: 'tag-1' },
+        { type: 'badge', children: 'Badge', id: 'badge-1' },
     ];
 
     const [hasMenu] = useFixtureInput<boolean>('Has Menu', false);

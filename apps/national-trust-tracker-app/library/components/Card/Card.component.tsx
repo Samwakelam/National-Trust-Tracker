@@ -7,7 +7,7 @@ import { ClickEvent } from '../../types';
 import { Button, ButtonProps } from '../Button';
 import { Menu, MenuProps } from '../Menu';
 import { Icon, IconProps } from '../Icon';
-import { Tag, TagProps } from '../Tag';
+import { Badge, BadgeProps } from '../Badge';
 
 import { CardStyles, useCardStyles } from './Card.styles';
 
@@ -18,12 +18,12 @@ interface IndicatorIconProps extends IconProps {
     id: string;
 }
 
-interface IndicatorTagProps extends TagProps {
-    type: 'tag';
+interface IndicatorBadgeProps extends BadgeProps {
+    type: 'badge';
     id: string;
 }
 
-export type IndicatorProps = IndicatorIconProps | IndicatorTagProps;
+export type IndicatorProps = IndicatorIconProps | IndicatorBadgeProps;
 
 export type Children =
     | ReactElement
@@ -193,7 +193,7 @@ export const CardComponent = ({
                         className='flex flex-col lg:flex-row gap-16 justify-end items-center'
                     >
                         {indicators && (
-                            <div className='flex flex-row w-full items-center gap-8'>
+                            <div className='flex flex-row flex-wrap w-full items-center gap-8'>
                                 {indicators.map(indicatorMap)}
                             </div>
                         )}
@@ -236,7 +236,7 @@ const indicatorMap = (indicator: IndicatorProps) => {
     }
 
     return (
-        <Tag
+        <Badge
             key={indicator.id}
             {...indicator}
         />

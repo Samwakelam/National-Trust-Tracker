@@ -4,13 +4,20 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { SavedPlace } from '../../../library/types/internal';
-import { PlaceSummary } from '../../../library/types/national-trust';
+import { Day, PlaceSummary } from '../../../library/types/national-trust';
 import { LinkProps } from '../../../library/types';
 
 import { getCase, resolveIcon } from '../../../library/helpers';
 import { isolateClickEvent } from '../../../library/helpers/isolateClickEvent.helper';
 
-import { Card, IndicatorProps, Tag } from '../../../library/components';
+import {
+    Card,
+    IndicatorProps,
+    Tag,
+    TagProps,
+} from '../../../library/components';
+
+import '../../../library/prototypes/String.extensions';
 
 // MARK: Types
 
@@ -51,21 +58,24 @@ export const PlaceCard = ({
 
     useEffect(() => {
         if (visited) {
-            const tag: IndicatorProps = {
+            const badge: IndicatorProps = {
                 children: `${visited} Visits`,
                 id: `${summary.placeId}-${visited}`,
-                type: 'tag',
+                type: 'badge',
+                className: 'text-nowrap',
+                colorScheme: 'forest',
+                divergent: 'outline',
             };
 
             setIndicators((prev) => {
                 const newArray = [...prev];
                 const exists =
                     newArray.filter((item) => {
-                        return item.id === tag.id;
+                        return item.id === badge.id;
                     }).length > 0;
 
                 if (exists) return newArray;
-                return [...newArray, tag];
+                return [...newArray, badge];
             });
         }
     }, [visited]);
@@ -139,20 +149,40 @@ export const PlaceCard = ({
             }}
         >
             <div
-                data-label=''
-                className='flex flex-row gap-8'
+                data-label='tag-box'
+                className='flex flex-row gap-8 flex-wrap'
             >
                 <Tag>{place.location.region}</Tag>
                 {place.opening && place.opening.days[today] && (
-                    <Tag>
+                    <Tag
+                        colorScheme={resolveTagColorScheme(
+                            place.opening.days[today]?.status
+                        )}
+                    >
                         {getCase(
                             place.opening.days[today]?.status || '',
                             'sentence'
-                        )}
+                        ).toCapitalisedCase()}
                     </Tag>
                 )}
             </div>
             {place.description && <p>{place.description.strapline}</p>}
         </Card>
     );
+};
+// MARK: Resolve Functions
+
+const resolveTagColorScheme = (
+    status: Day['status']
+): TagProps['colorScheme'] => {
+    switch (status) {
+        case 'FULLY_OPEN':
+            return 'forest';
+        case 'PARTIALLY_OPEN':
+            return 'amber';
+        case 'CLOSED':
+            return 'red';
+        default:
+            return 'slate';
+    }
 };
