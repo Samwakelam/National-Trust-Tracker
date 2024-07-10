@@ -2,12 +2,11 @@ import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import dotenv from 'dotenv';
 
-import { Providers } from './providers';
-
 import { scrollbar } from '../library/utilities/className.utils';
 import { twMerge } from '../library/utilities/twMerge.util';
 
-import { Navbar } from './Navbar.component';
+import { Navbar } from './partials/Navbar.component';
+import { Providers } from './providers';
 
 import '../library/prototypes/String.extensions';
 import '../library/global.css';

@@ -29,6 +29,7 @@ export const PlacesView = ({
     // MARK: State
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [propertyFilter, setPropertyFilter] = useState<string>('');
     const [propertyList, setPropertyList] = useState<PlaceSummary[]>([]);
 
@@ -103,6 +104,7 @@ export const PlacesView = ({
 
                         if (!place) {
                             const handleClick = () => {
+                                setIsLoading(true);
                                 router.push(url);
                             };
 
@@ -127,6 +129,7 @@ export const PlacesView = ({
                                     cta={{
                                         children: 'Go to Page',
                                         onClick: handleClick,
+                                        isLoading,
                                     }}
                                 />
                             );

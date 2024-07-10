@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import {
     Bar,
@@ -10,7 +10,7 @@ import {
     Button,
     Drawer,
     IconProps,
-} from '../library/components';
+} from '../../library/components';
 
 type MenuItem = {
     label: string;
