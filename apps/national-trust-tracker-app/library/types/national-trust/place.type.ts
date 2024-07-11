@@ -48,8 +48,8 @@ export type Place = {
         htmlDescription: string;
     };
     emergencyNotice: string;
-    websiteUrl: string;
-    location: Location;
+    websiteUrl?: string;
+    location?: Location;
     contact: {
         telephone: string;
         email: string;
@@ -61,11 +61,11 @@ export type Place = {
             url: string;
         };
     };
-    alternativeImages: [];
+    alternativeImages?: [];
     featureCategories: FeatureCategory[];
     activelyPromoted: string[];
     tags: string[];
-    cmsRegion: string;
-    websiteUrlPath: string;
+    cmsRegion?: string;
+    websiteUrlPath?: string;
     links: Link[];
 };

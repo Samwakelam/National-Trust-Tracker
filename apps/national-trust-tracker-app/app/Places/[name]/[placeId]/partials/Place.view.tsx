@@ -223,6 +223,7 @@ export const PlaceView = ({
                                 target: '_blank',
                             }}
                             colorScheme='white'
+                            isDisabled={!place.websiteUrl}
                         >
                             Website
                         </Button>
@@ -289,67 +290,71 @@ export const PlaceView = ({
                 {/* MARK: Location
                  */}
 
-                <Frame
-                    id='place-frame'
-                    colorScheme='white'
-                >
-                    <div className='flex flex-row gap-16 w-full '>
-                        <Card>
-                            <div className='flex flex-row gap-8'>
-                                <Icon
-                                    icon='detail'
-                                    ariaLabel='address'
-                                />
-                                <div className='flex flex-col gap-8'>
-                                    {Object.keys(
-                                        place.location.postalAddress
-                                    ).map((item) => {
-                                        const value =
-                                            place.location.postalAddress[
-                                                item as keyof PostalAddress
-                                            ];
+                {place.location && (
+                    <Frame
+                        id='place-frame'
+                        colorScheme='white'
+                    >
+                        <div className='flex flex-row gap-16 w-full '>
+                            <Card>
+                                <div className='flex flex-row gap-8'>
+                                    <Icon
+                                        icon='detail'
+                                        ariaLabel='address'
+                                    />
+                                    <div className='flex flex-col gap-8'>
+                                        {Object.keys(
+                                            place.location.postalAddress
+                                        ).map((item) => {
+                                            const value =
+                                                place.location!.postalAddress[
+                                                    item as keyof PostalAddress
+                                                ];
 
-                                        return (
-                                            <span
-                                                className='flex flex-row gap-8'
-                                                key={item}
-                                            >
-                                                <p className='font-bold'>
-                                                    {item === 'lines'
-                                                        ? null
-                                                        : item.toCapitalisedCase()}
-                                                </p>
-                                                <p>
-                                                    {Array.isArray(value)
-                                                        ? value.map((v) => {
-                                                              return v;
-                                                          })
-                                                        : value}
-                                                </p>
-                                            </span>
-                                        );
-                                    })}
-                                    <span className='flex flex-row gap-8'>
-                                        <p className='font-bold'>Region</p>
-                                        <p>{place.location.region}</p>
-                                    </span>
+                                            return (
+                                                <span
+                                                    className='flex flex-row gap-8'
+                                                    key={item}
+                                                >
+                                                    <p className='font-bold'>
+                                                        {item === 'lines'
+                                                            ? null
+                                                            : item.toCapitalisedCase()}
+                                                    </p>
+                                                    <p>
+                                                        {Array.isArray(value)
+                                                            ? value.map((v) => {
+                                                                  return v;
+                                                              })
+                                                            : value}
+                                                    </p>
+                                                </span>
+                                            );
+                                        })}
+                                        <span className='flex flex-row gap-8'>
+                                            <p className='font-bold'>Region</p>
+                                            <p>{place.location.region}</p>
+                                        </span>
+                                    </div>
                                 </div>
+                            </Card>
+                            <div
+                                data-label='map-container'
+                                className='aspect-video h-full flex-1'
+                            >
+                                <Map
+                                    ref={markerRef}
+                                    position={[
+                                        place.location.latitudeLongitude
+                                            .latitude,
+                                        place.location.latitudeLongitude
+                                            .longitude,
+                                    ]}
+                                />
                             </div>
-                        </Card>
-                        <div
-                            data-label='map-container'
-                            className='aspect-video h-full flex-1'
-                        >
-                            <Map
-                                ref={markerRef}
-                                position={[
-                                    place.location.latitudeLongitude.latitude,
-                                    place.location.latitudeLongitude.longitude,
-                                ]}
-                            />
                         </div>
-                    </div>
-                </Frame>
+                    </Frame>
+                )}
 
                 {/* MARK: Admission Prices
                  */}
