@@ -44,7 +44,6 @@ export const getAllVisitIds = async (): Promise<ActionResponse> => {
 
         //@ts-ignore
         const data = await VisitsModel.find({}, '_id');
-        console.log('DATA: ', data);
 
         const res = NextResponse.json({
             status: 200,

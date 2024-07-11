@@ -18,12 +18,11 @@ export const HtmlParser = ({
             if (node.type === 'tag') {
                 switch (node.name) {
                     case 'a':
-                        console.log('node.attribs.href : ', node.attribs.href);
                         return (
                             <a
                                 className='font-bold contents'
                                 target='_blank'
-                                href={node.attribs.href || undefined}
+                                href={node.attribs.href}
                                 // {...node.attribs}
                             >
                                 {/* @ts-ignore */}
