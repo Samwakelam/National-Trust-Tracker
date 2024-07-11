@@ -48,9 +48,10 @@ const MenuFixture = () => {
                       isLoading: isLoading === 2,
                   },
                   {
-                      label: 'Item Three',
+                      label: 'Disabled Item Three',
                       onClick: () => handleClick(3),
                       isLoading: isLoading === 3,
+                      isDisabled: true,
                   },
               ]),
     ];

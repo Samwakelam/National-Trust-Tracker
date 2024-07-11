@@ -146,8 +146,9 @@ export const PlaceCard = ({
                             variant: 'outline',
                         },
                         link: {
-                            href: place.websiteUrl,
+                            href: place.websiteUrl || '',
                         },
+                        isDisabled: !place.websiteUrl,
                     },
                 ],
             }}
@@ -156,7 +157,7 @@ export const PlaceCard = ({
                 data-label='tag-box'
                 className='flex flex-row gap-8 flex-wrap'
             >
-                <Tag>{place.location.region}</Tag>
+                {place.location && <Tag>{place.location.region}</Tag>}
                 {place.opening && place.opening.days[today] && (
                     <Tag
                         colorScheme={resolveTagColorScheme(

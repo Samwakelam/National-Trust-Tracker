@@ -61,7 +61,7 @@ export const Menu = ({
             <ul
                 data-label='menu-content'
                 className={twMerge(
-                    'absolute min-w-120 z-1 flex flex-col gap-2',
+                    'absolute min-w-120 w-max z-1 flex flex-col gap-2',
                     isOpen ? 'flex' : 'hidden',
                     align === 'left' ? 'left-0' : 'right-0'
                 )}
@@ -79,12 +79,13 @@ export const Menu = ({
 
 // MARK: Menu Item Types
 
-export interface MenuItemProps extends MenuItemStyles {
+export interface MenuItemProps extends Omit<MenuItemStyles, 'disabled'> {
     icon?: IconProps;
     label: string;
     onClick?: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
     link?: LinkProps;
     isLoading?: boolean;
+    isDisabled?: boolean;
 }
 
 // MARK: Menu Item
@@ -94,14 +95,15 @@ const MenuItemComponent = ({
     label,
     icon,
     isLoading,
+    isDisabled,
 }: Omit<MenuItemProps, 'link'>) => {
-    const styles = menuItemStyles({});
+    const styles = menuItemStyles({ disabled: isDisabled });
 
     return (
         <li
             data-label='menu-item'
             className={twMerge(styles)}
-            onClick={isolateClickEvent(onClick)}
+            onClick={isDisabled ? undefined : isolateClickEvent(onClick)}
         >
             <span
                 className={twMerge(
@@ -130,9 +132,10 @@ const MenuItemComponent = ({
     );
 };
 
-const MenuItem = ({ link, ...props }: MenuItemProps) => {
-    if (link) {
+const MenuItem = ({ link, isDisabled, ...props }: MenuItemProps) => {
+    if (link && !isDisabled) {
         const { target = '_blank', ...rest } = link;
+
         return (
             <Link
                 target={target}
@@ -144,5 +147,10 @@ const MenuItem = ({ link, ...props }: MenuItemProps) => {
         );
     }
 
-    return <MenuItemComponent {...props} />;
+    return (
+        <MenuItemComponent
+            {...props}
+            isDisabled={isDisabled}
+        />
+    );
 };
