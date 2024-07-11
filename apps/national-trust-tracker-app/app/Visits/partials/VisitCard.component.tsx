@@ -166,12 +166,14 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                         {visit.assetsUsed.map(resolveAssetMap)}
                     </div>
                 </div>
-                <div
-                    data-label='region'
-                    className='flex flex-row gap-8'
-                >
-                    <p>{visit.place.location.region}</p>
-                </div>
+                {visit.place.location && (
+                    <div
+                        data-label='region'
+                        className='flex flex-row gap-8'
+                    >
+                        <p>{visit.place.location.region}</p>
+                    </div>
+                )}
 
                 <p>
                     <span>Total: </span>
