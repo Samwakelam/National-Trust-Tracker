@@ -7,6 +7,7 @@ import {
 import { Link } from '../../../../library/types/national-trust/link.type';
 
 import { PlaceView } from './partials';
+import { getCase } from '../../../../library/helpers';
 
 export const metadata: Metadata = {
     title: 'National Trust Tracker',
@@ -86,8 +87,12 @@ export const generateStaticParams = async () => {
         }
 
         const places: Places = await res.json();
+
         return places.placeSummaries.map((place: PlaceSummary) => {
-            return { placeId: place.placeId.toString(), name: place.name };
+            return {
+                placeId: place.placeId.toString(),
+                name: getCase(place.name, 'pascal'),
+            };
         });
     } catch (error) {
         console.log('Place generateStaticParams error: ', error);

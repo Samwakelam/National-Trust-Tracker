@@ -275,7 +275,7 @@ export const PlaceView = ({
                             />
                         )}
 
-                        {place.description.htmlDescription && (
+                        {/* {place.description.htmlDescription && (
                             <div className='flex flex-col gap-16'>
                                 <HtmlParser
                                     htmlString={
@@ -283,7 +283,7 @@ export const PlaceView = ({
                                     }
                                 />
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </Frame>
 
@@ -367,11 +367,11 @@ export const PlaceView = ({
                         <h2>Admission</h2>
 
                         <>
-                            {_admissionPrices.htmlNote && (
+                            {/* {_admissionPrices.htmlNote && (
                                 <HtmlParser
                                     htmlString={_admissionPrices.htmlNote}
                                 />
-                            )}
+                            )} */}
                         </>
 
                         <div
@@ -511,7 +511,7 @@ export const PlaceView = ({
                                                 {key.toCapitalisedCase()}
                                             </p>
                                         </div>
-                                        {directions.directions[
+                                        {/* {directions.directions[
                                             key as DirectionType
                                         ].htmlDescription && (
                                             <HtmlParser
@@ -522,7 +522,7 @@ export const PlaceView = ({
                                                 }
                                                 align='left'
                                             />
-                                        )}
+                                        )} */}
                                     </div>
                                 );
                             })}
@@ -617,14 +617,14 @@ export const PlaceView = ({
                                             <p className='font-bold'>
                                                 {category.name.toCapitalisedCase()}
                                             </p>
-                                            {category.htmlNotes.join(' ') && (
+                                            {/* {category.htmlNotes.join(' ') && (
                                                 <HtmlParser
                                                     htmlString={category.htmlNotes.join(
                                                         ' '
                                                     )}
                                                     align='left'
                                                 />
-                                            )}
+                                            )} */}
                                         </div>
                                     );
                                 }
