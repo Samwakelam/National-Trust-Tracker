@@ -37,7 +37,6 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
     // MARK: State
 
     const [indicators, setIndicators] = useState<IndicatorProps[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     // MARK: handlers
 
@@ -45,6 +44,10 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
         router.push(
             `/Places/${getCase(visit.place.name, 'pascal')}/${visit.place.placeId}`
         );
+    };
+
+    const handleGoToVisitPage = () => {
+        router.push(`/Visits/${visit._id}`);
     };
 
     // MARK: Effects
@@ -132,6 +135,11 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                             onClick: () => handleGoToPropertyPage(),
                         },
                         {
+                            label: 'View Visit',
+                            onClick: () => handleGoToVisitPage(),
+                            isLoading,
+                        },
+                        {
                             label: 'Delete Visit',
                             onClick: () => onDeleteVisit(visit._id),
                             isLoading,
@@ -146,7 +154,7 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                 direction='horizontal'
                 className='w-full'
                 colorScheme='white'
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => handleGoToVisitPage()}
             >
                 <div className='flex flex-col gap-8'>
                     <p className='font-bold'>{visit.place.name}</p>
@@ -169,95 +177,6 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                     </span>
                 </p>
             </Card>
-
-            {/* MARK: Modal
-             */}
-
-            <Modal
-                onClose={() => setIsModalOpen(false)}
-                isOpen={isModalOpen}
-                heading={new Date(visit.date).toDateString()}
-                confirmCTA={{
-                    children: 'Property Page',
-                    onClick: () => handleGoToPropertyPage(),
-                }}
-                declineCTA={{
-                    children: 'Property Website',
-                    link: {
-                        href: visit.place.websiteUrl,
-                    },
-                    divergent: 'ghost',
-                }}
-            >
-                <h2 className='font-bold text-32'>{visit.place.name}</h2>
-                <div className='grid grid-cols-3 gap-16 w-full'>
-                    <Card
-                        divergent='outline'
-                        className='w-full'
-                    >
-                        <h3 className='font-bold text-24'>Visitors</h3>
-                        <div className='flex flex-col gap-8'>
-                            {visit.people.map((person) => (
-                                <div
-                                    className='flex flex-row gap-8'
-                                    key={`visit-people-${person}`}
-                                >
-                                    <Icon
-                                        icon='user'
-                                        ariaLabel='person'
-                                        variant='outline'
-                                    />
-                                    <p>{person.name}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </Card>
-                    <Card
-                        divergent='outline'
-                        className='w-full'
-                    >
-                        <h3 className='font-bold text-24'>Assets Used</h3>
-                        <div className='flex flex-col gap-8'>
-                            {visit.assetsUsed.map((asset) => {
-                                const icon = resolveAssetIcon(asset);
-                                return (
-                                    <div className='flex flex-row gap-8 items-center'>
-                                        {icon && (
-                                            <Icon
-                                                {...icon}
-                                                variant='outline'
-                                            />
-                                        )}
-                                        <p>{asset.name.split('|')[0]}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </Card>
-                    <Card
-                        divergent='outline'
-                        className='w-full'
-                    >
-                        <h3 className='font-bold text-24'>Facilities Used</h3>
-                        <div className='flex flex-col gap-8'>
-                            {visit.facilitiesUsed.map((facility) => {
-                                const icon = resolveIcon(facility.reference);
-                                return (
-                                    <div className='flex flex-row gap-8 items-center'>
-                                        {icon && (
-                                            <Icon
-                                                {...icon}
-                                                variant='outline'
-                                            />
-                                        )}
-                                        <p>{facility.name.split('|')[0]}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </Card>
-                </div>
-            </Modal>
         </>
     );
 };

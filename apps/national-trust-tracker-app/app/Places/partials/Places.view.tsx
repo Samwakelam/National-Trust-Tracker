@@ -23,6 +23,7 @@ type PlacesViewProps = { places: PlaceSummary[] };
 export const PlacesView = ({
     places,
 }: PlacesViewProps): ReactElement<PlacesViewProps> => {
+    const router = useRouter();
     const { visits, isLoading: isLoadingVisits } = useVisits();
     const { places: savedPlaces, isLoading: isLoadingPlaces } = usePlaces();
 
@@ -32,8 +33,6 @@ export const PlacesView = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [propertyFilter, setPropertyFilter] = useState<string>('');
     const [propertyList, setPropertyList] = useState<PlaceSummary[]>([]);
-
-    const router = useRouter();
 
     // MARK: Effects
 

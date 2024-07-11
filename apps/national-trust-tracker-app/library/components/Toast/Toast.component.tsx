@@ -15,24 +15,26 @@ type ToastStatus = 'info' | 'warning' | 'success' | 'error';
 type ToastPosition = 'top' | 'top-left' | 'top-right';
 
 export interface ToastProps extends Omit<ToastStyles, 'colorScheme'> {
-    title: string;
     description: string;
-    status: ToastStatus;
+    duration?: number;
     id: string;
-    position?: ToastPosition;
     onClose: (id: string) => void;
+    position?: ToastPosition;
+    status: ToastStatus;
+    title: string;
 }
 
 // MARK: Toast
 
 export const Toast = ({
-    title,
     description,
-    status,
-    id,
     divergent,
-    position = 'top',
+    duration,
+    id,
     onClose,
+    position = 'top',
+    status,
+    title,
 }: ToastProps) => {
     const ref = useRef<HTMLOutputElement>(null);
 
@@ -88,6 +90,12 @@ export const Toast = ({
             setShow(true);
         }, 300);
     }, []);
+
+    useEffect(() => {
+        if (duration) {
+            setTimeout(() => handleClose(), duration);
+        }
+    }, [duration]);
 
     // MARK: Return
 

@@ -40,7 +40,7 @@ const frameStyles = cva(['w-full relative', 'px-16 md:px-32 lg:px-56'], {
             banner: ['py-16'],
         },
         hero: {
-            true: ['text-slate-100 bg-no-repeat bg-cover'],
+            true: ['text-slate-100 bg-no-repeat bg-cover bg-center'],
             false: [],
         },
         size: {

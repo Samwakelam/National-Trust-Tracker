@@ -26,34 +26,6 @@ const Place = async ({ params }: PlaceProps): Promise<JSX.Element> => {
 
 export default Place;
 
-export const generateStaticParams = async () => {
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
-    try {
-        const res = await fetch(
-            'https://v2-api.nationaltrust.org.uk/places',
-            options
-        );
-
-        if (!res.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
-        const places: Places = await res.json();
-        return places.placeSummaries.map((place: PlaceSummary) => {
-            return JSON.stringify(place);
-        });
-    } catch (error) {
-        console.log('Place generateStaticParams error: ', error);
-        return [];
-    }
-};
-
 const getData = async ({ placeId }: { placeId: number }) => {
     const options = {
         method: 'GET',
@@ -92,5 +64,33 @@ const getData = async ({ placeId }: { placeId: number }) => {
         return { place, ...info };
     } catch (error) {
         console.log('Place Error: ', error);
+    }
+};
+
+export const generateStaticParams = async () => {
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const res = await fetch(
+            'https://v2-api.nationaltrust.org.uk/places',
+            options
+        );
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch data');
+        }
+
+        const places: Places = await res.json();
+        return places.placeSummaries.map((place: PlaceSummary) => {
+            return { placeId: place.placeId, name: place.name };
+        });
+    } catch (error) {
+        console.log('Place generateStaticParams error: ', error);
+        return [];
     }
 };

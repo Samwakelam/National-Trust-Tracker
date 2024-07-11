@@ -13,6 +13,7 @@ import {
     deleteVisitById,
     getAllVisits,
     postVisit,
+    putVisitById,
 } from '../../actions/Visits.actions';
 
 import { Visit, VisitDB } from '../types/internal';
@@ -43,7 +44,7 @@ type VisitsContextProps = {
     getVisits: () => void;
     onCreateVisit: (visit: Visit) => Promise<ActionResponse>;
     onDeleteVisit: (visitId: string) => Promise<ActionResponse>;
-    onUpdateVisit: (visitId: string) => Promise<ActionResponse>;
+    onUpdateVisit: (visitId: string, visit: VisitDB) => Promise<ActionResponse>;
 };
 
 type VisitsProviderProps = {
@@ -85,10 +86,6 @@ const VisitsContext = createContext<VisitsContextProps>(initialState);
 export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [visits, setVisits] = useState<VisitsContextProps['visits']>(initial);
-
-    useEffect(() => {
-        console.log('visits:', visits);
-    }, [visits]);
 
     // MARK: Handlers
 
@@ -186,9 +183,23 @@ export const VisitsProvider = ({ initial, children }: VisitsProviderProps) => {
     };
 
     const onUpdateVisit: VisitsContextProps['onUpdateVisit'] = async (
-        visitId
+        visitId,
+        visit
     ) => {
-        return { status: 501, message: 'Error', error: 'not implemented' };
+        try {
+            setIsLoading(true);
+            const res = await putVisitById(visitId, visit);
+
+            if (res.message === 'Error' && res.error)
+                throw new Error(res.error);
+
+            return res;
+        } catch (error) {
+            console.log('error onUpdateVisit: ', error);
+            return { status: 500, message: 'Error', error };
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // MARK: Return

@@ -46,13 +46,13 @@ export interface InputGroupProps<T extends FieldValues> extends InputStyles {
         register: UseFormRegister<T>;
         options?: RegisterOptions<T, Path<T>>;
     };
-    name: Path<T>;
     isDisabled?: boolean;
     label?: LabelProps['label'];
     labelConfig?: Omit<LabelProps, 'isRequired' | 'htmlFor'>;
-    type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
-    step?: React.InputHTMLAttributes<HTMLInputElement>['step'];
+    name: Path<T>;
     placeholder?: string;
+    step?: React.InputHTMLAttributes<HTMLInputElement>['step'];
+    type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
 }
 
 // MARK: Input Group
@@ -68,8 +68,9 @@ export const InputGroup = <T extends FieldValues>({
     label,
     labelConfig = { hideBadge: false },
     name,
-    type = 'text',
     placeholder,
+    step,
+    type = 'text',
 }: InputGroupProps<T>): ReactElement<InputGroupProps<T>> => {
     const { register, options } = formRegister;
 
@@ -118,6 +119,7 @@ export const InputGroup = <T extends FieldValues>({
                     <Addon
                         colorScheme={colorScheme}
                         divergent={divergent}
+                        disabled={isDisabled}
                         placement='left'
                         {...addon.left}
                     />
@@ -129,6 +131,7 @@ export const InputGroup = <T extends FieldValues>({
                         divergent={divergent}
                         hasError={hasError}
                         hasFocus={hasFocus}
+                        disabled={isDisabled}
                         placement='left'
                         {...element.left}
                     />
@@ -144,6 +147,7 @@ export const InputGroup = <T extends FieldValues>({
                     placeholder={placeholder}
                     required={isRequired}
                     type={type}
+                    step={step}
                 />
                 {element?.right && (
                     <Element
@@ -151,6 +155,7 @@ export const InputGroup = <T extends FieldValues>({
                         divergent={divergent}
                         hasError={hasError}
                         hasFocus={hasFocus}
+                        disabled={isDisabled}
                         placement='right'
                         {...element.right}
                     />
@@ -161,6 +166,7 @@ export const InputGroup = <T extends FieldValues>({
                         colorScheme={colorScheme}
                         divergent={divergent}
                         placement='right'
+                        disabled={isDisabled}
                         {...addon.right}
                     />
                 )}
@@ -178,13 +184,19 @@ export const InputGroup = <T extends FieldValues>({
 
 // MARK: Addon
 
-export const Addon = ({
+const Addon = ({
     divergent,
     placement,
     colorScheme,
     children,
+    disabled,
 }: AddonProps) => {
-    const styles = addonStyles({ divergent, colorScheme, placement });
+    const styles = addonStyles({
+        divergent,
+        colorScheme,
+        placement,
+        disabled,
+    });
 
     return (
         <div
@@ -198,13 +210,14 @@ export const Addon = ({
 
 // MARK: Element
 
-export const Element = ({
+const Element = ({
     divergent,
     placement,
     colorScheme,
     hasFocus,
     hasError,
     children,
+    disabled,
 }: ElementProps) => {
     const styles = elementStyles({
         divergent,
@@ -212,6 +225,7 @@ export const Element = ({
         colorScheme,
         hasFocus,
         hasError,
+        disabled,
     });
 
     return (

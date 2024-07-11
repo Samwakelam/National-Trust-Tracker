@@ -51,6 +51,10 @@ export const elementStyles = cva(
                 true: ['border-b-red-400'],
                 false: [],
             },
+            disabled: {
+                true: ['bg-transparent border-[--color-400]'],
+                false: [''],
+            },
         },
         compoundVariants: [
             {
@@ -69,6 +73,7 @@ export const elementStyles = cva(
         defaultVariants: {
             colorScheme: 'slate',
             divergent: 'default',
+            disabled: false,
         },
     }
 );
@@ -87,11 +92,16 @@ export const addonStyles = cva(
                 left: ['first:rounded-l-8 border-r-0'],
                 right: ['border-l-0 last:rounded-r-8'],
             },
+            disabled: {
+                true: ['bg-transparent border-[--color-400]'],
+                false: [''],
+            },
         },
         compoundVariants: [],
         defaultVariants: {
             colorScheme: 'slate',
             divergent: 'default',
+            disabled: false,
         },
     }
 );

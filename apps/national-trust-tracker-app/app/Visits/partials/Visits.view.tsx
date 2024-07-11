@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { useVisits } from '../../../library/context/Visits.context';
 import { twMerge } from '../../../library/utilities/twMerge.util';
-import { FilterVisits } from './FilterVisits.component';
-import { VisitCard } from './VisitCard.component';
 import { VisitDB } from '../../../library/types/internal';
 import { Drawer } from '../../../library/components';
+
+import { FilterVisits } from './FilterVisits.component';
+import { VisitCard } from './VisitCard.component';
 
 type FiltersState = {
     name: string;
@@ -16,6 +19,7 @@ type FiltersState = {
 };
 
 export const VisitsView = () => {
+    const router = useRouter();
     const { visits } = useVisits();
 
     // MARK: State

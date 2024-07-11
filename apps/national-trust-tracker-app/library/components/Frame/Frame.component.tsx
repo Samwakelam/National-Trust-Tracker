@@ -108,7 +108,9 @@ export const Frame = ({ preset, children, ...props }: FrameProps) => {
                                 {...(props as FrameControlsProps).navigationCTA}
                             />
                         )}
-                        <div className='flex flex-row'>{children}</div>
+                        <div className='flex flex-row gap-8 md:gap-16'>
+                            {children}
+                        </div>
                     </div>
                 </FrameComponent>
             );
