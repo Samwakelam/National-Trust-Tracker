@@ -190,7 +190,7 @@ export const VisitView = ({ visit }: VisitViewProps) => {
         visit && (
             <>
                 <Frame
-                    bgImage={visit.place.images?.PRIMARY.url || undefined}
+                    bgImage={visit.place.images?.PRIMARY?.url || undefined}
                     id='frame-hero-image'
                     className='h-544 md:h-320 justify-end'
                 >

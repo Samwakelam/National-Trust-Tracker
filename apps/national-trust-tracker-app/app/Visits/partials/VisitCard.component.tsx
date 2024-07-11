@@ -148,7 +148,7 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                 }}
                 indicators={indicators}
                 image={
-                    visit.place.images
+                    visit.place.images && visit.place.images.PRIMARY
                         ? {
                               src: visit.place.images.PRIMARY.url,
                               alt: visit.place.images.PRIMARY.description,

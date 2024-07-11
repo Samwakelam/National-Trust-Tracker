@@ -129,7 +129,7 @@ export const PlaceCard = ({
                 }
             })}
             image={
-                place.images
+                place.images && place.images.PRIMARY
                     ? {
                           src: place.images.PRIMARY.url,
                           alt: place.images.PRIMARY.description,
