@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import {
     getAllVisitIds,
     getAllVisits,
@@ -41,8 +42,8 @@ export const generateStaticParams = async () => {
         const res = await getAllVisitIds();
 
         if (res.message === 'Success') {
-            return res.data.map((item: { _id: string }) => ({
-                visitId: item._id,
+            return res.data.map((item: { _id: ObjectId }) => ({
+                visitId: item._id.toString(),
             }));
         }
 
