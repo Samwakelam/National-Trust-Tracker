@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
@@ -19,12 +20,9 @@ import {
     resolveCurrency,
     resolveIcon,
 } from '../../../../../library/helpers';
-
-import { DrawerAddVisit } from './DrawerAddVisit.component';
-import { resolveCategoriesFromHTML } from './Place.helpers';
-import { DisclosureType, PlaceViewProps } from './Place.definition';
-
-import '../../../../../library/prototypes/String.extensions';
+import { Alert } from '../../../../../library/components/Alert';
+import { twMerge } from '../../../../../library/utilities/twMerge.util';
+import { useVisits } from '../../../../../library/context/Visits.context';
 import {
     Button,
     Card,
@@ -35,11 +33,12 @@ import {
     Tag,
 } from '../../../../../library/components';
 
+import { DrawerAddVisit } from './DrawerAddVisit.component';
+import { resolveCategoriesFromHTML } from './Place.helpers';
+import { DisclosureType, PlaceViewProps } from './Place.definition';
+
+import '../../../../../library/prototypes/String.extensions';
 import 'leaflet/dist/leaflet.css';
-import { Alert } from '../../../../../library/components/Alert';
-import { useForm } from 'react-hook-form';
-import { twMerge } from '../../../../../library/utilities/twMerge.util';
-import { useVisits } from '../../../../../library/context/Visits.context';
 
 // MARK: Types
 
@@ -214,6 +213,7 @@ export const PlaceView = ({
                 <Frame
                     bgImage={place.images.PRIMARY.url || undefined}
                     id='frame-hero-image'
+                    className='h-544 md:h-320 lg:h-auto justify-end'
                 >
                     <div className='flex flex-col gap-16 w-full items-start'>
                         <h2>{place.name}</h2>
@@ -276,7 +276,9 @@ export const PlaceView = ({
 
                         <div className='flex flex-col gap-16'>
                             <HtmlParser
-                                htmlString={place.description.htmlDescription}
+                                htmlString={
+                                    place.description.htmlDescription || ''
+                                }
                             />
                         </div>
                     </div>
@@ -357,7 +359,9 @@ export const PlaceView = ({
                     >
                         <h2>Admission</h2>
 
-                        <HtmlParser htmlString={_admissionPrices.htmlNote} />
+                        <HtmlParser
+                            htmlString={_admissionPrices.htmlNote || ''}
+                        />
 
                         <div
                             className={twMerge(
@@ -500,7 +504,7 @@ export const PlaceView = ({
                                             htmlString={
                                                 directions.directions[
                                                     key as DirectionType
-                                                ].htmlDescription
+                                                ].htmlDescription || ''
                                             }
                                             align='left'
                                         />
@@ -599,9 +603,11 @@ export const PlaceView = ({
                                                 {category.name.toCapitalisedCase()}
                                             </p>
                                             <HtmlParser
-                                                htmlString={category.htmlNotes.join(
-                                                    ' '
-                                                )}
+                                                htmlString={
+                                                    category.htmlNotes.join(
+                                                        ' '
+                                                    ) || ''
+                                                }
                                                 align='left'
                                             />
                                         </div>

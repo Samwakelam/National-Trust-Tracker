@@ -20,7 +20,8 @@ export const HtmlParser = ({
                             <a
                                 className='font-bold contents'
                                 target='_blank'
-                                {...node.attribs}
+                                href={node.attribs.href}
+                                // {...node.attribs}
                             >
                                 {domToReact(node.children, options)}
                             </a>

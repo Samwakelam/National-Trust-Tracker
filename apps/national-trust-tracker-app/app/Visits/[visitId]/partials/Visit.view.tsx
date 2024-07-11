@@ -189,7 +189,7 @@ export const VisitView = ({ visit }: VisitViewProps) => {
                 <Frame
                     bgImage={visit.place.images?.PRIMARY?.url || undefined}
                     id='frame-hero-image'
-                    className='h-544 justify-end'
+                    className='h-544 md:h-320 justify-end'
                 >
                     <div className='flex flex-col gap-16 w-full items-start'>
                         <h1 className='font-bold text-24'>
@@ -481,7 +481,7 @@ export const VisitView = ({ visit }: VisitViewProps) => {
                      */}
                     <Frame
                         id='assets-and-facilities'
-                        className='items-stretch md:flex-row md:gap-16'
+                        className='items-stretch md:flex-row md:gap-16 lg:gap-16'
                     >
                         <Card
                             heading='Assets Used'
