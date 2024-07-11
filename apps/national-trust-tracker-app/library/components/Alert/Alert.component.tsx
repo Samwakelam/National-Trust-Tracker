@@ -20,7 +20,6 @@ export const Alert = ({
     heading,
     status,
 }: AlertProps) => {
-    console.log('description: ', description);
     const styles = alertStyles({
         divergent,
         colorScheme: resolveColorScheme(status),

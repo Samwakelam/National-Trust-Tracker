@@ -47,10 +47,10 @@ export type Place = {
         strapline: string;
         htmlDescription: string;
     };
-    emergencyNotice: string;
+    emergencyNotice?: string;
     websiteUrl?: string;
     location?: Location;
-    contact: {
+    contact?: {
         telephone: string;
         email: string;
         socialMediaLinks: SocialMediaLink[];
