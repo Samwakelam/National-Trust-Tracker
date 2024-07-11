@@ -111,7 +111,7 @@ export const VisitView = ({ visit }: VisitViewProps) => {
     };
 
     const handleReset = () => {
-        const tickets = visit.tickets.map((ticket) => {
+        const _tickets = visit.tickets.map((ticket) => {
             return {
                 ...ticket,
                 standardAmount: {
@@ -123,9 +123,12 @@ export const VisitView = ({ visit }: VisitViewProps) => {
             };
         });
 
+        const totalPrice = getAmountInPounds(visit.totalPrice) as any as number;
+
         reset({
             ...visit,
-            tickets,
+            totalPrice,
+            tickets: _tickets,
         });
         setIsEditable(false);
     };
@@ -272,101 +275,123 @@ export const VisitView = ({ visit }: VisitViewProps) => {
                     {/* MARK: Location
                      */}
 
-                    <Frame id='place-frame'>
-                        <InputGroup<FormValues>
-                            name='date'
-                            label='Date'
-                            formRegister={{ register }}
-                            errors={errors}
-                            labelConfig={{ hideBadge: true }}
-                        />
-                        <div className='flex flex-col md:flex-row gap-16 w-full'>
-                            <Card className='w-full md:w-auto order-2 md:order-1'>
-                                <div className='flex flex-row gap-8'>
-                                    <Icon
-                                        icon='detail'
-                                        ariaLabel='address'
-                                    />
-                                    <div className='flex flex-col gap-8'>
-                                        {Object.keys(
-                                            visit.place.location.postalAddress
-                                        ).map((item) => {
-                                            const value =
+                    {visit.place.location && (
+                        <Frame id='place-frame'>
+                            <div className='flex flex-col md:flex-row gap-16 w-full'>
+                                <Card className='w-full md:w-auto order-2 md:order-1'>
+                                    <div className='flex flex-row gap-8'>
+                                        <Icon
+                                            icon='detail'
+                                            ariaLabel='address'
+                                        />
+                                        <div className='flex flex-col gap-8'>
+                                            {Object.keys(
                                                 visit.place.location
-                                                    .postalAddress[
-                                                    item as keyof PostalAddress
-                                                ];
+                                                    .postalAddress
+                                            ).map((item) => {
+                                                const value =
+                                                    visit.place.location!
+                                                        .postalAddress[
+                                                        item as keyof PostalAddress
+                                                    ];
+
+                                                return (
+                                                    <span
+                                                        className='flex flex-row gap-8'
+                                                        key={item}
+                                                    >
+                                                        <p className='font-bold'>
+                                                            {item === 'lines'
+                                                                ? null
+                                                                : item.toCapitalisedCase()}
+                                                        </p>
+                                                        <p>
+                                                            {Array.isArray(
+                                                                value
+                                                            )
+                                                                ? value.map(
+                                                                      (v) => {
+                                                                          return v;
+                                                                      }
+                                                                  )
+                                                                : value}
+                                                        </p>
+                                                    </span>
+                                                );
+                                            })}
+                                            <span className='flex flex-row gap-8'>
+                                                <p className='font-bold'>
+                                                    Region
+                                                </p>
+                                                <p>
+                                                    {
+                                                        visit.place.location
+                                                            .region
+                                                    }
+                                                </p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-row gap-8'>
+                                        {visit.travel.map((transport) => {
+                                            const icon = resolveIcon(
+                                                transport.toLowerCase()
+                                            );
 
                                             return (
-                                                <span
-                                                    className='flex flex-row gap-8'
-                                                    key={item}
-                                                >
-                                                    <p className='font-bold'>
-                                                        {item === 'lines'
-                                                            ? null
-                                                            : item.toCapitalisedCase()}
-                                                    </p>
-                                                    <p>
-                                                        {Array.isArray(value)
-                                                            ? value.map((v) => {
-                                                                  return v;
-                                                              })
-                                                            : value}
-                                                    </p>
-                                                </span>
+                                                <React.Fragment key={transport}>
+                                                    {icon && <Icon {...icon} />}
+                                                    <div className='flex flex-col gap-8'>
+                                                        <p className='font-bold'>
+                                                            {transport.toCapitalisedCase()}
+                                                        </p>
+                                                    </div>
+                                                </React.Fragment>
                                             );
                                         })}
-                                        <span className='flex flex-row gap-8'>
-                                            <p className='font-bold'>Region</p>
-                                            <p>{visit.place.location.region}</p>
-                                        </span>
                                     </div>
+                                </Card>
+                                <div
+                                    data-label='map-container'
+                                    className='aspect-video h-full flex-1 order-1 md:order-2'
+                                >
+                                    <Map
+                                        ref={markerRef}
+                                        position={[
+                                            visit.place.location
+                                                .latitudeLongitude.latitude,
+                                            visit.place.location
+                                                .latitudeLongitude.longitude,
+                                        ]}
+                                    />
                                 </div>
-                                <div className='flex flex-row gap-8'>
-                                    {visit.travel.map((transport) => {
-                                        const icon = resolveIcon(
-                                            transport.toLowerCase()
-                                        );
-
-                                        return (
-                                            <React.Fragment key={transport}>
-                                                {icon && <Icon {...icon} />}
-                                                <div className='flex flex-col gap-8'>
-                                                    <p className='font-bold'>
-                                                        {transport.toCapitalisedCase()}
-                                                    </p>
-                                                </div>
-                                            </React.Fragment>
-                                        );
-                                    })}
-                                </div>
-                            </Card>
-                            <div
-                                data-label='map-container'
-                                className='aspect-video h-full flex-1 order-1 md:order-2'
-                            >
-                                <Map
-                                    ref={markerRef}
-                                    position={[
-                                        visit.place.location.latitudeLongitude
-                                            .latitude,
-                                        visit.place.location.latitudeLongitude
-                                            .longitude,
-                                    ]}
-                                />
                             </div>
-                        </div>
-                    </Frame>
+                        </Frame>
+                    )}
 
                     {/* MARK: Tickets
                      */}
 
                     <Frame id='people-and-tickets'>
-                        <p>
-                            <span className='font-semibold'>Total Price</span>:
-                            £{getAmountInPounds(visit.totalPrice)}
-                        </p>
+                        <div className='flex flex-col md:flex-row gap-16'>
+                            <InputGroup<FormValues>
+                                name='date'
+                                label='Date'
+                                formRegister={{ register }}
+                                errors={errors}
+                                labelConfig={{ hideBadge: true }}
+                            />
+                            <InputGroup<FormValues>
+                                name='totalPrice'
+                                label='Total Price'
+                                formRegister={{ register }}
+                                errors={errors}
+                                labelConfig={{ hideBadge: true }}
+                                addon={{ left: { children: '£' } }}
+                                isDisabled
+                            />
+                        </div>
+
                         <div className='flex flex-col md:flex-row gap-16  md:items-stretch w-full'>
                             {tickets.map((ticket, index) => {
                                 return (
@@ -407,7 +432,7 @@ export const VisitView = ({ visit }: VisitViewProps) => {
                                             }}
                                             isDisabled={!isEditable}
                                             errors={errors}
-                                            label='Qty'
+                                            label='Amount'
                                             type='number'
                                             step='.01'
                                             labelConfig={{ hideBadge: true }}
