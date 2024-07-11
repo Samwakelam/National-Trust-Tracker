@@ -64,7 +64,7 @@ export const VisitsView = () => {
                     ? new Date(visit.date) >= new Date(dateFrom)
                     : true) &&
                 (dateTo ? new Date(visit.date) <= new Date(dateTo) : true) &&
-                (region ? visit.place.location.region.includes(region) : true)
+                (region ? visit.place.location?.region.includes(region) : true)
             );
         });
         setVisitsList(newVisits);

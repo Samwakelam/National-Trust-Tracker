@@ -225,6 +225,7 @@ export const getReducedPlaces = (visits: Visit[]) => {
 // MARK: Regions
 export const getReducedRegions = (visits: Visit[]) => {
     return visits.reduce((prev: Record<string, number>, visit: Visit) => {
+        if (!visit.place.location) return prev;
         const array = visit.place.location.region.toLowerCase().split(' ');
         const key = array.join('-');
 
