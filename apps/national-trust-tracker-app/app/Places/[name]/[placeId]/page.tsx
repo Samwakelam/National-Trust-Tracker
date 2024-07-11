@@ -89,10 +89,7 @@ export const generateStaticParams = async () => {
         const places: Places = await res.json();
 
         return places.placeSummaries.map((place: PlaceSummary) => {
-            return {
-                placeId: place.placeId.toString(),
-                name: getCase(place.name, 'pascal'),
-            };
+            return JSON.stringify(place);
         });
     } catch (error) {
         console.log('Place generateStaticParams error: ', error);

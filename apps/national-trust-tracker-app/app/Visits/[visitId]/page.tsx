@@ -1,4 +1,8 @@
-import { getAllVisits, getVisitById } from '../../../actions/Visits.actions';
+import {
+    getAllVisitIds,
+    getAllVisits,
+    getVisitById,
+} from '../../../actions/Visits.actions';
 import { VisitDB } from '../../../library/types/internal';
 
 import { VisitView } from './partials/Visit.view';
@@ -34,13 +38,15 @@ const getData = async (visitId: string) => {
 
 export const generateStaticParams = async () => {
     try {
-        const res = await getAllVisits();
+        const res = await getAllVisitIds();
 
         if (res.message === 'Success') {
-            return res.data.map((visit: VisitDB) => ({
-                visitId: visit._id,
+            return res.data.map((item: { _id: string }) => ({
+                visitId: item._id,
             }));
         }
+
+        return [];
     } catch (error) {
         console.log('Visit generateStaticParams error: ', error);
         return [];

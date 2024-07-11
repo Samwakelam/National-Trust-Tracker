@@ -38,6 +38,33 @@ export const getAllVisits = async (): Promise<ActionResponse> => {
     }
 };
 
+export const getAllVisitIds = async (): Promise<ActionResponse> => {
+    try {
+        await getDatabaseConnection();
+
+        //@ts-ignore
+        const data = await VisitsModel.find({}, '_id');
+        console.log('DATA: ', data);
+
+        const res = NextResponse.json({
+            status: 200,
+            message: 'Success',
+            data,
+        });
+
+        return await res.json();
+    } catch (error) {
+        console.log('getAllVisitIds error:', error);
+        const res = NextResponse.json({
+            status: 404,
+            message: 'Error',
+            error,
+        });
+
+        return await res.json();
+    }
+};
+
 export const getVisitById = async (
     _id: VisitDB['_id']
 ): Promise<ActionResponse> => {
