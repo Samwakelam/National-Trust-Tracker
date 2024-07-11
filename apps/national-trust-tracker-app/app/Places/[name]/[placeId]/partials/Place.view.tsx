@@ -274,13 +274,15 @@ export const PlaceView = ({
                             />
                         )}
 
-                        <div className='flex flex-col gap-16'>
-                            <HtmlParser
-                                htmlString={
-                                    place.description.htmlDescription || ''
-                                }
-                            />
-                        </div>
+                        {place.description.htmlDescription && (
+                            <div className='flex flex-col gap-16'>
+                                <HtmlParser
+                                    htmlString={
+                                        place.description.htmlDescription
+                                    }
+                                />
+                            </div>
+                        )}
                     </div>
                 </Frame>
 
@@ -359,9 +361,13 @@ export const PlaceView = ({
                     >
                         <h2>Admission</h2>
 
-                        <HtmlParser
-                            htmlString={_admissionPrices.htmlNote || ''}
-                        />
+                        <>
+                            {_admissionPrices.htmlNote && (
+                                <HtmlParser
+                                    htmlString={_admissionPrices.htmlNote}
+                                />
+                            )}
+                        </>
 
                         <div
                             className={twMerge(
@@ -500,14 +506,18 @@ export const PlaceView = ({
                                                 {key.toCapitalisedCase()}
                                             </p>
                                         </div>
-                                        <HtmlParser
-                                            htmlString={
-                                                directions.directions[
-                                                    key as DirectionType
-                                                ].htmlDescription || ''
-                                            }
-                                            align='left'
-                                        />
+                                        {directions.directions[
+                                            key as DirectionType
+                                        ].htmlDescription && (
+                                            <HtmlParser
+                                                htmlString={
+                                                    directions.directions[
+                                                        key as DirectionType
+                                                    ].htmlDescription
+                                                }
+                                                align='left'
+                                            />
+                                        )}
                                     </div>
                                 );
                             })}
@@ -602,14 +612,14 @@ export const PlaceView = ({
                                             <p className='font-bold'>
                                                 {category.name.toCapitalisedCase()}
                                             </p>
-                                            <HtmlParser
-                                                htmlString={
-                                                    category.htmlNotes.join(
+                                            {category.htmlNotes.join(' ') && (
+                                                <HtmlParser
+                                                    htmlString={category.htmlNotes.join(
                                                         ' '
-                                                    ) || ''
-                                                }
-                                                align='left'
-                                            />
+                                                    )}
+                                                    align='left'
+                                                />
+                                            )}
                                         </div>
                                     );
                                 }
