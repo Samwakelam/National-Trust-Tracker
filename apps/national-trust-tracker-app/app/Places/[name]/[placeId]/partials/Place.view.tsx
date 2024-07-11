@@ -211,7 +211,7 @@ export const PlaceView = ({
                 )}
 
                 <Frame
-                    bgImage={place.images.PRIMARY.url || undefined}
+                    bgImage={place.images?.PRIMARY.url || undefined}
                     id='frame-hero-image'
                     className='h-544 md:h-320 lg:h-auto justify-end'
                 >
@@ -266,7 +266,7 @@ export const PlaceView = ({
                         )}
                     </>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-32 items-center'>
-                        {place.images.PRIMARY.url && (
+                        {place.images && (
                             <img
                                 className='h-full object-cover'
                                 alt={place.images.PRIMARY.description}

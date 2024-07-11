@@ -128,10 +128,14 @@ export const PlaceCard = ({
                     router.push(link.href);
                 }
             })}
-            image={{
-                src: place.images.PRIMARY.url,
-                alt: place.images.PRIMARY.description,
-            }}
+            image={
+                place.images
+                    ? {
+                          src: place.images.PRIMARY.url,
+                          alt: place.images.PRIMARY.description,
+                      }
+                    : undefined
+            }
             menu={{
                 menuItems: [
                     {

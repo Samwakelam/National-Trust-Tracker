@@ -147,10 +147,14 @@ export const VisitCard = ({ visit }: VisitCardProps) => {
                     ],
                 }}
                 indicators={indicators}
-                image={{
-                    src: visit.place.images.PRIMARY.url,
-                    alt: visit.place.images.PRIMARY.description,
-                }}
+                image={
+                    visit.place.images
+                        ? {
+                              src: visit.place.images.PRIMARY.url,
+                              alt: visit.place.images.PRIMARY.description,
+                          }
+                        : undefined
+                }
                 direction='horizontal'
                 className='w-full'
                 colorScheme='white'

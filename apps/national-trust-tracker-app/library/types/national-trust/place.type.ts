@@ -55,7 +55,7 @@ export type Place = {
         email: string;
         socialMediaLinks: SocialMediaLink[];
     };
-    images: {
+    images?: {
         PRIMARY: {
             description: string;
             url: string;
